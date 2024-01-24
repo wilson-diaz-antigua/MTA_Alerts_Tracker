@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
 {%block content%}
-    {%for x in info%}
+    {%for stations in affectedStations %}
+ <!-- ('station',
+  {'alertType': 'Planned - Part Suspended',
+   'heading': 'In the Bronx, no [1] at Van Cortlandt Park-242 St',
+   'line': '1',
+   'time': '11:18 AM'})
+ -->
             <ol>
-            <li>{{x}}</li>
-        </ol>
+            
+          <li class="list" >{{stations[0]}} <img src="../static/images/{{serviceStatus[stations[1]['alertType']]}}"  width="20"
+  height="20"> {{stations[1]["alertType"]}} </li  >
+             </ol>
+
 
     {%endfor%}
     

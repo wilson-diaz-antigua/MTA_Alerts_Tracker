@@ -32,6 +32,7 @@ ServiceStatus = {
     "Station Notice": "information.png",
     "Reduced Service": "reduced.png",
 }
+
 for entity in alertFeed["entity"]:
     informedEnt = entity.get("alert", {}).get("informed_entity", {})
 
@@ -42,8 +43,11 @@ for entity in alertFeed["entity"]:
             alertType.get("alert_type", {}),
             alertType.get("created_at", {}),
             alertType.get("updated_at", {}),
+            alertType.get("human_readable_active_period", {})
+            .get("translation", {})[0]
+            .get("text", {}),
         ]
-
+        pprint(alertinfo[3])
         for info in informedEnt:
             head = alert.get("header_text", {}).get("translation", {})
             descr = alert.get("description_text", {}).get("translation", {})
@@ -56,4 +60,4 @@ for entity in alertFeed["entity"]:
                     "heading": head[0]["text"],
                 }
 AffetedStations = list(filter(lambda x: x[1], lineStops.items()))
-pprint(AffetedStations)
+# pprint(AffetedStations)

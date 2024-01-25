@@ -1,20 +1,97 @@
 {% extends 'base.html' %}
+
+
+
+
 {%block content%}
-    {%for stations in affectedStations %}
+
+
+<div class="center-container">
+  <div class="map-container">
+
+
+
+{%for station in affectedStations %}
  <!-- ('station',
   {'alertType': 'Planned - Part Suspended',
    'heading': 'In the Bronx, no [1] at Van Cortlandt Park-242 St',
    'line': '1',
    'time': '11:18 AM'})
  -->
-            <ol>
-            
-          <li class="list" >{{stations[0]}} <img src="../static/images/{{serviceStatus[stations[1]['alertType']]}}"  width="20"
-  height="20"> {{stations[1]["alertType"]}} </li  >
-             </ol>
 
 
-    {%endfor%}
+{% if loop.first %}
+
+    <div class="connection">
+      <img src="../static/images/{{serviceStatus[station[1]['alertType']]}}"  width="20" height="20" title='{{station[1]["alertType"]}}'>
+    </div>
+      <div class="line">
+          <div class="line-stop"></div>
+      </div>
+      <div class="station terminal">{{station[0]}}</div>
+
+    <div></div>
+    <div class="line">
+        <div class="line-spacer"></div>
+    </div>
+    <div></div>
+
+    <div></div>
+    <div class="line" style="position: relative;">
+        <div class="line-hidden"></div><br>
+        <div class="line-hidden" style="position: relative; top:-10px"></div>
+    </div>
+    <div class="prev">Previous Stops</div>
+
+    <div></div>
+    <div class="line">
+        <div class="line-spacer"></div>
+    </div>
+    <div></div>
+
+{% elif loop.last %}
+    <div></div>
+    <div class="line" style="position: relative;">
+      <div class="line-hidden"></div><br>
+      <div class="line-hidden" style="position: relative; top:-10px"></div>
+    </div>
+    <div>Further Stops</div>
+
+    <div></div>
+    <div class="line">
+        <div class="line-spacer"></div>
+    </div>
+    <div></div>
+
+    <div class="connection">
+      <img src="../static/images/{{serviceStatus[station[1]['alertType']]}}"  width="20" height="20"title='{{station[1]["alertType"]}}'>
+    </div>
+    <div class="line">
+        <div class="line-stop"></div>
+    </div>
+    <div class="terminal">{{station[0]}}</div>
+
+{% else %}
+    <div class="connection">
+      <img src="../static/images/{{serviceStatus[station[1]['alertType']]}}"  width="20" height="20" title='{{station[1]["alertType"]}}'> 
+    </div>
+    <div class="line">
+        <div class="line-stop"></div>
+    </div>
+    <div class="station">{{station[0]}}</div>
+
+    <div></div>
+    <div class="line">
+        <div class="line-spacer"></div>
+    </div>
+    <div></div>
+
+{% endif %}
+{%endfor%}
+
+    </div>
+    </div>
+
     
    
 

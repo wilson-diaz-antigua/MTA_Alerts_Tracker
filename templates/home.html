@@ -23,7 +23,7 @@
 {% if loop.first %}
 
     <div class="connection">
-      <img src="../static/images/{{serviceStatus[station[1]['alertType']]}}"  width="20" height="20" title='{{station[1]["alertType"]}}'>
+      <img src="../static/images/{{serviceStatus[station[1]['alertType']]| default( 'default.png')}}"  width="30" height="30" title='{{station[1]["alertType"]}}'>
     </div>
       <div class="line">
           <div class="line-stop"></div>
@@ -64,7 +64,7 @@
     <div></div>
 
     <div class="connection">
-      <img src="../static/images/{{serviceStatus[station[1]['alertType']]}}"  width="20" height="20"title='{{station[1]["alertType"]}}'>
+      <img src="../static/images/{{serviceStatus[station[1]['alertType']]| default( 'default.png')}}"  width="30" height="30"title='{{station[1]["alertType"]}}'>
     </div>
     <div class="line">
         <div class="line-stop"></div>
@@ -73,7 +73,7 @@
 
 {% else %}
     <div class="connection">
-      <img src="../static/images/{{serviceStatus[station[1]['alertType']]}}"  width="20" height="20" title='{{station[1]["alertType"]}}'> 
+      <img src="../static/images/{{ serviceStatus[station[1]['alertType']] | default( 'default.png')}}"  width="30" height="30" title='{{station[1]["alertType"]}}'> 
     </div>
     <div class="line">
         <div class="line-stop"></div>

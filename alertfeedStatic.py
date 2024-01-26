@@ -15,15 +15,13 @@ Response = requests.get(
     headers=headers,
 )
 
-alertFeed = json.loads(Response.content)
-lineStops = OrderedDict()
+
 with open("stops.csv") as csvfile:
     reader = csv.DictReader(csvfile)
 
     for col in reader:
         if col["stop_id"][0] == "1":
             lineStops[stopid(col["stop_id"])] = None
-
 alertinfo = []
 ServiceStatus = {
     "Delays": "delays.png",
@@ -32,8 +30,9 @@ ServiceStatus = {
     "Station Notice": "information.png",
     "Reduced Service": "reduced.png",
 }
-
-for entity in alertFeed["entity"]:
+alertFeed = json.loads(Response.content)
+lineStops = OrderedDict()
+for entity in alertFeed:= alertFeed["entity"]:
     informedEnt = entity.get("alert", {}).get("informed_entity", {})
 
     if informedEnt[0].get("route_id", None) in ["1"]:
@@ -43,11 +42,11 @@ for entity in alertFeed["entity"]:
             alertType.get("alert_type", {}),
             alertType.get("created_at", {}),
             alertType.get("updated_at", {}),
-            alertType.get("human_readable_active_period", {})
-            .get("translation", {})[0]
-            .get("text", {}),
+            # alertType.get("human_readable_active_period", {})
+            # .get("translation", {})[0]
+            # .get("text", {}),
         ]
-        pprint(alertinfo[3])
+        # pprint(alertinfo[3])
         for info in informedEnt:
             head = alert.get("header_text", {}).get("translation", {})
             descr = alert.get("description_text", {}).get("translation", {})

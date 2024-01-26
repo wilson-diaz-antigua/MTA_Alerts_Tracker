@@ -1,6 +1,29 @@
 import time
 from datetime import datetime
 
+from dateparser.search import search_dates
+
+"""
+TODO:
+* format dates
+* add default icon
+* update list without deleting 
+
+"""
+
+
+date1 = "Beginning Feb 5, Mon 4:45 AM through late Feb"
+date2 = "Feb 20 - 23, Tue to Fri, 10:45 AM to 3:30 PM"
+res = search_dates(date1)
+timer = datetime.strptime("00:00:00", "%H:%M:%S")
+s = [
+    x[1].strftime("%a, %b %d")
+    if x[1].time() == timer.time()
+    else x[1].strftime("%I:%M %p")
+    for x in res
+]
+print(s)
+
 
 def stopid(stop: str):
     import csv

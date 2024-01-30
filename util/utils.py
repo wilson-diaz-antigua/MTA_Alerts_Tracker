@@ -1,4 +1,5 @@
 import time
+from collections import defaultdict
 from datetime import datetime
 
 from dateparser.search import search_dates
@@ -11,24 +12,33 @@ TODO:
 
 """
 
-date1 = "Beginning Feb 5, Mon 4:45 AM through late Feb"
+date1 = "Feb 5, Mon 4:45 AM through late Feb"
 date2 = "Feb 20 - 23, Tue to Fri, 10:45 AM to 3:30 PM"
+# strftime("%a, %b %d")
+# .strftime("%I:%M %p")
 
 
 def dateparsing(date):
-    res = search_dates(date1)
+    res = search_dates(date)
+    timer = datetime.strptime("00:00:00", "%H:%M:%S").time()
+    datePeriod = {"time": [], "date": []}
+    for x in res:
+        if x[1].strftime("%a, %b %d") not in datePeriod["date"]:
+            datePeriod["date"].append(x[1].strftime("%a, %b %d"))
+        if (
+            x[1].time() != timer
+            and x[1].time().strftime("%I:%M %p") not in datePeriod["time"]
+        ):
+            datePeriod["time"].append(x[1].time().strftime("%I:%M %p"))
 
-    s = [
-        x[1].strftime("%a, %b %d")
-        if x[1].time() == (timer := datetime.strptime("00:00:00", "%H:%M:%S").time())
-        else x[1].strftime("%I:%M %p")
-        for x in res
-    ]
-
-    return s
+    return datePeriod
 
 
-dateparsing(date1)
+# print(
+#     f"""{date2}
+#             {dateparsing(date2)}
+#       """
+# )
 
 
 def stopid(stop: str):

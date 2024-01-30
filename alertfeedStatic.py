@@ -1,6 +1,8 @@
+import copy
 import csv
 import datetime
 import json
+import re
 from collections import OrderedDict, defaultdict
 from datetime import datetime as dt
 from pprint import pprint
@@ -22,7 +24,7 @@ lineStops = OrderedDict()
 with open("stops.csv") as csvfile:
     reader = csv.DictReader(csvfile)
     for col in reader:
-        if col["stop_id"][0] == "1":
+        if col["stop_id"][0] == ("1"):
             lineStops[col["stop_id"]] = None
 alertinfo = []
 ServiceStatus = {
@@ -46,16 +48,13 @@ for entity in alertFeed["entity"]:
         alertType = entity.get("alert", {}).get("transit_realtime.mercury_alert", {})
         alertinfo = {
             "alertType": alertType.get("alert_type", {}),
-            "createdAt": dt.fromtimestamp(dt.timestamp(alertType.get("created_at", {})))
-            if isinstance(created := alertType.get("created_at", {}), datetime.datetime)
-            else dt.fromtimestamp(created),
-            "updatedAt": dt.fromtimestamp(dt.timestamp(alertType.get("updated_at", {})))
-            if isinstance(updated := alertType.get("updated_at", {}), datetime.datetime)
-            else dt.fromtimestamp(updated),
+            "createdAt": alertType.get("created_at", {}),
+            "updatedAt": alertType.get("updated_at", {}),
             "date": alertType.get("human_readable_active_period", {})
             .get("translation", {})[0]
             .get("text", {}),
         }
+
         # pprint(alertinfo[3])
         for info in informedEnt:
             head = alert.get("header_text", {}).get("translation", {})
@@ -67,15 +66,36 @@ for entity in alertFeed["entity"]:
                     "alertInfo": alertinfo,
                     "heading": head[0]["text"],
                 }
-# AffetedStations = list(filter(lambda x: x[1], lineStops.items()))
+                direction = re.search(
+                    r"(downtown|uptown)",
+                    lineStops[info.get("stop_id", None)]["heading"].lower(),
+                )
 
-affectedStops = {stopid(x[0]): x[1] for x in lineStops.items() if x[1]}
-# AffetedStations = list(map(lambda x: (stopid(x[0]), x[1]), AffetedStations))
+                lineStops[info.get("stop_id", None)]["direction"] = (
+                    direction.group(0) if direction else None
+                )
+
+
+affectedStops = {stopid(x[0]): copy.deepcopy(x[1]) for x in lineStops.items() if x[1]}
 
 for x in affectedStops:
     affectedStops[x]["alertInfo"]["parsedDate"] = dateparsing(
         affectedStops[x]["alertInfo"]["date"]
     )
 
-
-pprint(affectedStops)
+    affectedStops[x]["alertInfo"]["createdAt"] = (
+        dt.fromtimestamp(affectedStops[x]["alertInfo"]["createdAt"])
+        if not isinstance(
+            created := affectedStops[x]["alertInfo"]["createdAt"], datetime.datetime
+        )
+        else created
+    )
+    affectedStops[x]["alertInfo"]["updatedAt"] = (
+        dt.fromtimestamp(affectedStops[x]["alertInfo"]["updatedAt"])
+        if not isinstance(
+            created := affectedStops[x]["alertInfo"]["updatedAt"], datetime.datetime
+        )
+        else created
+    )
+sale = list(filter(lambda x: x[1]["direction"] == None, affectedStops.items()))
+pprint(sale)

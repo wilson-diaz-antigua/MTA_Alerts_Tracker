@@ -35,17 +35,21 @@ ServiceStatus = {
     "Reduced Service": "reduced.png",
 }
 
-# pprint(Response.headers)
 alertFeed = json.loads(Response.content)
 
 
-# pprint(alertFeed["entity"][0], indent=2)
+# Iterate over each entity in the alert feed
 for entity in alertFeed["entity"]:
+    # Extract the informed entity from the alert
     informedEnt = entity.get("alert", {}).get("informed_entity", {})
 
+    # Check if the route_id of the first informed entity is "1"
     if informedEnt[0].get("route_id", None) in ["1"]:
+        # Extract the alert and alert type
         alert = entity.get("alert", {})
-        alertType = entity.get("alert", {}).get("transit_realtime.mercury_alert", {})
+        alertType = alert.get("transit_realtime.mercury_alert", {})
+
+        # Extract alert information
         alertinfo = {
             "alertType": alertType.get("alert_type", {}),
             "createdAt": alertType.get("created_at", {}),
@@ -55,47 +59,57 @@ for entity in alertFeed["entity"]:
             .get("text", {}),
         }
 
-        # pprint(alertinfo[3])
+        # Iterate over each informed entity
         for info in informedEnt:
+            # Extract the header and description text
             head = alert.get("header_text", {}).get("translation", {})
             descr = alert.get("description_text", {}).get("translation", {})
 
+            # Check if the stop_id is not None
             if info.get("stop_id", None) is not None:
-                lineStops[info.get("stop_id", None)] = {
+                # Extract the stop_id
+                stop_id = info.get("stop_id", None)
+
+                # Update the lineStops dictionary
+                lineStops[stop_id] = {
                     "line": informedEnt[0].get("route_id"),
                     "alertInfo": alertinfo,
                     "heading": head[0]["text"],
                 }
-                direction = re.search(
-                    r"(downtown|uptown)",
-                    lineStops[info.get("stop_id", None)]["heading"].lower(),
-                )
 
-                lineStops[info.get("stop_id", None)]["direction"] = (
+                # Extract the heading and convert it to lowercase
+                heading = lineStops[stop_id]["heading"].lower()
+
+                # Search for "downtown" or "uptown" in the heading
+                direction = re.search(r"(downtown|uptown)", heading)
+
+                # Update the direction in the lineStops dictionary
+                lineStops[stop_id]["direction"] = (
                     direction.group(0) if direction else None
                 )
 
+# Create a new dictionary with deep copies of the values in lineStops
+affectedStops = {
+    stopid(key): copy.deepcopy(value) for key, value in lineStops.items() if value
+}
 
-affectedStops = {stopid(x[0]): copy.deepcopy(x[1]) for x in lineStops.items() if x[1]}
 
-for x in affectedStops:
-    affectedStops[x]["alertInfo"]["parsedDate"] = dateparsing(
-        affectedStops[x]["alertInfo"]["date"]
-    )
+# Define a function to convert a timestamp to a datetime object if it isn't already
+def convert_to_datetime(timestamp):
+    if not isinstance(timestamp, datetime.datetime):
+        return dt.fromtimestamp(timestamp)
+    return timestamp
 
-    affectedStops[x]["alertInfo"]["createdAt"] = (
-        dt.fromtimestamp(affectedStops[x]["alertInfo"]["createdAt"])
-        if not isinstance(
-            created := affectedStops[x]["alertInfo"]["createdAt"], datetime.datetime
-        )
-        else created
-    )
-    affectedStops[x]["alertInfo"]["updatedAt"] = (
-        dt.fromtimestamp(affectedStops[x]["alertInfo"]["updatedAt"])
-        if not isinstance(
-            created := affectedStops[x]["alertInfo"]["updatedAt"], datetime.datetime
-        )
-        else created
-    )
-sale = list(filter(lambda x: x[1]["direction"] == None, affectedStops.items()))
+
+# Iterate over each stop in affectedStops
+for stop in affectedStops.values():
+    # Parse the date
+    stop["alertInfo"]["parsedDate"] = dateparsing(stop["alertInfo"]["date"])
+
+    # Convert the createdAt and updatedAt timestamps to datetime objects
+    stop["alertInfo"]["createdAt"] = convert_to_datetime(stop["alertInfo"]["createdAt"])
+    stop["alertInfo"]["updatedAt"] = convert_to_datetime(stop["alertInfo"]["updatedAt"])
+
+# Filter the stops without a direction
+sale = [item for item in affectedStops.items() if item[1]["direction"] is None]
 pprint(sale)

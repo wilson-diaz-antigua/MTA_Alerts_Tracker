@@ -12,16 +12,11 @@ TODO:
 
 """
 
-date1 = "Feb 5, Mon 4:45 AM through late Feb"
-date2 = "Feb 20 - 23, Tue to Fri, 10:45 AM to 3:30 PM"
-# strftime("%a, %b %d")
-# .strftime("%I:%M %p")
-
 
 def dateparsing(date):
     res = search_dates(date)
     timer = datetime.strptime("00:00:00", "%H:%M:%S").time()
-    datePeriod = {"time": [], "date": []}
+    datePeriod = {"dateText": date, "time": [], "date": []}
     for x in res:
         if x[1].strftime("%a, %b %d") not in datePeriod["date"]:
             datePeriod["date"].append(x[1].strftime("%a, %b %d"))
@@ -32,13 +27,6 @@ def dateparsing(date):
             datePeriod["time"].append(x[1].time().strftime("%I:%M %p"))
 
     return datePeriod
-
-
-# print(
-#     f"""{date2}
-#             {dateparsing(date2)}
-#       """
-# )
 
 
 def stopid(stop: str):
@@ -60,6 +48,13 @@ def stopid(stop: str):
             return f"{col[stop][0]}"
         else:
             pass
+
+
+# Define a function to convert a timestamp to a datetime object if it isn't already
+def convert_to_datetime(timestamp):
+    if not isinstance(timestamp, datetime):
+        return datetime.fromtimestamp(timestamp)
+    return timestamp
 
 
 def secToTime(row: int):

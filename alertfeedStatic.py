@@ -1,6 +1,5 @@
 import copy
 import csv
-import datetime
 import json
 import re
 from collections import OrderedDict, defaultdict
@@ -141,5 +140,5 @@ def process_alert_feed() -> dict:
     return affected_stops
 
 
-lineStops = process_alert_feed()
-pprint(lineStops)
+line_stops = process_alert_feed()
+pprint(line_stops)

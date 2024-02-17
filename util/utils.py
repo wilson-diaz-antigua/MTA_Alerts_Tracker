@@ -1,19 +1,12 @@
 import time
 from collections import defaultdict
 from datetime import datetime
+from typing import Union
 
 from dateparser.search import search_dates
 
-"""
-TODO:
-* format dates
-* add default icon
-* update list without deleting 
 
-"""
-
-
-def dateparsing(date):
+def dateparsing(date) -> dict:
     res = search_dates(date)
     timer = datetime.strptime("00:00:00", "%H:%M:%S").time()
     datePeriod = {"dateText": date, "time": [], "date": []}
@@ -51,15 +44,17 @@ def stopid(stop: str):
 
 
 # Define a function to convert a timestamp to a datetime object if it isn't already
-def convert_to_datetime(timestamp):
+def convert_to_datetime(timestamp: Union[int, float, datetime]) -> datetime:
     if not isinstance(timestamp, datetime):
         return datetime.fromtimestamp(timestamp)
     return timestamp
 
 
-def secToTime(row: int):
-    return time.strftime("%I:%M %p", time.localtime(row))
+def secToTime(row):
+    if row:
+        return time.strftime("%I:%M %p", time.localtime(int(row)))
 
 
-def secToMin(row: int):
-    return int((row - time.time()) / 60)
+def secToMin(row):
+    if row:
+        return int((int(row) - time.time()) / 60)

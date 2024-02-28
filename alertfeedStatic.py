@@ -9,6 +9,8 @@ from pprint import pprint
 
 import requests
 
+from backend import app
+from backend.models import *
 from util.utils import convert_to_datetime, dateparsing, stopid
 
 service_status = {
@@ -140,5 +142,45 @@ def process_alert_feed() -> dict:
     return affected_stops
 
 
+#  'stop name': {'alertInfo': {'alertType': str,
+#                             'createdAt': datetime,
+#                             'updatedAt': datetime},
+#                 'date': {'date': [datetime],
+#                         'time': [datetime],
+#                         'dateText': str },
+#                 'direction': str,
+#                 'heading': str,
+#                 'description': str
+#                 'line':  str }
+
+
 line_stops = process_alert_feed()
-pprint(line_stops)
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True)
+
+    for key, values in line_stops.items():
+        if values["alertInfo"]["alertType"].lower().startswith("planned"):
+            data = PlannedChanges(
+                id=key,
+                alertType=values["alertInfo"]["alertType"],
+                createdAt=values["alertInfo"]["createdAt"],
+                updatedAt=values["alertInfo"]["updatedAt"],
+                dateText=values.get("date", {}).get("dateText", "None"),
+                direction=values["direction"],
+                heading=values["heading"],
+                line=values["line"],
+            )
+            db.session.add(data)
+            db.session.commit()
+
+
+# pprint(
+#     [
+#         x
+#         for x in line_stops.values()
+#         if not x["alertInfo"]["alertType"].lower().startswith("planned")
+#     ]
+# )

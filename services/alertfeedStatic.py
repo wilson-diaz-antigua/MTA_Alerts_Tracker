@@ -2,15 +2,18 @@ import copy
 import csv
 import json
 import re
+import sys
 from collections import OrderedDict, defaultdict
 from datetime import datetime as dt
 from functools import lru_cache
 from pprint import pprint
 
 import requests
+from sqlmodel import Session, select
 
-from backend import app
-from backend.models import *
+from backend.database import engine
+from backend.models import Data, Date
+from backend.route import app
 from util.utils import convert_to_datetime, dateparsing, stopid
 
 service_status = {
@@ -22,7 +25,7 @@ service_status = {
 }
 
 
-@lru_cache(maxsize=None)
+# @lru_cache(maxsize=None)
 def process_alert_feed() -> dict:
     """
     Process the alert feed and extract relevant information about subway alerts.
@@ -45,7 +48,6 @@ def process_alert_feed() -> dict:
 
     """
 
-    line_stops = OrderedDict()
     headers = {"x-api-key": "8ogTVWVBY55OObVPvYpmu4zQAjmlHl3Q8HmQ1BpV"}
     Response = requests.get(
         "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts.json",
@@ -54,11 +56,23 @@ def process_alert_feed() -> dict:
     )
     alert_feed = json.loads(Response.content)
 
+    # Iterate over each entity in the alert feed
+    info = {
+        "line": None,
+        "alertInfo": [],
+    }
+    affected_stops = defaultdict()
     with open("stops.csv", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
-        line_stops.update({col["stop_id"]: None for col in reader if col["stop_id"]})
+        affected_stops.update(
+            {col["stop_id"]: info for col in reader if col["stop_id"]}
+        )
 
-    # Iterate over each entity in the alert feed
+    # Create a new dictionary with deep copies of the values in lineStops
+    line_stops = {
+        key: copy.deepcopy(value) for key, value in affected_stops.items() if value
+    }
+
     alert_info = []
     for entity in alert_feed["entity"]:
         # Extract the informed entity from the alert
@@ -83,6 +97,9 @@ def process_alert_feed() -> dict:
                 "createdAt": alert_type.get("created_at", {}),
                 "updatedAt": alert_type.get("updated_at", {}),
                 "date": date,
+                "direction": None,
+                "heading": None,
+                "description": None,
             }
 
             # Iterate over each informed entity
@@ -96,85 +113,86 @@ def process_alert_feed() -> dict:
                     # Extract the stop_id
                     stop_id = info.get("stop_id", None)
 
-                    # Update the lineStops dictionary
-                    line_stops[stop_id] = {
-                        "line": informed_ent[0].get("route_id"),
-                        "alertInfo": alert_info,
-                        "heading": head[0]["text"],
-                        "description": descr[0]["text"] if descr else "",
-                    }
-
-                    # Extract the heading and convert it to lowercase
-                    heading = line_stops[stop_id]["heading"].lower()
-
-                    # Search for "downtown" or "uptown" in the heading
                     direction = re.search(
                         r"(downtown|uptown)|(?!(the|a|an))\b(\w+\s?)(\w*-?)bound",
                         heading,
                     )
+                    # Update the lineStops dictionary
+                    line_stops[stop_id]["line"] = informed_ent[0].get("route_id")
+                    heading = head[0]["text"]
 
-                    # Update the direction in the lineStops dictionary
-                    line_stops[stop_id]["direction"] = (
-                        direction.group(0) if direction else None
-                    )
+                    # Search for "downtown" or "uptown" in the heading
+                    alert_info["heading"] = head[0]["text"]
+                    alert_info["direction"] = direction.group(0) if direction else None
+                    alert_info["description"] = descr[0]["text"] if descr else ""
 
-    # Create a new dictionary with deep copies of the values in lineStops
-    affected_stops = {
-        stopid(key): copy.deepcopy(value) for key, value in line_stops.items() if value
-    }
+                    line_stops[stop_id]["alertInfo"].append(alert_info)
 
+                # Extract the heading and convert it to lowercase
+    return line_stops
+    #  'stop name': {'alertInfo': {'alertType': str,
+    #                             'createdAt': datetime,
+    #                             'updatedAt': datetime},
+    #                 'date': {'date': [datetime],
+    #                         'time': [datetime],
+    #                         'dateText': str },
+    #                 'direction': str,
+    #                 'heading': str,
+    #                 'description': str
+    #                 'line':  str }
+
+
+def convert_dates(dic):
     # Iterate over each stop in affectedStops
-    for stop in affected_stops.values():
-        # Parse the date
-        try:
-            stop["alertInfo"]["date"] = dateparsing(stop["alertInfo"]["date"])
-        except AttributeError:
-            pass
+    for stop in dic.values():
+        for alert in stop["alertInfo"]:
+            # Parse the date
+            try:
 
-        # Convert the createdAt and updatedAt timestamps to datetime objects
-        stop["alertInfo"]["createdAt"] = convert_to_datetime(
-            stop["alertInfo"]["createdAt"]
+                alert["date"] = dateparsing(alert["date"])
+            except AttributeError:
+                pass
+
+            # Convert the createdAt and updatedAt timestamps to datetime objects
+            alert["createdAt"] = convert_to_datetime(alert["createdAt"])
+            alert["updatedAt"] = convert_to_datetime(alert["updatedAt"])
+    return dic
+
+
+alerts = process_alert_feed()
+
+
+converted_alerts = convert_dates(alerts)
+pprint(converted_alerts)
+
+
+def add_alerts_to_db():
+    alerts = process_alert_feed()
+
+    for key, values in alerts.items():
+        data = Data(
+            stop=str(key),
+            alert_type=values["alertInfo"]["alertType"],
+            created_at=values["alertInfo"]["createdAt"],
+            updated_at=values["alertInfo"]["updatedAt"],
+            direction=values["direction"],
+            heading=values["heading"],
+            line=values["line"],
         )
-        stop["alertInfo"]["updatedAt"] = convert_to_datetime(
-            stop["alertInfo"]["updatedAt"]
+        dates = Date(
+            data_id=data.stop,
+            # date=values.get("date", {}).get("date", []),
+            dateText=values.get("alertInfo", {}).get("date", {}).get("dateText", ""),
         )
+    with Session(engine) as session:
+        # statement = select(Data).where(Data.stop == key)
+        # res = session.exec(statement)
+        # if not res.first():
 
-    return affected_stops
+        session.add_all([data, dates])
+        session.commit()
 
-
-#  'stop name': {'alertInfo': {'alertType': str,
-#                             'createdAt': datetime,
-#                             'updatedAt': datetime},
-#                 'date': {'date': [datetime],
-#                         'time': [datetime],
-#                         'dateText': str },
-#                 'direction': str,
-#                 'heading': str,
-#                 'description': str
-#                 'line':  str }
-
-
-line_stops = process_alert_feed()
-
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        app.run(debug=True)
-
-    for key, values in line_stops.items():
-        if values["alertInfo"]["alertType"].lower().startswith("planned"):
-            data = PlannedChanges(
-                id=key,
-                alertType=values["alertInfo"]["alertType"],
-                createdAt=values["alertInfo"]["createdAt"],
-                updatedAt=values["alertInfo"]["updatedAt"],
-                dateText=values.get("date", {}).get("dateText", "None"),
-                direction=values["direction"],
-                heading=values["heading"],
-                line=values["line"],
-            )
-            db.session.add(data)
-            db.session.commit()
+        session.refresh(data)
 
 
 # pprint(

@@ -4,8 +4,7 @@ from statistics import mean
 import requests
 from google.protobuf.json_format import MessageToJson
 from google.transit import gtfs_realtime_pb2
-
-from util.utils import secToMin
+from utils import secToMin
 
 tripUrl = {
     "ace": "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace",

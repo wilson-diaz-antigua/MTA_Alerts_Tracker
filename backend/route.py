@@ -1,15 +1,13 @@
+import sys
+
 from flask import Flask, jsonify, render_template
 
-from backend import app
-from backend.models import *
+# from models import Data
+# from route import app
 
 # import alertfeedStatic as af
 
-
-PlannedChanges.init_app(app)
-
-voyceSchemas = db_Schema(many=True)
-voyceSchema = db_Schema()
+app = Flask(__name__)
 
 
 @app.route("/")

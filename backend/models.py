@@ -22,15 +22,6 @@ from sqlmodel import Column, Field, Relationship, SQLModel, String
 # Optional because if we use this field as auto id increment
 
 
-class StopAlertsLink(SQLModel, table=True):
-    stop_id: Optional[int] = Field(
-        default=None, foreign_key="stop.id", primary_key=True
-    )
-    alert_id: Optional[int] = Field(
-        default=None, foreign_key="alerts.id", primary_key=True
-    )
-
-
 class Alerts(SQLModel, table=True):
 
     # the value would be None before it gets to the database
@@ -41,17 +32,5 @@ class Alerts(SQLModel, table=True):
     direction: str = Field(nullable=True)
     heading: str = Field(nullable=True)
     decription: str = Field(nullable=True)
-    stops: List["Stop"] = Relationship(
-        back_populates="alert", link_model=StopAlertsLink
-    )
-
-
-class Stop(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True, unique=True)
-
+    route: str = Field(nullable=True)
     stop: Optional[str] = Field(default=None)
-    route: str
-
-    alert: Optional["Alerts"] = Relationship(
-        back_populates="stops", link_model=StopAlertsLink
-    )

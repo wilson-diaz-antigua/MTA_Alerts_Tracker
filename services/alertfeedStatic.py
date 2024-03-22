@@ -12,7 +12,7 @@ import requests
 from sqlmodel import Session, select
 
 from backend.database import engine
-from backend.models import Alerts, Stop
+from backend.models import Alerts
 from backend.route import app
 from util.utils import convert_to_datetime, dateparsing, stopid
 
@@ -57,7 +57,6 @@ def process_alert_feed() -> dict:
     alert_feed = json.loads(Response.content)
     info = defaultdict()
     info = {
-        "line": set(),
         "alertInfo": [],
     }
     affected_stops = defaultdict()
@@ -102,7 +101,9 @@ def process_alert_feed() -> dict:
                 "direction": None,
                 "heading": None,
                 "description": None,
+                "line": None,
             }
+            alert_info["line"] = informed_ent[0].get("route_id", None)
 
             for info in informed_ent:
 
@@ -121,14 +122,10 @@ def process_alert_feed() -> dict:
                 alert_info["description"] = descr[0]["text"] if descr else ""
 
                 if info.get("stop_id", None) is not None:
-                    line_stops[stop_id]["line"].add(informed_ent[0].get("route_id"))
+
                     line_stops[stop_id]["alertInfo"].append(alert_info)
                 else:
-                    line_stops["None"]["alertInfo"] = alert_info
-                    line_stops["None"]["alertInfo"]["line"] = None
-                    line_stops["None"]["alertInfo"]["line"] = informed_ent[0].get(
-                        "route_id"
-                    )
+                    line_stops["None"]["alertInfo"].append(alert_info)
 
     return line_stops
 
@@ -150,34 +147,34 @@ def convert_dates(dic):
 
 
 def add_alerts_to_db():
-    alerts = process_alert_feed()
+    alert_dict = process_alert_feed()
 
     with Session(engine) as session:
-        for key, values in alerts.items():
-            for line in values["line"]:
-                stop = Stop(
-                    stop=str(key),
-                    route=line,
-                )
-                for alert in values["alertInfo"]:
-                    alerts = Alerts(
-                        alert_type=alert["alertType"],
-                        created_at=alert["createdAt"],
-                        updated_at=alert["updatedAt"],
-                        direction=alert["direction"],
-                        heading=alert["heading"],
-                        stops=[stop],
-                        dateText=alert.get("alertInfo", {})
-                        .get("date", {})
-                        .get("dateText", ""),
-                    )
-                    session.add(alerts)
-                    session.commit()
-                    session.refresh(alerts)
+        for key, values in alert_dict.items():
 
-                session.add(stop)
+            # stop = Stop(
+            #     stop=str(key),
+            # )
+            for alert in values["alertInfo"]:
+                alerts = Alerts(
+                    alert_type=alert["alertType"],
+                    created_at=alert["createdAt"],
+                    updated_at=alert["updatedAt"],
+                    direction=alert["direction"],
+                    heading=alert["heading"],
+                    route=str(alert["line"]),
+                    stop=str(key),
+                    dateText=alert.get("alertInfo", {})
+                    .get("date", {})
+                    .get("dateText", ""),
+                )
+                session.add(alerts)
                 session.commit()
-                session.refresh(stop)
+                session.refresh(alerts)
+
+            # session.add(stop)
+            # session.commit()
+            # session.refresh(stop)
 
 
 def select_heroes():
@@ -202,4 +199,4 @@ alerts = process_alert_feed()
 
 # converted_alerts = convert_dates(alerts)
 
-pprint(alerts)
+# pprint(alerts)

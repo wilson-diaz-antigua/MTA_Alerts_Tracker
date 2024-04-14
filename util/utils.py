@@ -37,10 +37,10 @@ def stopid(stop: str):
             else:
                 col[row["stop_id"]] += [row["stop_name"]]
 
-        if stop is not None:
+        if stop != "None":
             return f"{col[stop][0]}"
         else:
-            pass
+            return "None"
 
 
 # Define a function to convert a timestamp to a datetime object if it isn't already

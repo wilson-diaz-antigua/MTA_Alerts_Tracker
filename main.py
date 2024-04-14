@@ -1,9 +1,9 @@
-from backend.database import create_db_and_tables
+from backend.database import init_db
 from services.alertfeedStatic import add_alerts_to_db
 
 
 def main():
-    create_db_and_tables()
+    init_db()
     add_alerts_to_db()
 
 

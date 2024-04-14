@@ -6,14 +6,15 @@ import sys
 from collections import OrderedDict, defaultdict
 from datetime import datetime as dt
 from functools import lru_cache
-from pprint import pprint
+from pprint import pprint as pp
 
 import requests
 from sqlmodel import Session, select
 
 from backend.database import engine
-from backend.models import Alerts
-from backend.route import app
+from backend.models import Alerts, Stop
+
+# from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, stopid
 
 service_status = {
@@ -146,15 +147,37 @@ def convert_dates(dic):
     return dic
 
 
+# def seen_stops():
+#     with Session(engine) as session:
+
+#         statement = select(Stop)
+#         result = session.exec(statement)
+#         alertType = result.all()
+
+#         # Code from the previous example omitted 👈
+#         return {x.stop for x in alertType}
+#         # return [f"{stopid(x.stop)}:{x.alert_type} : {x.direction}" for x in alertType]
+#         # pprint(
+#         #     [
+#         #         f"""{stopid(x.stop)} : {x.direction} : {x.alert_type}"""
+#         #         for x in alertType
+#         #     ]
+#         # )
+
+
 def add_alerts_to_db():
     alert_dict = process_alert_feed()
 
     with Session(engine) as session:
         for key, values in alert_dict.items():
 
-            # stop = Stop(
-            #     stop=str(key),
-            # )
+            stop = Stop(
+                stop=str(key),
+            )
+            # session.add(stop)
+            # session.commit()
+            # session.refresh(stop)
+
             for alert in values["alertInfo"]:
                 alerts = Alerts(
                     alert_type=alert["alertType"],
@@ -163,40 +186,30 @@ def add_alerts_to_db():
                     direction=alert["direction"],
                     heading=alert["heading"],
                     route=str(alert["line"]),
-                    stop=str(key),
-                    dateText=alert.get("alertInfo", {})
-                    .get("date", {})
-                    .get("dateText", ""),
+                    dateText=alert.get("date", {}),
                 )
-                session.add(alerts)
-                session.commit()
-                session.refresh(alerts)
+                table = select(Alerts).where(
+                    Alerts.alert_type == alerts.alert_type,
+                    Alerts.route == alerts.route,
+                    Alerts.direction == alerts.direction,
+                    Alerts.heading == alerts.heading,
+                    Alerts.created_at == alerts.created_at,
+                    Alerts.updated_at == alerts.updated_at,
+                    alerts.stop_id == stop.id,
+                )
+                instance = session.exec(table).first()
+                if not instance:
+                    alerts.stops = stop
+                    session.add(alerts)
+                    session.commit()
+                    session.refresh(alerts)
 
-            # session.add(stop)
-            # session.commit()
-            # session.refresh(stop)
 
-
-def select_heroes():
+def get_alerts():
     with Session(engine) as session:
-        statement = select(Stop).where(Stop.route == "2")
-        result = session.exec(statement)
-        alertType = result.all()
-
-        # Code from the previous example omitted 👈
-
-        pprint(
-            [
-                f"{stopid(x.stop)}___{x.alert.heading}"
-                for x in alertType
-                if x.alert is not None
-            ]
-        )
+        nostop = session.exec(select(Alerts).where(Alerts.route == "1")).all()
+        for x in nostop:
+            pp(f"{x.stops.stop}___{x.heading}")
 
 
-alerts = process_alert_feed()
-
-
-# converted_alerts = convert_dates(alerts)
-
-# pprint(alerts)
+# get_alerts()

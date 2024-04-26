@@ -1,4 +1,7 @@
 {
     "editor.defaultFormatter": "ms-python.black-formatter",
-    "livePreview.defaultPreviewPath": "/templates/index.html"
+    "livePreview.defaultPreviewPath": "/templates/index.html",
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }

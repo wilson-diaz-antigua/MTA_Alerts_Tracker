@@ -3,8 +3,9 @@ from typing import Any, Dict, List, Optional, Set, Union
 
 import sqlalchemy as sa
 from database import engine
-
-# from pydantic import BaseModel
+from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from pydantic import BaseModel
 from sqlalchemy.dialects import (
     postgresql,
 )  # ARRAY contains requires dialect specific type
@@ -43,3 +44,35 @@ class Alerts(SQLModel, table=True):
     # stop: Optional[str] = Field(default=None)
     stop_id: Optional[int] = Field(default=None, foreign_key="stop.id")
     stops: Stop | None = Relationship(back_populates="alert")
+
+
+class AlertSchema(SQLAlchemyAutoSchema):
+
+    # id = fields.Int(allow_none=True)
+    # stop_id = fields.Int(allow_none=True)
+    alert_type = fields.Str(allow_none=True)
+    heading = fields.Str(allow_none=True)
+    # stop_id = fields.Int(allow_none=True)
+    # stops = fields.Nested(StopSchema, allow_none=True, many=True)
+
+
+class ListofAlerts(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Alerts
+
+
+# class ListofStops(Schema):
+#     stops = fields.Nested(StopSchema, allow_none=True, many=True)
+
+
+class StopSchema(SQLAlchemyAutoSchema):
+
+    class Meta:
+        model = Stop
+        include_relationship = True
+
+    alert = fields.Nested(
+        ListofAlerts,
+        allow_none=True,
+        many=True,
+    )

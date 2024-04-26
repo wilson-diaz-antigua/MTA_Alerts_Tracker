@@ -60,9 +60,5 @@ def secToMin(row):
         return int((int(row) - time.time()) / 60)
 
 
-# def main():
-#     pass
-
-
-# if __name__ == "__main__":
-#     print(dateparsing("Apr 5 - 8"))
+if __name__ == "__main__":
+    print(dateparsing("Apr 5 - 8"))

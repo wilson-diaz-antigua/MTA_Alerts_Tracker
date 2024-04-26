@@ -12,7 +12,7 @@ import requests
 from sqlmodel import Session, select
 
 from backend.database import engine
-from backend.models import Alerts, Stop
+from backend.models import Alerts, AlertSchema, Stop, StopSchema
 
 # from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, stopid
@@ -206,10 +206,20 @@ def add_alerts_to_db():
 
 
 def get_alerts():
+    stopSchema = StopSchema()
+    alertSchema = AlertSchema()
     with Session(engine) as session:
-        nostop = session.exec(select(Alerts).where(Alerts.route == "1")).all()
-        for x in nostop:
-            pp(f"{x.stops.stop}___{x.heading}")
+        stops = session.exec(select(Stop)).all()
+        alerts = session.exec(select(Alerts)).all()
+
+        # for x in stopSchema.dump(stops, many=True):
+        #     for y in alertSchema.dump(alerts, many=True):
+        #         if x["id"] == y["stop_id"]:
+
+        for x in stops[8:10]:
+            print(x.stop, [y.alert_type for y in x.alert])
+
+        return stopSchema.dump(stops)
 
 
-# get_alerts()
+pp(get_alerts())

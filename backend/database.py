@@ -1,6 +1,6 @@
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import SQLModel, create_engine
 
-from backend.route import server
+# from backend.route import server
 
 sqlite_file_name = "data.db"
 supabase_url = f"postgresql://postgres.chdvhomptyzmnkizulpc:uPnqqA6RGcFbcPAh@aws-0-us-west-1.pooler.supabase.com:5432/postgres"

@@ -7,7 +7,7 @@ from flask_smorest import Api, Blueprint, abort
 from sqlmodel import Session, select
 
 from backend.database import engine
-from backend.models import Alerts, AlertSchema, ListofAlerts, Stop, StopSchema
+from backend.models import Alerts, ListofAlerts, Stop, StopSchema
 
 # from models import Data
 
@@ -36,27 +36,28 @@ api = Api(server)
 stops = Blueprint("stops", "stops", url_prefix="/api", description="MTA stops API")
 
 
-@stops.route("/alerts")
-class alertsCollection(MethodView):
-    # @stops.arguments(StopSchema, location="query")
-    @stops.response(status_code=200, schema=AlertSchema(many=True))
-    def get(self):
-        with Session(engine) as session:
-            out = session.exec(select(Alerts)).all()
+# @stops.route("/alerts")
+# class alertsCollection(MethodView):
+#     # @stops.arguments(StopSchema, location="query")
+#     @stops.response(status_code=200, schema=AlertSchema(many=True))
+#     def get(self):
+#         with Session(engine) as session:
+#             out = session.exec(select(Alerts)).all()
 
-        return out
+#         return out
 
-        # return {"stop": x.stop for x in stops, "alert" : [y.alert[0].alert_type for y in stops]}
+#         # return {"stop": x.stop for x in stops, "alert" : [y.alert[0].alert_type for y in stops]}
 
 
 @stops.route("/stops")
 class StopsCollection(MethodView):
-    @stops.response(status_code=200, schema=StopSchema(many=True))
+    @stops.response(status_code=200)
     def get(self):
-        # out = None
+
+        stopSchema = StopSchema()
         with Session(engine) as session:
             stops = session.exec(select(Stop)).all()
-            # alerts = session.exec(select(Alerts)).all()
+            stops = stopSchema.dump(stops, many=True)
 
             # for x in stops:
             #     if x.id == alerts.stop_id:

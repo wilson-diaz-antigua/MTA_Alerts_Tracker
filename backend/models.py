@@ -46,29 +46,17 @@ class Alerts(SQLModel, table=True):
     stops: Stop | None = Relationship(back_populates="alert")
 
 
-class AlertSchema(SQLAlchemyAutoSchema):
-
-    # id = fields.Int(allow_none=True)
-    # stop_id = fields.Int(allow_none=True)
-    alert_type = fields.Str(allow_none=True)
-    heading = fields.Str(allow_none=True)
-    # stop_id = fields.Int(allow_none=True)
-    # stops = fields.Nested(StopSchema, allow_none=True, many=True)
-
-
 class ListofAlerts(SQLAlchemyAutoSchema):
     class Meta:
         model = Alerts
-
-
-# class ListofStops(Schema):
-#     stops = fields.Nested(StopSchema, allow_none=True, many=True)
+        exclude = ("id", "stop_id", "created_at", "updated_at")
 
 
 class StopSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         model = Stop
+        exclude = ("id",)
         include_relationship = True
 
     alert = fields.Nested(

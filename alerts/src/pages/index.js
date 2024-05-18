@@ -11,23 +11,24 @@ function Index() {
   }, []);
 
   return (
-    <div className="-my-6">
+    <ul className="-my-6">
       {data.map((stop) => {
         return (
           <div key={stop.id} className="timelineItem group">
             <div className=" group-last:before:hidden verticalLine">
-              <div className="rightInfo">{stop.stop}</div>
+              <li className="rightInfo">{stop.stop}</li>
             </div>
-            {stop.alert.map((alert, index) => {
-              return (
-                <div key={index}>
-                  <ul className="leftInfo">
-                    <li className="items">{alert.route}</li>
-                  </ul>
-                </div>
-              );
-            })}
-            {console.log(stop.alert)}
+            <ul className="leftInfo">
+              {stop.alert.map((alert, index) => {
+                let routes = [new Set(alert.route)];
+                return (
+                  <div key={index}>
+                    <li className="items">{routes}</li>
+                  </div>
+                );
+              })}
+            </ul>
+
             {stop.alert.map((alert, index) => {
               return (
                 <div key={index}>
@@ -41,7 +42,7 @@ function Index() {
           </div>
         );
       })}
-    </div>
+    </ul>
   );
 }
 

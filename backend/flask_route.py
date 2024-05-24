@@ -8,6 +8,7 @@ from sqlmodel import Session, select
 
 from backend.database import engine
 from backend.models import Alerts, ListofAlerts, Stop, StopSchema
+from util.utils import stopid
 
 # from models import Data
 
@@ -57,6 +58,8 @@ class StopsCollection(MethodView):
         stopSchema = StopSchema()
         with Session(engine) as session:
             stops = session.exec(select(Stop)).all()
+            # idstop = map(lambda a: stopid(a.stops), stops)
+
             stops = stopSchema.dump(stops, many=True)
 
             # for x in stops:

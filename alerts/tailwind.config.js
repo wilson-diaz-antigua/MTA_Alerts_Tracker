@@ -12,6 +12,14 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        transparent: "transparent",
+        current: "currentColor",
+        MTAred: "#EE352E",
+        MTAgreen: "#00933C",
+        MTAmagenta: "#B933AD",
+        "MTAblue": "#0039A6",
+      },
     },
   },
   plugins: [],

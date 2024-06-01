@@ -1,9 +1,10 @@
+import csv
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Union
 
 import sqlalchemy as sa
 from database import engine
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_dump, pre_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from pydantic import BaseModel
 from sqlalchemy.dialects import (
@@ -11,6 +12,8 @@ from sqlalchemy.dialects import (
 )  # ARRAY contains requires dialect specific type
 from sqlalchemy.orm import Mapped
 from sqlmodel import Column, Field, Relationship, Session, SQLModel, String, select
+
+from util.utils import stopid
 
 # class Date(SQLModel, table=True):
 #     id: Optional[int] = Field(default=None, primary_key=True)
@@ -64,3 +67,8 @@ class StopSchema(SQLAlchemyAutoSchema):
         allow_none=True,
         many=True,
     )
+
+    # @post_dump
+    # def stopParser(self, stops, **kwargs):
+    #     stops["stop"] = stopid(stops["stop"])
+    #     return stops

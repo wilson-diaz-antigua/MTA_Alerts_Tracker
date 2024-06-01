@@ -47,7 +47,7 @@ stops = Blueprint("stops", "stops", url_prefix="/api", description="MTA stops AP
 
 #         return out
 
-#         # return {"stop": x.stop for x in stops, "alert" : [y.alert[0].alert_type for y in stops]}
+#         # return {"£stop": x.stop for x in stops, "alert" : [y.alert[0].alert_type for y in stops]}
 
 
 @stops.route("/stops")
@@ -58,8 +58,10 @@ class StopsCollection(MethodView):
         stopSchema = StopSchema()
         with Session(engine) as session:
             stops = session.exec(select(Stop)).all()
-            # idstop = map(lambda a: stopid(a.stops), stops)
-
+            # idstop = [map(lambda a: stopid(a), stops)]
+            # stops= {}
+            prepro = stops[0].stop
+            print(prepro)
             stops = stopSchema.dump(stops, many=True)
 
             # for x in stops:

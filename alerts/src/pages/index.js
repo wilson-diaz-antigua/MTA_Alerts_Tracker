@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import routeNames from "../../../stops.json";
 function Index() {
   const [data, setdata] = useState([]);
   const [filtered, setfilter] = useState('broadway');
  const [lines, setlines] = useState('x');
- 
  
  
  
@@ -20,13 +20,19 @@ function Index() {
     "queens blvd": ["7"],
     "8th ave":["A","B","C","E"],
   };
-  
   let stopColors = {
     broadway: "bg-MTAred",
     lexington: "bg-MTAgreen",
     "queens blvd": "bg-MTAmagenta",
     "8th ave": "bg-MTAblue",
   };
+  let stopLineColors = {
+    broadway: "before:bg-MTAred",
+    lexington: "before:bg-MTAgreen",
+    "queens blvd": "before:bg-MTAmagenta",
+    "8th ave": "before:bg-MTAblue",
+  };
+  
   
 let lineColors = {
   1: "bg-MTAred",
@@ -43,6 +49,7 @@ let lineColors = {
 };
 
 
+
   useEffect(() => {
     fetch("http://localhost:8080/api/stops")
       .then((res) => res.json())
@@ -51,7 +58,7 @@ let lineColors = {
       });
   }, []);
 
-  console.log()
+  
 
     const filteredItems = data.filter((x) => {
       return lines == "x"
@@ -61,7 +68,7 @@ let lineColors = {
     
     const startStop = filteredItems.findIndex((obj) => obj.stop == "120");
     
-    console.log( filteredItems.slice(startStop, filteredItems.length))
+    
     
     const data1 =() => filteredItems.map((item, id) => {
       
@@ -72,6 +79,8 @@ let lineColors = {
           
           return routes.route;
         })
+
+        
       )],
       'type': [
        ...new Set(
@@ -101,7 +110,7 @@ let lineColors = {
             <div className="leftSide ">
               <ul className="leftcont">
                 {alerts['route'].map((item) => {
-                  console.log(item)
+                  
                   return <li className= {"items " + lineColors[item]}>{item} </li>;
                 })}
               </ul>
@@ -110,7 +119,7 @@ let lineColors = {
 
           <div className="flex flex-row items-start justify-start h-10 ml-0 space-x-2 mt-[2.9rem] text-slate-500">
             <div className="self-start font-bold text-slate-50">
-              {item.stop}
+              {routeNames[item.stop].stop_name}
             </div>
             <ul className="self-start">
               {alerts['type'].map((item) => {
@@ -159,7 +168,7 @@ let lineColors = {
         </div>
       </section>
 
-      <div className={`container relative before:${stopColors[filtered]}`}>
+      <div className={`container relative ${stopLineColors[filtered]}`}>
         <div className="relative">
           <section>{data1()}</section>
         </div>

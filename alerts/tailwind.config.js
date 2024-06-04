@@ -18,7 +18,7 @@ module.exports = {
         MTAred: "#EE352E",
         MTAgreen: "#00933C",
         MTAmagenta: "#B933AD",
-        "MTAblue": "#0039A6",
+        MTAblue: "#0039A6",
       },
     },
   },

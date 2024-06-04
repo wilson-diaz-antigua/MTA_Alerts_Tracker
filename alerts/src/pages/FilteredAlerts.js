@@ -7,14 +7,15 @@ const FilteredAlerts = (props) => {
       <select
         multiple={props.multiple || false}
         defaultValue="x"
-        className={props.tailwind}
+        className={`appearance-none  ${props.tailwind}`}
         name="filter"
         id="filter"
-        value={props.service}
-        onChange={props.setService}
+        value={props.state}
+        onChange={props.setState}
       >
-        {objMap.map((filtServiceIter) => {
-          return <option className="appearance-none">{filtServiceIter}</option>;
+        {props.value && <option value="x">X</option>}
+        {objMap.map((filtIter, value) => {
+          return <option value={filtIter}>{filtIter}</option>;
         })}
       </select>
     </>

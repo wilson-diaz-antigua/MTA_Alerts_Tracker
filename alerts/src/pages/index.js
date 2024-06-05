@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import objects from "../../../themes.json";
 import FilteredAlerts from "./FilteredAlerts.js";
 import TimelineItem from "./TimelineItem";
+let colors = "bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue";
 
 function Index() {
   const [data, setdata] = useState([]);
@@ -14,7 +14,6 @@ function Index() {
     setStop(id);
   };
 
-  const timelineTheme = objects.timelineLineColors[filtLines];
   useEffect(() => {
     fetch("http://localhost:8080/api/stops")
       .then((res) => res.json())
@@ -88,7 +87,10 @@ function Index() {
           />
         </div>
       </section>
-      <div className={twMerge("cotntent", timelineTheme)}>
+      <div
+        className={` container relative
+          before:${objects.lineColors[filtLines]}`}
+      >
         <div className="relative">
           <section>{data1()}</section>
         </div>

@@ -2,49 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
- @font-face {
-   font-family: 'Helvetica';
-    font-style: normal
- }
+@layer base {
+  @font-face {
+    font-family: "Helvetica";
+    font-style: normal;
+  }
 }
 
 @layer components {
   .container {
-    @apply  space-y-8 relative  before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:ml-[7.5rem]  sm:before:ml-[12.6rem] md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.3rem]
+    @apply space-y-8 relative  before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:ml-[7.5rem]  sm:before:ml-[12.6rem] md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.3rem];
   }
-    .content{
-      @apply 
-       /* bg-red-500  sm:bg-blue-400 md:bg-green-400 lg:bg-yellow-400 xl:bg-pink-400 2xl:bg-purple-400 */
-      items-center mb-10 flex space-x-3
-    }
-    .timelineItem{
-      @apply  
-       /* bg-blue-500 */
-        flex justify-around  
-    }
-      .icon {
-        @apply mt-7 ml-[-0.20rem] sm:ml-[0.70rem] sm:ml-[0.85rem] flex items-center justify-center w-7 h-7 bg-white rounded-full shadow order-1 
-      }
-      .leftSide{
-        
-        @apply text-xl font-medium  w-28  h-4/5 lg:w-[11em] sm:w-[9em]       
+  .content {
+    @apply /* bg-red-500  sm:bg-blue-400 md:bg-green-400 lg:bg-yellow-400 xl:bg-pink-400 2xl:bg-purple-400 */
+      items-center mb-10 flex space-x-3;
+  }
+  .timelineItem {
+    @apply flex justify-around;
+  }
+  .icon {
+    @apply mt-7 ml-[-0.20rem] sm:ml-[0.70rem] sm:ml-[0.85rem] flex items-center justify-center w-7 h-7 bg-white rounded-full shadow order-1;
+  }
+  .leftSide {
+    @apply text-xl font-medium  w-28  h-4/5 lg:w-[11em] sm:w-[9em];
+  }
+  .leftcont {
+    @apply pl-px md:w-[18em]  w-[12em]   lg:w-[21em]   sm:w-[18em]  absolute left-0 flex flex-wrap items-end justify-end px-12 mb-0 text-xs font-semibold uppercase text-emerald-600 h-14 place-items-stretch;
+  }
+  .items {
+    @apply m-0.5  p-2.5 py-1.5 rounded-full w-7 h-7 mb-0  text-slate-50 font-bold;
+  }
+  .route {
+    @apply m-0.5  p-2.5  rounded-full w-full h-full mb-0 text-slate-50 font-bold text-6xl text-center;
+  }
 
-      }
-      .leftcont{
-        @apply   pl-px md:w-[18em]  w-[12em]   lg:w-[21em]   sm:w-[18em]  absolute left-0 flex flex-wrap items-end justify-end px-12 mb-0 text-xs font-semibold uppercase text-emerald-600 h-14 place-items-stretch ;
-
-      }
-      .items{
-            @apply  m-0.5  p-2.5 py-1.5 rounded-full w-7 h-7 mb-0  text-slate-50 font-bold  ;
-
-          }
-                .route{
-            @apply  m-0.5  p-2.5  rounded-full w-full h-full mb-0 text-slate-50 font-bold text-6xl text-center ;
-
-          }
-    
-  .details
-  {@apply p-4 bg-white border rounded shadow border-slate-200 text-slate-50 ml-14 ml-44}
-
+  .details {
+    @apply p-4 bg-white border rounded shadow border-slate-200 text-slate-50 ml-44;
+  }
 }

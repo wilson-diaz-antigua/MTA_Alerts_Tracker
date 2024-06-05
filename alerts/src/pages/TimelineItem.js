@@ -1,3 +1,5 @@
+import stopNames from "../../../stopNames.json";
+
 const TimelineItem = (props) => {
   return (
     <>
@@ -16,11 +18,8 @@ const TimelineItem = (props) => {
           <div className="leftSide ">
             <ul className="leftcont">
               {props.alerts["service"].map((serviceIter) => {
-                return (
-                  <li className={`items ${props.lineColor[serviceIter]}`}>
-                    {serviceIter}
-                  </li>
-                );
+                let lineThemes = props.lineColor[serviceIter];
+                return <li className={`items ${lineThemes}`}>{serviceIter}</li>;
               })}
             </ul>
           </div>
@@ -31,7 +30,7 @@ const TimelineItem = (props) => {
             onClick={props.setState}
             className="self-start font-bold text-slate-50"
           >
-            {props.stop_name}
+            {stopNames[props.stop.stop].stop_name}
           </button>
           <ul className="self-start">
             {props.alerts["type"].map((alertTypeIter) => {

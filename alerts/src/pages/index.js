@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
-import stopNames from "../../../stops.json";
+import { twMerge } from "tailwind-merge";
 import objects from "../../../themes.json";
 import FilteredAlerts from "./FilteredAlerts.js";
-import TimelineItem from "./TimelineItem.js";
+import TimelineItem from "./TimelineItem";
 
 function Index() {
   const [data, setdata] = useState([]);
   const [filtLines, setFiltLines] = useState("broadway");
   const [service, setService] = useState("x");
   const [direction, setDirection] = useState("downtown");
-  const [stop, setStop] = useState("");
+  const [stop, setStop] = useState(0);
+  const testClick = (event, id) => {
+    setStop(id);
+  };
 
+  const timelineTheme = objects.timelineLineColors[filtLines];
   useEffect(() => {
     fetch("http://localhost:8080/api/stops")
       .then((res) => res.json())
       .then((data) => {
         setdata(data);
-        setStop(data[0].stop);
       });
   }, []);
 
@@ -25,10 +28,9 @@ function Index() {
       ? objects.serviceByLines[filtLines].includes(x.stop[0])
       : service.includes(x.stop[0]);
   });
-  console.log(stop);
   const startStop = filteredItems.findIndex((obj) => obj.stop == "120");
   const data1 = () =>
-    filteredItems.map((item, id) => {
+    filteredItems.map((item, index) => {
       const alerts = {
         service: [
           ...new Set(
@@ -49,14 +51,11 @@ function Index() {
       return (
         <>
           <TimelineItem
-            key={id}
-            setState={(e) => {
-              setStop(e.currentTarget.textContent);
-            }}
+            setState={(event) => testClick(event, index)}
             alerts={alerts}
             lineColor={objects.serviceColors}
-            stop_name={stopNames[item.stop].stop_name}
-          ></TimelineItem>
+            stop={item}
+          />
         </>
       );
     });
@@ -66,7 +65,6 @@ function Index() {
       <section className="  flex  pt-10 ml-[05rem] sm:ml-[10rem]  md:ml-[10rem]  lg:ml-[13rem]">
         <div className="w-20 h-20 justify-self-end ">
           <FilteredAlerts
-            lineColors={objects.lineColors}
             data={objects.serviceByLines[filtLines]}
             state={service}
             setState={(e) => {
@@ -74,7 +72,7 @@ function Index() {
             }}
             tailwind={` pt-2 route ${objects.lineColors[filtLines]} `}
             value={true}
-          ></FilteredAlerts>
+          />
         </div>
         <div className="ml-5">
           <FilteredAlerts
@@ -87,22 +85,10 @@ function Index() {
               "  content-center h-auto pt-5 ml-4 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
             }
             value={false}
-          ></FilteredAlerts>
-          {/* <FilteredAlerts
-            data={["uptown", "downtown"]}
-            state={direction}
-            setState={(e) => {
-              setDirection(e.target.value);
-            }}
-            tailwind={`block  content-center h-auto pt-1 ml-4 text-1xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50 `}
-            value={true}
-          ></FilteredAlerts> */}
+          />
         </div>
       </section>
-      {console.log(filtLines)}
-      <div
-        className={`container relative ${objects.timelineLineColors[filtLines]}`}
-      >
+      <div className={twMerge("cotntent", timelineTheme)}>
         <div className="relative">
           <section>{data1()}</section>
         </div>

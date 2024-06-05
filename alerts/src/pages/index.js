@@ -9,7 +9,7 @@ function Index() {
   const [filtLines, setFiltLines] = useState("broadway");
   const [service, setService] = useState("x");
   const [direction, setDirection] = useState("downtown");
-  const [stop, setStop] = useState(0);
+  const [stop, setStop] = useState("101");
   const testClick = (event, id) => {
     setStop(id);
   };
@@ -27,9 +27,15 @@ function Index() {
       ? objects.serviceByLines[filtLines].includes(x.stop[0])
       : service.includes(x.stop[0]);
   });
-  const startStop = filteredItems.findIndex((obj) => obj.stop == "120");
+
+  const startStop = filteredItems.findIndex((obj) => obj.stop == stop);
+  const indexOf = filteredItems.findIndex((obj) => obj.stop == "42");
+
   const data1 = () =>
     filteredItems.map((item, index) => {
+      // let item = nitem.alert.filter((item) => {
+      //   return item;
+      // });
       const alerts = {
         service: [
           ...new Set(
@@ -48,14 +54,13 @@ function Index() {
       };
 
       return (
-        <>
-          <TimelineItem
-            setState={(event) => testClick(event, index)}
-            alerts={alerts}
-            lineColor={objects.serviceColors}
-            stop={item}
-          />
-        </>
+        <TimelineItem
+          key={item.stop}
+          setState={(event) => testClick(event, item.stop)}
+          alerts={alerts}
+          className={objects.serviceColors}
+          stop={item}
+        />
       );
     });
 
@@ -69,7 +74,7 @@ function Index() {
             setState={(e) => {
               setService(e.target.value);
             }}
-            tailwind={` pt-2 route ${objects.lineColors[filtLines]} `}
+            className={` pt-2 route ${objects.lineColors[filtLines]} `}
             value={true}
           />
         </div>
@@ -80,7 +85,7 @@ function Index() {
               setFiltLines(e.target.value);
             }}
             data={objects.serviceByLines}
-            tailwind={
+            className={
               "  content-center h-auto pt-5 ml-4 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
             }
             value={false}

@@ -17,9 +17,15 @@ const TimelineItem = (props) => {
           </div>
           <div className="leftSide ">
             <ul className="leftcont">
-              {props.alerts["service"].map((serviceIter) => {
-                let lineThemes = props.lineColor[serviceIter];
-                return <li className={`items ${lineThemes}`}>{serviceIter}</li>;
+              {props.alerts["service"].map((serviceIter, index) => {
+                return (
+                  <li
+                    key={index}
+                    className={`items ${props.className[serviceIter]}`}
+                  >
+                    {serviceIter}
+                  </li>
+                );
               })}
             </ul>
           </div>
@@ -33,8 +39,8 @@ const TimelineItem = (props) => {
             {stopNames[props.stop.stop].stop_name}
           </button>
           <ul className="self-start">
-            {props.alerts["type"].map((alertTypeIter) => {
-              return <li>{alertTypeIter}</li>;
+            {props.alerts["type"].map((alertTypeIter, index) => {
+              return <li key={index}>{alertTypeIter}</li>;
             })}
           </ul>
         </div>

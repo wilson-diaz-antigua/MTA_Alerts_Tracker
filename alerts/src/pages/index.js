@@ -3,7 +3,8 @@ import objects from "../../../themes.json";
 import FilteredAlerts from "./FilteredAlerts.js";
 import TimelineItem from "./TimelineItem";
 let colors = "bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue";
-
+let beforecolors =
+  "before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue";
 function Index() {
   const [data, setdata] = useState([]);
   const [filtLines, setFiltLines] = useState("broadway");
@@ -28,14 +29,18 @@ function Index() {
       : service.includes(x.stop[0]);
   });
 
+  // const filt = filt.filter((item) => {
+  //   return item.alert.forEach((element) => {
+  //     return element.direction == direction;
+  //   });
+  // });
+  console.log(filteredItems);
+
   const startStop = filteredItems.findIndex((obj) => obj.stop == stop);
   const indexOf = filteredItems.findIndex((obj) => obj.stop == "42");
 
   const data1 = () =>
     filteredItems.map((item, index) => {
-      // let item = nitem.alert.filter((item) => {
-      //   return item;
-      // });
       const alerts = {
         service: [
           ...new Set(
@@ -52,7 +57,6 @@ function Index() {
           ),
         ],
       };
-
       return (
         <TimelineItem
           key={item.stop}

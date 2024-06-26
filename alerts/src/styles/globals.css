@@ -10,7 +10,7 @@
 }
 
 @layer components {
-  .container {
+  .content {
     @apply space-y-8 relative  before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:ml-[7.5rem]  sm:before:ml-[12.6rem] md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.3rem];
   }
   .content {

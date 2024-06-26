@@ -12,7 +12,7 @@ import requests
 from sqlmodel import Session, select
 
 from backend.database import engine
-from backend.models import Alerts, AlertSchema, Stop, StopSchema
+from backend.models import Alerts, Stop, StopSchema
 
 # from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, stopid
@@ -114,7 +114,7 @@ def process_alert_feed() -> dict:
                 stop_id = info.get("stop_id", None)
                 heading = head[0]["text"]
                 direction = re.search(
-                    r"(downtown|uptown)|(?!(the|a|an))\b(\w+\s?)(\w*-?)bound",
+                    r"(downtown| )|(?!(the|a|an))\b(\w+\s?)(\w*-?)bound",
                     heading,
                 )
 
@@ -207,7 +207,6 @@ def add_alerts_to_db():
 
 def get_alerts():
     stopSchema = StopSchema()
-    alertSchema = AlertSchema()
     with Session(engine) as session:
         stops = session.exec(select(Stop)).all()
         alerts = session.exec(select(Alerts)).all()

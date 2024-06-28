@@ -1,9 +1,13 @@
+import { useContext } from "react";
 import stopNames from "../../../stopNames.json";
-
+import { AccordionContext } from "./index.js";
 const TimelineItem = (props) => {
+  const { accordionOpen, setAccordionOpen } = useContext(AccordionContext);
+  const open = accordionOpen === props.index;
+  console.log(open);
   return (
     <>
-      <div className="content">
+      <div className={`content ${accordionOpen ? "mb-0" : "mb-10"}`}>
         <div className=" timelineItem">
           <div className="icon">
             <svg
@@ -30,19 +34,54 @@ const TimelineItem = (props) => {
             </ul>
           </div>
         </div>
-
-        <div className="flex flex-row items-start justify-start h-10 ml-0 space-x-2 mt-[2.9rem] text-slate-500">
+        <div className="mt-0">
           <button
-            onClick={props.setState}
-            className="self-start font-bold text-slate-50"
+            onClick={() => {
+              setAccordionOpen(open ? null : props.index);
+            }}
+            className={`self-start font-bold text-slate-50   mt-2${
+              open
+                ? " ml-2 inline-block bg-slate-50 text-slate-900  rounded-e-md relative  px-2  before:content-[''] before:absolute before:h-0 before:w-0 before:top-[0px] before:left-[-24px] before:border-[12px]  before:border-r-slate-50 before:border-l-transparent before:border-y-transparent border-solid "
+                : "bg-slate-900"
+            } `}
           >
-            {stopNames[props.stop.stop].stop_name}
+            <span>{stopNames[props.stop.stop].stop_name}</span>
           </button>
-          <ul className="self-start">
-            {props.alerts["type"].map((alertTypeIter, index) => {
-              return <li key={index}>{alertTypeIter}</li>;
-            })}
-          </ul>
+
+          <div
+            className={`grid transition-all duration-300 ease-in-out text-slate-600 text-sm ${
+              !open
+                ? "grid-rows-[1fr] opacity-100"
+                : "grid-rows-[0fr] opacity-0 overflow-hidden"
+            }`}
+          >
+            <div className="overflow-hidden ">
+              {props.alerts["type"].map((alertTypeIter, index) => {
+                return <ul key={index}>{alertTypeIter}</ul>;
+              })}
+            </div>
+          </div>
+
+          <div
+            className={`grid transition-all duration-300 ease-in-out text-slate-600 text-sm ${
+              open
+                ? "grid-rows-[1fr] opacity-100"
+                : "grid-rows-[0fr] opacity-0 overflow-hidden"
+            }`}
+          >
+            <div className="mt-2 overflow-hidden">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import objects from "../../../themes.json";
 import FilteredAlerts from "./FilteredAlerts.js";
 import TimelineItem from "./TimelineItem";
+
+export const AccordionContext = createContext();
 let colors = "bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue";
 let beforecolors =
   "before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue";
 function Index() {
+  const [accordionOpen, setAccordionOpen] = useState(false);
   const [data, setdata] = useState([]);
   const [filtLines, setFiltLines] = useState("broadway");
   const [service, setService] = useState("x");
@@ -122,13 +125,19 @@ function Index() {
         ],
       };
       return (
-        <TimelineItem
-          key={item.stop}
-          setState={(event) => testClick(event, item.stop)}
-          alerts={alerts}
-          className={objects.serviceColors}
-          stop={item}
-        />
+        <>
+          <AccordionContext.Provider
+            value={{ accordionOpen, setAccordionOpen }}
+          >
+            <TimelineItem
+              key={item.stop}
+              index={index}
+              alerts={alerts}
+              className={objects.serviceColors}
+              stop={item}
+            />
+          </AccordionContext.Provider>
+        </>
       );
     });
 

@@ -8,7 +8,7 @@ from sqlmodel import Session, select
 
 from backend.database import engine
 from backend.models import Alerts, ListofAlerts, Stop, StopSchema
-from util.utils import stopid
+from util.utils import dateparsing, stopid
 
 # from models import Data
 
@@ -52,20 +52,28 @@ stops = Blueprint("stops", "stops", url_prefix="/api", description="MTA stops AP
 
 @stops.route("/stops")
 class StopsCollection(MethodView):
+
     @stops.response(status_code=200)
     def get(self):
+        parsed = []
 
         stopSchema = StopSchema()
         with Session(engine) as session:
             stops = session.exec(select(Stop)).all()
             # idstop = [map(lambda a: stopid(a), stops)]
             # stops= {}
-            prepro = stops[0].stop
-            print(prepro)
-            stops = stopSchema.dump(stops, many=True)
 
+            stops = stopSchema.dump(stops, many=True)
             # for x in stops:
-            #     if x.id == alerts.stop_id:
+            #     if x is not None or x["alert"][0]["dateText"] is not None:
+            #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
+
+        print(parsed)
+        # for stop in stops:
+        #     print(stop.alerts)
+
+        # for x in stops:
+        #     if x.id == alerts.stop_id:
         return stops
 
         # session.close

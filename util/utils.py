@@ -1,9 +1,21 @@
+import logging
+import re
 import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import date, datetime
+from itertools import chain, zip_longest
 from typing import Union
 
+import arrow
+import datefinder as df
+import dateutil.parser as dps
 from dateparser.search import search_dates
+
+logging.basicConfig(
+    filename="logging.log",
+    level=logging.DEBUG,
+    format="%(levelname)s:%(asctime)s: %(message)s",
+)
 
 
 def dateparsing(date) -> dict:
@@ -11,6 +23,7 @@ def dateparsing(date) -> dict:
     timer = datetime.strptime("00:00:00", "%H:%M:%S").time()
     datePeriod = {"dateText": date, "time": [], "date": []}
     for x in res:
+
         if x[1].strftime("%a, %b %d") not in datePeriod["date"]:
             datePeriod["date"].append(x[1].strftime("%a, %b %d"))
         if (
@@ -60,5 +73,64 @@ def secToMin(row):
         return int((int(row) - time.time()) / 60)
 
 
+def parseDates(string):
+    try:
+        reg = re.compile(
+            r"(?:(?P<ranged>\w{3}\s\d*\s?-\s?(?:\w{3}\s)?\d+)|(?P<single>(?:\b\w{3}\s\d+(?!\d*\:|\s*-\s*))))"
+        )
+
+        output = {"start_date": [], "end_date": []}
+        dic = {"ranged": [], "single": []}
+        dates = list(
+            re.finditer(
+                reg,
+                string,
+            )
+        )
+        month = None
+        daterange = []
+        if not dates:
+            output = date.today()
+            return output
+
+        for x in dates:
+            if x.group("ranged"):
+                dic["ranged"].append(x.group("ranged"))
+            elif x.group("single"):
+                dic["single"].append(x.group("single"))
+        if dic["ranged"]:
+            for dateRange in dic["ranged"]:
+                month = re.findall(r"\w{3}", dateRange)
+                daterange = re.findall(r"\d+", dateRange)
+
+                zipedrange = list(zip_longest(month, daterange, fillvalue=month[0]))
+                comp = [
+                    search_dates(f"{ranges[0]} {ranges[1]}")[0][1]
+                    for ranges in zipedrange
+                ]
+                output["start_date"].append(comp[0])
+                output["end_date"].append(comp[1])
+
+        if dic["single"]:
+            for single in dic["single"]:
+
+                output["start_date"].append(search_dates(single)[0][1])
+                output["end_date"].append(None)
+
+    except Exception as e:
+        output["start_date"] = date.today()
+        output["end_date"] = None
+
+        logging.debug(string if string is not None else "None" + " " + str(e))
+
+    return output
+
+
 if __name__ == "__main__":
-    print(dateparsing("Apr 5 - 8"))
+    print(
+        parseDates("Jul 29 - Aug 2, and feb 3  Mon to Fri, 9:45 PM to 5:00 AM")[
+            "start_date"
+        ][0]
+    )
+    # print(parseDates("Through Summer 2024"))
+    # print(parseDates(None))

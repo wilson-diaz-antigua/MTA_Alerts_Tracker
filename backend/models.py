@@ -13,7 +13,7 @@ from sqlalchemy.dialects import (
 from sqlalchemy.orm import Mapped
 from sqlmodel import Column, Field, Relationship, Session, SQLModel, String, select
 
-from util.utils import stopid
+from util.utils import parseDates
 
 # class Date(SQLModel, table=True):
 #     id: Optional[int] = Field(default=None, primary_key=True)
@@ -32,6 +32,13 @@ class Stop(SQLModel, table=True):
     alert: list["Alerts"] = Relationship(back_populates="stops")
 
 
+class DateRanges(SQLModel, table=True):
+    id: Optional[int] = Field(primary_key=True)
+    begin_date: datetime = Field(nullable=True)
+    end_date: datetime = Field(nullable=True)
+    stop_id: Optional[int] = Field(default=None, foreign_key="stop.id")
+
+
 class Alerts(SQLModel, table=True):
 
     # the value would be None before it gets to the database
@@ -42,6 +49,7 @@ class Alerts(SQLModel, table=True):
     direction: str = Field(nullable=True)
     heading: str = Field(nullable=True)
     dateText: str = Field(nullable=True)
+    parsedDate: str = Field(nullable=True)
     # decription: str = Field(nullable=True)
     route: str = Field(nullable=True)
     # stop: Optional[str] = Field(default=None)
@@ -68,7 +76,7 @@ class StopSchema(SQLAlchemyAutoSchema):
         many=True,
     )
 
-    # @post_dump
+    # @pre_dump
     # def stopParser(self, stops, **kwargs):
-    #     stops["stop"] = stopid(stops["stop"])
+    #     stops["parsedDate"] = parseDates(stops["alert"][0]["dateText"])
     #     return stops

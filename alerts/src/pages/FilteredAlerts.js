@@ -6,7 +6,7 @@ const FilteredAlerts = (props) => {
     <>
       <select
         multiple={props.multiple || false}
-        className={`appearance-none  ${props.className}`}
+        className={`appearance-none cursor-pointer ${props.className}`}
         name="filter"
         id="filter"
         value={props.state}

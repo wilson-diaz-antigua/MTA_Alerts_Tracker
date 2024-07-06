@@ -4,7 +4,14 @@ import { AccordionContext } from "./index.js";
 const TimelineItem = (props) => {
   const { accordionOpen, setAccordionOpen } = useContext(AccordionContext);
   const open = accordionOpen === props.index;
-  console.log(open);
+  const mapFromColors = new Map(
+    props.stop.alert.map((item) => [item.heading, item])
+  );
+  const unique = [...mapFromColors.values()];
+  const dirs = unique.map((item) => {
+    return item.dateText;
+  });
+
   return (
     <>
       <div className={`content ${accordionOpen ? "mb-0" : "mb-10"}`}>
@@ -63,23 +70,24 @@ const TimelineItem = (props) => {
           </div>
 
           <div
-            className={`grid transition-all duration-300 ease-in-out text-slate-600 text-sm ${
+            className={`grid transition-all duration-300 ease-in-outtext-sm ${
               open
                 ? "grid-rows-[1fr] opacity-100"
                 : "grid-rows-[0fr] opacity-0 overflow-hidden"
             }`}
           >
             <div className="mt-2 overflow-hidden">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              {unique.map((item) => {
+                return (
+                  <>
+                    <div className="text-sm text-slate-300">
+                      {item.alert_type}
+                    </div>
+                    <div className="text-sm text-slate-600">{item.heading}</div>
+                  </>
+                );
+              })}
+              ;
             </div>
           </div>
         </div>

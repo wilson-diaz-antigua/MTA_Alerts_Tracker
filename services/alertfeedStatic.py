@@ -12,10 +12,10 @@ import requests
 from sqlmodel import Session, select
 
 from backend.database import engine
-from backend.models import Alerts, Stop, StopSchema
+from backend.models import Alerts, DateRanges, Stop, StopSchema
 
 # from backend.route import server
-from util.utils import convert_to_datetime, dateparsing, stopid
+from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
 
 service_status = {
     "Delays": "delays.png",
@@ -188,6 +188,12 @@ def add_alerts_to_db():
                     route=str(alert["line"]),
                     dateText=alert.get("date", {}),
                 )
+
+                dates = DateRanges(
+                    begin_date=parseDates(alert.get("date", {}))["start_date"][0],
+                    end_date=parseDates(alert.get("date", {}))["end_date"][0],
+                )
+
                 table = select(Alerts).where(
                     Alerts.alert_type == alerts.alert_type,
                     Alerts.route == alerts.route,
@@ -195,14 +201,19 @@ def add_alerts_to_db():
                     Alerts.heading == alerts.heading,
                     Alerts.created_at == alerts.created_at,
                     Alerts.updated_at == alerts.updated_at,
+                    Alerts.parsedDate == alerts.parsedDate,
                     alerts.stop_id == stop.id,
                 )
                 instance = session.exec(table).first()
                 if not instance:
                     alerts.stops = stop
+                    dates.stop_id = stop.id
                     session.add(alerts)
+                    session.add(dates)
+                    session.commit()
                     session.commit()
                     session.refresh(alerts)
+                    session.refresh(dates)
 
 
 def get_alerts():
@@ -221,4 +232,4 @@ def get_alerts():
         return stopSchema.dump(stops)
 
 
-pp(get_alerts())
+# pp(get_alerts())

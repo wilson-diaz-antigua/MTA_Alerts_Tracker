@@ -11,7 +11,7 @@
 
 @layer components {
   .content {
-    @apply items-start flex  space-x-3 space-y-5  before:absolute before:inset-0 before:-translate-x-px before:ml-[7.5rem]  sm:before:ml-[12.6rem] md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.3rem];
+    @apply items-start flex  space-x-3 space-y-5  before:absolute beforebefore:inset-0 before:-translate-x-px before:ml-[7.5rem]  sm:before:ml-[12.6rem] md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.3rem];
   }
 
   .timelineItem {

@@ -96,8 +96,6 @@ function Index() {
       return item.alert.length;
     });
 
-  console.log(data2);
-
   // let dir = filteredItems.map((element) => {
   //   return [...new Set(element.alert.map((element) => element.direction))];
   // });
@@ -106,6 +104,7 @@ function Index() {
   //   return dir.indexOf(item) === index;
   // });
   // console.log(dir);
+  console.log(data2);
   const data1 = () =>
     data2.map((item, index) => {
       const alerts = {
@@ -113,6 +112,13 @@ function Index() {
           ...new Set(
             item.alert.map((service) => {
               return service.route;
+            })
+          ),
+        ],
+        heading: [
+          ...new Set(
+            item.alert.map((service) => {
+              return service.heading;
             })
           ),
         ],
@@ -124,6 +130,7 @@ function Index() {
           ),
         ],
       };
+      console.log(item);
       return (
         <>
           <AccordionContext.Provider
@@ -156,7 +163,7 @@ function Index() {
           />
         </div>
         <div>
-          <div className="ml-9">
+          <div className="ml-5">
             <FilteredAlerts
               setState={(e) => {
                 setService("x");
@@ -165,12 +172,12 @@ function Index() {
               state={filtLines}
               data={objects.serviceByLines}
               className={
-                "  content-center h-auto pt-5 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
+                "  content-center h-auto pt-1 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
               }
               value={false}
             />
           </div>
-          <div className="ml-9 ">
+          <div className="ml-5 ">
             <FilteredAlerts
               setState={(e) => {
                 setService("x");

@@ -114,7 +114,7 @@ def process_alert_feed() -> dict:
                 stop_id = info.get("stop_id", None)
                 heading = head[0]["text"]
                 direction = re.search(
-                    r"(downtown| )|(?!(the|a|an))\b(\w+\s?)(\w*-?)bound",
+                    r"(downtown|uptown)|(?!(the|a|an))\b(\w+\s?)(\w*-?)bound",
                     heading,
                 )
 
@@ -189,10 +189,10 @@ def add_alerts_to_db():
                     dateText=alert.get("date", {}),
                 )
 
-                dates = DateRanges(
-                    begin_date=parseDates(alert.get("date", {}))["start_date"][0],
-                    end_date=parseDates(alert.get("date", {}))["end_date"][0],
-                )
+                # dates = DateRanges(
+                #     begin_date=parseDates(alert.get("date", {}))["start_date"][0],
+                #     end_date=parseDates(alert.get("date", {}))["end_date"][0],
+                # )
 
                 table = select(Alerts).where(
                     Alerts.alert_type == alerts.alert_type,
@@ -207,13 +207,13 @@ def add_alerts_to_db():
                 instance = session.exec(table).first()
                 if not instance:
                     alerts.stops = stop
-                    dates.stop_id = stop.id
+                    # dates.stop_id = stop.id
                     session.add(alerts)
-                    session.add(dates)
-                    session.commit()
+                    # session.add(dates)
+
                     session.commit()
                     session.refresh(alerts)
-                    session.refresh(dates)
+                    # session.refresh(dates)
 
 
 def get_alerts():

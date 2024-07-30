@@ -88,4 +88,4 @@ api.register_blueprint(stops)
 
 
 if __name__ == "__main__":
-    server.run(port=8080, debug=True)
+    server.run(port=6543, debug=True)

@@ -56,7 +56,7 @@ function Index() {
     "Both Directions": null,
   };
   useEffect(() => {
-    fetch("http://localhost:7000/api/stops")
+    fetch("http://localhost:6543/api/stops")
       .then((res) => res.json())
       .then((data) => {
         setdata(data);

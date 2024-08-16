@@ -6,7 +6,7 @@ from supabase import Client, create_client
 
 load_dotenv(".env")
 
-KEY = os.getenv("API_KEY")
-URL = os.getenv("API_URL")
+KEY = os.getenv("SUPABASE_API_KEY")
+URL = os.getenv("SUPABASE_API_URL")
 
 supabase: Client = create_client(URL, KEY)

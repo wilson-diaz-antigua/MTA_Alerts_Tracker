@@ -1,6 +1,7 @@
 import copy
 import csv
 import json
+import os
 import re
 import sys
 from collections import OrderedDict, defaultdict
@@ -9,6 +10,7 @@ from functools import lru_cache
 from pprint import pprint as pp
 
 import requests
+from dotenv import load_dotenv
 from sqlmodel import Session, select
 
 from backend.database import engine
@@ -17,6 +19,8 @@ from backend.models import Alerts, DateRanges, Stop, StopSchema
 # from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
 
+load_dotenv(".env")
+MTA_API_KEY = os.getenv("MTA_API_KEY")
 service_status = {
     "Delays": "delays.png",
     "Planned - Part Suspended": "suspended.png",
@@ -49,7 +53,7 @@ def process_alert_feed() -> dict:
 
     """
 
-    headers = {"x-api-key": "8ogTVWVBY55OObVPvYpmu4zQAjmlHl3Q8HmQ1BpV"}
+    headers = {"x-api-key": MTA_API_KEY}
     Response = requests.get(
         "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts.json",
         headers=headers,

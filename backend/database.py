@@ -1,13 +1,18 @@
+import os
+
+from dotenv import load_dotenv
 from sqlmodel import SQLModel, create_engine
 
+load_dotenv(".env")
+
+KEY = os.getenv("SUPABASE_API_KEY")
 # from backend.route import server
-pss = "uPnqqA6RGcFbcPAh"
-sqlite_file_name = "data.db"
-supabase_url = f"postgresql://postgres.chdvhomptyzmnkizulpc:uPnqqA6RGcFbcPAh@aws-0-us-west-1.pooler.supabase.com:6543/postgress"
-postgress_url = f"postgresql://wilson@localhost:5432/wilson"
+sqlite_file_name = os.getenv("SQLITE_FILE_NAME")
+supabase_url = os.getenv("SUPABASE_URL")
+postgress_url = os.getenv("POSTGRESS_URL")
 
 # The engine is the interface to our database so we can execute SQL commands
-engine = create_engine(postgress_url)
+engine = create_engine(supabase_url)
 
 
 def init_db():

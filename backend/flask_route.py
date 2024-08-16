@@ -6,6 +6,7 @@ from flask_cors import CORS
 from flask_smorest import Api, Blueprint, abort
 from sqlmodel import Session, select
 
+from api import supabase
 from backend.database import engine
 from backend.models import Alerts, ListofAlerts, Stop, StopSchema
 from util.utils import dateparsing, stopid
@@ -58,23 +59,24 @@ class StopsCollection(MethodView):
         parsed = []
 
         stopSchema = StopSchema()
-        with Session(engine) as session:
-            stops = session.exec(select(Stop)).all()
-            # idstop = [map(lambda a: stopid(a), stops)]
-            # stops= {}
+        response = supabase.table("alerts").select("*").execute()
+        # with Session(engine) as session:
+        #     stops = session.exec(select(Stop)).all()
+        #     # idstop = [map(lambda a: stopid(a), stops)]
+        #     # stops= {}
 
-            stops = stopSchema.dump(stops, many=True)
-            # for x in stops:
-            #     if x is not None or x["alert"][0]["dateText"] is not None:
-            #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
-
-        print(parsed)
+        #     stops = stopSchema.dump(stops, many=True)
+        # for x in stops:
+        #     if x is not None or x["alert"][0]["dateText"] is not None:
+        #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
+        response = stopSchema.dump(response, many=True)
+        # print(parsed)
         # for stop in stops:
         #     print(stop.alerts)
 
         # for x in stops:
         #     if x.id == alerts.stop_id:
-        return stops
+        return response
 
         # session.close
 

@@ -60,6 +60,7 @@ class StopsCollection(MethodView):
 
         stopSchema = StopSchema()
         response = supabase.table("alerts").select("*").execute()
+        response = stopSchema.dump(response, many=True)
         # with Session(engine) as session:
         #     stops = session.exec(select(Stop)).all()
         #     # idstop = [map(lambda a: stopid(a), stops)]
@@ -69,7 +70,6 @@ class StopsCollection(MethodView):
         # for x in stops:
         #     if x is not None or x["alert"][0]["dateText"] is not None:
         #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
-        response = stopSchema.dump(response, many=True)
         # print(parsed)
         # for stop in stops:
         #     print(stop.alerts)

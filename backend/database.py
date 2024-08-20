@@ -12,11 +12,11 @@ supabase_url = os.getenv("SUPABASE_URL")
 postgress_url = os.getenv("POSTGRESS_URL")
 
 # The engine is the interface to our database so we can execute SQL commands
-engine = create_engine(supabase_url)
+engine = create_engine(postgress_url)
 
 
-def init_db():
+# def init_db():
 
-    # using the engine we create the tables we need if they aren't already done
+# using the engine we create the tables we need if they aren't already done
 
-    SQLModel.metadata.create_all(engine)
+SQLModel.metadata.create_all(engine)

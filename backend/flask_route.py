@@ -59,24 +59,24 @@ class StopsCollection(MethodView):
         parsed = []
 
         stopSchema = StopSchema()
-        response = supabase.table("alerts").select("*").execute()
-        response = stopSchema.dump(response, many=True)
-        # with Session(engine) as session:
-        #     stops = session.exec(select(Stop)).all()
-        #     # idstop = [map(lambda a: stopid(a), stops)]
-        #     # stops= {}
+        # response = supabase.table("alerts").select("*").execute()
+        # response = stopSchema.dump(response, many=True)
+        with Session(engine) as session:
+            stops = session.exec(select(Stop)).all()
+            # idstop = [map(lambda a: stopid(a), stops)]
+            # stops= {}
 
-        #     stops = stopSchema.dump(stops, many=True)
-        # for x in stops:
-        #     if x is not None or x["alert"][0]["dateText"] is not None:
-        #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
-        # print(parsed)
-        # for stop in stops:
-        #     print(stop.alerts)
+            stops = stopSchema.dump(stops, many=True)
+            # for x in stops:
+            #     if x is not None or x["alert"][0]["dateText"] is not None:
+            #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
+            # print(parsed)
+            # for stop in stops:
+            #     print(stop.alerts)
 
-        # for x in stops:
-        #     if x.id == alerts.stop_id:
-        return response
+            # for x in stops:
+            #     if x.id == alerts.stop_id:
+            return stops
 
         # session.close
 

@@ -7,7 +7,7 @@ import requests
 from google.protobuf.json_format import MessageToJson
 from google.transit import gtfs_realtime_pb2
 
-from util.utils import convert_to_datetime, dateparsing, secToMin, secToTime, stopid
+from MTAFlash.utils import convert_to_datetime, dateparsing, secToMin, secToTime, stopid
 
 headers = {"x-api-key": "8ogTVWVBY55OObVPvYpmu4zQAjmlHl3Q8HmQ1BpV"}
 tripUrl = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs"
@@ -35,8 +35,12 @@ for x in headwayFeed["entity"]:
 
 
 # arrivals = [secToTime(int(x)) for y, x in arrivals.items()]
+def main():
+    pass
 
-pprint(arrivals)
+
+if __name__ == "__main__":
+    pprint(arrivals)
 
 # filt = sorted(list(filter(lambda x: x < 25 and x > 0, arrivals)))
 

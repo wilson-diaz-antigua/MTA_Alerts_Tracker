@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@craco/craco": "^7.1.0"
+  },
+  "dependencies": {
+    "tailwind-merge": "^2.3.0"
+  }
+}

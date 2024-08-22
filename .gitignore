@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/flask,nextjs,visualstudiocode,database,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask,nextjs,visualstudiocode,database,python
-
+.vscode/
+__pycache__/
 ### Database ###
 *.accdb
 *.db

@@ -162,7 +162,7 @@ function Index() {
             value={true}
           />
         </div>
-        <div>
+        <div className="sticky">
           <div className="ml-5">
             <FilteredAlerts
               setState={(e) => {

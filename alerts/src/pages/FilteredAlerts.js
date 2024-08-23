@@ -3,7 +3,7 @@ const FilteredAlerts = (props) => {
     ? Object.values(props.data)
     : Object.keys(props.data);
   return (
-    <>
+    <section>
       <select
         multiple={props.multiple || false}
         className={`appearance-none cursor-pointer ${props.className}`}
@@ -21,7 +21,7 @@ const FilteredAlerts = (props) => {
           );
         })}
       </select>
-    </>
+    </section>
   );
 };
 

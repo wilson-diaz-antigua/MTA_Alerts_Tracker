@@ -12,6 +12,13 @@ __pycache__/
 *.db-shm
 *.db-wal
 
+
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
 ### Flask ###
 instance/*
 !instance/.gitignore
@@ -28,7 +35,7 @@ __pycache__/
 *.so
 *.yaml
 # Distribution / packaging
-junk/
+junks/
 .Python
 build/
 develop-eggs/
@@ -307,13 +314,6 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
 .history/

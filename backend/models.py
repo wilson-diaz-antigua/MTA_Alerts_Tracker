@@ -2,8 +2,8 @@ import csv
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Union
 
+import database
 import sqlalchemy as sa
-from database import engine
 from marshmallow import Schema, fields, post_dump, pre_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from pydantic import BaseModel
@@ -15,7 +15,7 @@ from sqlmodel import Column, Field, Relationship, Session, SQLModel, String, sel
 
 from util.utils import parseDates
 
-# class Date(SQLModel, table=True):
+# class sDate(SQLModel, table=True):
 #     id: Optional[int] = Field(default=None, primary_key=True)
 #     dateText: str = Field(nullable=True)
 #     data_id: Optional[str] = Field(default=None, foreign_key="data.stop")

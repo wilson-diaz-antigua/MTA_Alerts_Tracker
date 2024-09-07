@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  backend: 
+    build: ./backend
+    container_name: backend_c
+    ports:
+      - "6543:6543"
+  db:
+    image: postgres
+    restart: always
+    container_name: db_c
+    volumes:
+      - db_volume:/var/lib/postgresql
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: wilson
+      POSTGRES_DB: wilson
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: db_c
+
+
+volumes:
+  db_volume:
+    external: true
+    # set shared memory limit when using docker-compose
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+
+

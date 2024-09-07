@@ -1,5 +1,5 @@
 from backend.database import init_db
-from services.alertfeedStatic import add_alerts_to_db
+from backend.services.alertfeedStatic import add_alerts_to_db
 
 
 def main():

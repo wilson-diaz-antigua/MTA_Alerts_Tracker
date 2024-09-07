@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import objects from "../../../themes.json";
+import objects from "../../../util/subwayLineColors.json";
 import FilteredAlerts from "./FilteredAlerts.js";
 import TimelineItem from "./TimelineItem";
 
@@ -150,49 +150,51 @@ function Index() {
 
   return (
     <div className=" pb-[100%] bg-zinc-900">
-      <section className="  flex  pt-10 ml-[05rem] sm:ml-[10rem]  md:ml-[10rem]  lg:ml-[13rem]">
-        <div className="w-20 h-20 justify-self-end ">
-          <FilteredAlerts
-            data={objects.serviceByLines[filtLines]}
-            state={service}
-            setState={(e) => {
-              setService(e.target.value);
-            }}
-            className={` pt-2 route ${objects.lineColors[filtLines]} `}
-            value={true}
-          />
-        </div>
-        <div className="sticky">
-          <div className="ml-5">
+      <div className=" bg-zinc-900">
+        <section className=" flex  pt-10 ml-[05rem] sm:ml-[10rem]  md:ml-[10rem]  lg:ml-[13rem]">
+          <div className="w-20 h-20 justify-self-end ">
             <FilteredAlerts
+              data={objects.serviceByLines[filtLines]}
+              state={service}
               setState={(e) => {
-                setService("x");
-                setFiltLines(e.target.value);
+                setService(e.target.value);
               }}
-              state={filtLines}
-              data={objects.serviceByLines}
-              className={
-                "  content-center h-auto pt-1 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
-              }
-              value={false}
+              className={` pt-2 route ${objects.lineColors[filtLines]} `}
+              value={true}
             />
           </div>
-          <div className="ml-5 ">
-            <FilteredAlerts
-              setState={(e) => {
-                setService("x");
-                setDirection(e.target.value);
-              }}
-              data={terminal}
-              state={direction}
-              className={
-                "  content-center h-auto pt-2  text-1xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
-              }
-              value={false}
-            />
+          <div>
+            <div className="ml-5">
+              <FilteredAlerts
+                setState={(e) => {
+                  setService("x");
+                  setFiltLines(e.target.value);
+                }}
+                state={filtLines}
+                data={objects.serviceByLines}
+                className={
+                  "  content-center h-auto pt-1 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
+                }
+                value={false}
+              />
+            </div>
+            <div className="ml-5 ">
+              <FilteredAlerts
+                setState={(e) => {
+                  setService("x");
+                  setDirection(e.target.value);
+                }}
+                data={terminal}
+                state={direction}
+                className={
+                  "  content-center h-auto pt-2  text-1xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50"
+                }
+                value={false}
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
       <div
         className={` content relative
           before:${objects.lineColors[filtLines]}`}

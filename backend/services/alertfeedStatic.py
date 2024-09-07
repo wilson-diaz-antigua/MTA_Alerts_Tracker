@@ -7,6 +7,7 @@ import sys
 from collections import OrderedDict, defaultdict
 from datetime import datetime as dt
 from functools import lru_cache
+from pathlib import Path
 from pprint import pprint as pp
 
 import requests
@@ -19,7 +20,9 @@ from backend.models import Alerts, DateRanges, Stop, StopSchema
 # from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
 
-load_dotenv(".env")
+stopsPath = Path(__file__).parent / "../util/stops.csv"
+
+load_dotenv("../.env.MTA")
 MTA_API_KEY = os.getenv("MTA_API_KEY")
 service_status = {
     "Delays": "delays.png",
@@ -65,7 +68,7 @@ def process_alert_feed() -> dict:
         "alertInfo": [],
     }
     affected_stops = defaultdict()
-    with open("stops.csv", encoding="utf-8") as csvfile:
+    with stopsPath.open() as csvfile:
         reader = csv.DictReader(csvfile)
         affected_stops.update(
             {

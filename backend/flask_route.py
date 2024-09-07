@@ -1,14 +1,13 @@
 import sys
 
+import database
 from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
 from flask_cors import CORS
 from flask_smorest import Api, Blueprint, abort
+from models import Alerts, ListofAlerts, Stop, StopSchema
 from sqlmodel import Session, select
 
-from api import supabase
-from backend.database import engine
-from backend.models import Alerts, ListofAlerts, Stop, StopSchema
 from util.utils import dateparsing, stopid
 
 # from models import Data
@@ -61,7 +60,7 @@ class StopsCollection(MethodView):
         stopSchema = StopSchema()
         # response = supabase.table("alerts").select("*").execute()
         # response = stopSchema.dump(response, many=True)
-        with Session(engine) as session:
+        with Session(database.engine) as session:
             stops = session.exec(select(Stop)).all()
             # idstop = [map(lambda a: stopid(a), stops)]
             # stops= {}
@@ -90,4 +89,4 @@ api.register_blueprint(stops)
 
 
 if __name__ == "__main__":
-    server.run(port=6543, debug=True)
+    server.run(port=6543, host="0.0.0.0", debug=True)

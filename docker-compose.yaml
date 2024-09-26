@@ -1,30 +1,58 @@
-version: '3.8'
 services:
+  frontend:
+    image: wildiant/frontend:latest
+    build: ./alertsDisplayApp
+    container_name: frontend_c
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+    volumes:
+      - ./alertsDisplayApp:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
   backend: 
+    image: wildiant/backend:latest
     build: ./backend
     container_name: backend_c
+    # command: python -m main
     ports:
       - "6543:6543"
+    networks:
+      - mynetwork    
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
-    image: postgres
-    restart: always
+    image: postgres:latest
     container_name: db_c
+    restart: always
+
     volumes:
-      - db_volume:/var/lib/postgresql
+      - /Users/wilson/Library/Application Support/Postgres/var-16:/var/lib/postgresql/data
+    expose:
+      - "5432"  
     ports:
       - 5432:5432
-    expose:
-      - 5432
-    environment:
-      POSTGRES_USER: wilson
-      POSTGRES_DB: wilson
-      POSTGRES_PASSWORD: password
-      POSTGRES_HOST: db_c
+    networks:
+      - mynetwork
 
+    healthcheck:
+      #CHANGE 1: this command checks if the database is ready, right on the source db server
+      test:  pg_isready -h localhost -U wilson
+      interval: 5s
+      timeout: 5s
+      retries: 5
+        
+    env_file:
+      - ./backend/.env.postgres
 
-volumes:
-  db_volume:
-    external: true
+networks:
+  mynetwork:
+    driver: bridge
+
     # set shared memory limit when using docker-compose
     # or set shared memory limit when deploy via swarm stack
     #volumes:

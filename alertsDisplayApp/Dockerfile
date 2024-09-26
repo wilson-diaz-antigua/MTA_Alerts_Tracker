@@ -1,8 +1,7 @@
-FROM node:alpine3.20
+FROM node:22-alpine AS base
 WORKDIR /app
 
+COPY package.json .
+RUN npm install
 COPY . .
-RUN node install
-EXPOSE 6543
-
-CMD ["python", "flask_route.py"]
+CMD ["npm", "run","dev"]

@@ -14,16 +14,17 @@ import requests
 from dotenv import load_dotenv
 from sqlmodel import Session, select
 
-from backend.database import engine
-from backend.models import Alerts, DateRanges, Stop, StopSchema
-
 # from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
 
+from .database import engine
+from .models import Alerts, Stop, StopSchema
+
 stopsPath = Path(__file__).parent / "../util/stops.csv"
 
-load_dotenv("../.env.MTA")
+load_dotenv(".env.MTA")
 MTA_API_KEY = os.getenv("MTA_API_KEY")
+print(MTA_API_KEY)
 service_status = {
     "Delays": "delays.png",
     "Planned - Part Suspended": "suspended.png",
@@ -181,9 +182,9 @@ def add_alerts_to_db():
             stop = Stop(
                 stop=str(key),
             )
-            # session.add(stop)
-            # session.commit()
-            # session.refresh(stop)
+            session.add(stop)
+            session.commit()
+            session.refresh(stop)
 
             for alert in values["alertInfo"]:
                 alerts = Alerts(
@@ -213,7 +214,7 @@ def add_alerts_to_db():
                 )
                 instance = session.exec(table).first()
                 if not instance:
-                    alerts.stops = stop
+                    # alerts.stops = stop
                     # dates.stop_id = stop.id
                     session.add(alerts)
                     # session.add(dates)

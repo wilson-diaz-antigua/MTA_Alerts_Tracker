@@ -1,11 +1,13 @@
+import os
 import sys
 
-import database
 from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
 from flask_cors import CORS
 from flask_smorest import Api, Blueprint, abort
-from models import Alerts, ListofAlerts, Stop, StopSchema
+from services import database
+from services.alertfeedStatic import add_alerts_to_db
+from services.models import Alerts, ListofAlerts, Stop, StopSchema
 from sqlmodel import Session, select
 
 from util.utils import dateparsing, stopid
@@ -89,4 +91,7 @@ api.register_blueprint(stops)
 
 
 if __name__ == "__main__":
+    # database.init_db()
+    # add_alerts_to_db()
+
     server.run(port=6543, host="0.0.0.0", debug=True)

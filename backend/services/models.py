@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Union
 
-import database
+# import .database as database
 import sqlalchemy as sa
 from marshmallow import Schema, fields, post_dump, pre_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -32,11 +32,11 @@ class Stop(SQLModel, table=True):
     alert: list["Alerts"] = Relationship(back_populates="stops")
 
 
-class DateRanges(SQLModel, table=True):
-    id: Optional[int] = Field(primary_key=True)
-    begin_date: datetime = Field(nullable=True)
-    end_date: datetime = Field(nullable=True)
-    stop_id: Optional[int] = Field(default=None, foreign_key="stop.id")
+# class DateRanges(SQLModel, table=True):
+#     id: Optional[int] = Field(primary_key=True)
+#     begin_date: datetime = Field(nullable=True)
+#     end_date: datetime = Field(nullable=True)
+#     stop_id: Optional[int] = Field(default=None, foreign_key="stop.id")
 
 
 class Alerts(SQLModel, table=True):
@@ -44,8 +44,8 @@ class Alerts(SQLModel, table=True):
     # the value would be None before it gets to the database
     id: Optional[int] = Field(primary_key=True)
     alert_type: str = Field(nullable=True)
-    created_at: datetime = Field(nullable=True)
-    updated_at: datetime = Field(nullable=True)
+    created_at: int = Field(nullable=True)
+    updated_at: int = Field(nullable=True)
     direction: str = Field(nullable=True)
     heading: str = Field(nullable=True)
     dateText: str = Field(nullable=True)

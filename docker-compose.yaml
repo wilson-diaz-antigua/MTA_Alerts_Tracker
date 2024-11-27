@@ -1,7 +1,7 @@
 services:
   frontend:
+    build: ./alertsDisplayApp  
     image: wildiant/frontend:latest
-    build: ./alertsDisplayApp
     container_name: frontend_c
     ports:
       - "3000:3000"

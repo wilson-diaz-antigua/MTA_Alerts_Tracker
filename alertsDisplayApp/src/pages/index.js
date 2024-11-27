@@ -55,8 +55,11 @@ function Index() {
     ],
     "Both Directions": null,
   };
+
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:6543";
+
   useEffect(() => {
-    fetch("http://localhost:6543/api/stops")
+    fetch(`${backendUrl}/api/stops`)
       .then((res) => res.json())
       .then((data) => {
         setdata(data);

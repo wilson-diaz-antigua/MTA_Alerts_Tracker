@@ -5,18 +5,13 @@ from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
 from flask_cors import CORS
 from flask_smorest import Api, Blueprint, abort
-from services import database
+from services import database, server
 from services.alertfeedStatic import add_alerts_to_db
 from services.models import Alerts, ListofAlerts, Stop, StopSchema
 from sqlmodel import Session, select
-
 from util.utils import dateparsing, stopid
 
 # from models import Data
-
-
-server = Flask(__name__)
-CORS(server)
 
 
 class APIConfig:
@@ -32,10 +27,7 @@ class APIConfig:
     )
 
 
-server.config.from_object(APIConfig)
-
-
-api = Api(server)
+# api = Api(server)
 stops = Blueprint("stops", "stops", url_prefix="/api", description="MTA stops API")
 
 
@@ -82,16 +74,9 @@ class StopsCollection(MethodView):
         # session.close
 
 
-api.register_blueprint(stops)
+# api.register_blueprint(stops)
 
 
 # @server.route("/")
 # def hello():
 #     return jsonify({"about": "Hello World!"})
-
-
-if __name__ == "__main__":
-    # database.init_db()
-    # add_alerts_to_db()
-
-    server.run(port=6543, host="0.0.0.0", debug=True)

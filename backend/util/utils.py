@@ -12,8 +12,10 @@ import datefinder as df
 import dateutil.parser as dps
 from dateparser.search import search_dates
 
-stopsPath = Path(__file__).parent / "../util/stops.csv"
-
+stopsPath = (
+    Path(__file__).parent.parent.parent / "alertsDisplayApp" / "util" / "stops.csv"
+)
+print(stopsPath)
 logging.basicConfig(
     filename="logging.log",
     level=logging.DEBUG,
@@ -128,12 +130,5 @@ def parseDates(string):
 
     return output
 
-
-if __name__ == "__main__":
-    print(
-        parseDates("Jul 29 - Aug 2, and feb 3  Mon to Fri, 9:45 PM to 5:00 AM")[
-            "start_date"
-        ][0]
-    )
     # print(parseDates("Through Summer 2024"))
     # print(parseDates(None))

@@ -20,8 +20,9 @@ from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
 from .database import engine
 from .models import Alerts, Stop, StopSchema
 
-stopsPath = Path(__file__).parent / "../util/stops.csv"
-
+stopsPath = (
+    Path(__file__).parent.parent.parent / "alertsDisplayApp" / "util" / "stops.csv"
+)
 load_dotenv(".env.MTA")
 MTA_API_KEY = os.getenv("MTA_API_KEY")
 print(MTA_API_KEY)
@@ -182,7 +183,7 @@ def add_alerts_to_db():
             stop = Stop(
                 stop=str(key),
             )
-            session.add(stop)
+            session.merge(stop)
             session.commit()
             session.refresh(stop)
 
@@ -222,6 +223,9 @@ def add_alerts_to_db():
                     session.commit()
                     session.refresh(alerts)
                     # session.refresh(dates)
+
+
+add_alerts_to_db()
 
 
 def get_alerts():

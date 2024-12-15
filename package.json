@@ -3,6 +3,8 @@
     "@craco/craco": "^7.1.0"
   },
   "dependencies": {
-    "tailwind-merge": "^2.3.0"
+    "@neondatabase/serverless": "^0.10.4",
+    "tailwind-merge": "^2.3.0",
+    "vercel": "^39.2.2"
   }
 }

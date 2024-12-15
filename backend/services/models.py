@@ -11,9 +11,16 @@ from sqlalchemy.dialects import (
     postgresql,
 )  # ARRAY contains requires dialect specific type
 from sqlalchemy.orm import Mapped
-from sqlmodel import Column, Field, Relationship, Session, SQLModel, String, select
-
-from util.utils import parseDates
+from sqlmodel import (
+    Column,
+    Field,
+    Relationship,
+    Session,
+    SQLModel,
+    String,
+    create_engine,
+    select,
+)
 
 # class sDate(SQLModel, table=True):
 #     id: Optional[int] = Field(default=None, primary_key=True)
@@ -76,7 +83,10 @@ class StopSchema(SQLAlchemyAutoSchema):
         many=True,
     )
 
-    # @pre_dump
-    # def stopParser(self, stops, **kwargs):
-    #     stops["parsedDate"] = parseDates(stops["alert"][0]["dateText"])
-    #     return stops
+
+engine = create_engine("postgresql+psycopg2://wilson:password@localhost:5432/wilson")
+SQLModel.metadata.create_all(engine)
+# @pre_dump
+# def stopParser(self, stops, **kwargs):
+#     stops["parsedDate"] = parseDates(stops["alert"][0]["dateText"])
+#     return stops

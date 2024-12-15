@@ -1,15 +1,11 @@
+version: "3.8" 
 services:
   frontend:
-<<<<<<< HEAD
+    # image: wildiant/frontend:latest
     build: ./alertsDisplayApp
     platforms:
       - linux/amd64
-      - linux/arm64
-  
-=======
-    image: wildiant/frontend:latest
-    build: ./alertsDisplayApp
->>>>>>> origin/main
+      - linux/arm64 
     container_name: frontend_c
     ports:
       - "3000:3000"
@@ -20,26 +16,16 @@ services:
       - /app/node_modules
     stdin_open: true
     tty: true
-<<<<<<< HEAD
-
-  backend:
+  backend: 
+    # image: wildiant/backend:latest
     build: ./backend
-    container_name:  
     platforms:
       - linux/amd64
-      - linux/arm64
-    ports:
-      - "6543:6543"
-
-=======
-  backend: 
-    image: wildiant/backend:latest
-    build: ./backend
+      - linux/arm64     
     container_name: backend_c
     # command: python -m main
     ports:
       - "6543:6543"
->>>>>>> origin/main
     networks:
       - mynetwork    
     depends_on:

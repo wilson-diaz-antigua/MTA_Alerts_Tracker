@@ -18,7 +18,8 @@ ipykernel==6.29.3
 marshmallow-sqlalchemy==1.0.0
 pickleshare==0.7.5
 pip-chill==1.0.3
-psycopg2==2.9.9
+#psycopg2==2.9.9
+psycopg2-binary==2.9.9
 pydantic-core==2.16.3
 pytest==8.1.1
 python-dotenv==1.0.1

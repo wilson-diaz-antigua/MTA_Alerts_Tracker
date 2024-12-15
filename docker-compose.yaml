@@ -1,11 +1,8 @@
 version: "3.8" 
 services:
   frontend:
-    # image: wildiant/frontend:latest
-    build: ./alertsDisplayApp
-    platforms:
-      - linux/amd64
-      - linux/arm64 
+    build: ./alertsDisplayApp  
+    image: wildiant/frontend:latest
     container_name: frontend_c
     ports:
       - "3000:3000"
@@ -16,12 +13,12 @@ services:
       - /app/node_modules
     stdin_open: true
     tty: true
+    environment:
+      REACT_APP_BACKEND_URL: "http://backend_c:6543"
+
   backend: 
-    # image: wildiant/backend:latest
+    image: wildiant/backend:latest
     build: ./backend
-    platforms:
-      - linux/amd64
-      - linux/arm64     
     container_name: backend_c
     # command: python -m main
     ports:
@@ -37,8 +34,10 @@ services:
     container_name: db_c
     restart: always
 
+    # volumes:
+    #   - /Users/wilson/Library/Application Support/Postgres/var-16:/var/lib/postgresql/data
     volumes:
-      - /Users/wilson/Library/Application Support/Postgres/var-16:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     expose:
       - "5432"  
     ports:
@@ -55,6 +54,9 @@ services:
         
     env_file:
       - ./backend/.env.postgres
+
+volumes:
+      db_data:
 
 networks:
   mynetwork:

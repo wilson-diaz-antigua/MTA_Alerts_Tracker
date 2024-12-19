@@ -11,14 +11,13 @@ from pathlib import Path
 from pprint import pprint as pp
 
 import requests
+from database import engine
 from dotenv import load_dotenv
+from models import Alerts, Stop, StopSchema
 from sqlmodel import Session, select
 
 # from backend.route import server
 from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
-
-from .database import engine
-from .models import Alerts, Stop, StopSchema
 
 stopsPath = (
     Path(__file__).parent.parent.parent / "alertsDisplayApp" / "util" / "stops.csv"
@@ -156,73 +155,54 @@ def convert_dates(dic):
     return dic
 
 
-# def seen_stops():
-#     with Session(engine) as session:
-
-#         statement = select(Stop)
-#         result = session.exec(statement)
-#         alertType = result.all()
-
-#         # Code from the previous example omitted 👈
-#         return {x.stop for x in alertType}
-#         # return [f"{stopid(x.stop)}:{x.alert_type} : {x.direction}" for x in alertType]
-#         # pprint(
-#         #     [
-#         #         f"""{stopid(x.stop)} : {x.direction} : {x.alert_type}"""
-#         #         for x in alertType
-#         #     ]
-#         # )
-
-
 def add_alerts_to_db():
     alert_dict = process_alert_feed()
 
     with Session(engine) as session:
-        for key, values in alert_dict.items():
+        try:
+            for key, values in alert_dict.items():
+                statement = select(Stop).where(Stop.stop == str(key))
+                existing_stop = session.exec(statement).first()
 
-            stop = Stop(
-                stop=str(key),
-            )
-            session.merge(stop)
+                if existing_stop:
+                    stop = existing_stop
+                else:
+                    stop = Stop(stop=str(key))
+                    session.add(stop)
+                    session.flush()
+
+                for alert in values["alertInfo"]:
+                    alerts = Alerts(
+                        alert_type=alert["alertType"],
+                        created_at=alert["createdAt"],
+                        updated_at=alert["updatedAt"],
+                        direction=alert["direction"],
+                        heading=alert["heading"],
+                        route=str(alert["line"]),
+                        dateText=alert.get("date", {}),
+                        stop_id=stop.id,
+                    )
+
+                    table = select(Alerts).where(
+                        Alerts.alert_type == alerts.alert_type,
+                        Alerts.route == alerts.route,
+                        Alerts.direction == alerts.direction,
+                        Alerts.heading == alerts.heading,
+                        Alerts.created_at == alerts.created_at,
+                        Alerts.updated_at == alerts.updated_at,
+                        Alerts.parsedDate == alerts.parsedDate,
+                        alerts.stop_id == stop.id,
+                    )
+                    instance = session.exec(table).first()
+                    if not instance:
+                        alerts.stop = stop
+                        session.add(alerts)
+
             session.commit()
-            session.refresh(stop)
 
-            for alert in values["alertInfo"]:
-                alerts = Alerts(
-                    alert_type=alert["alertType"],
-                    created_at=alert["createdAt"],
-                    updated_at=alert["updatedAt"],
-                    direction=alert["direction"],
-                    heading=alert["heading"],
-                    route=str(alert["line"]),
-                    dateText=alert.get("date", {}),
-                )
-
-                # dates = DateRanges(
-                #     begin_date=parseDates(alert.get("date", {}))["start_date"][0],
-                #     end_date=parseDates(alert.get("date", {}))["end_date"][0],
-                # )
-
-                table = select(Alerts).where(
-                    Alerts.alert_type == alerts.alert_type,
-                    Alerts.route == alerts.route,
-                    Alerts.direction == alerts.direction,
-                    Alerts.heading == alerts.heading,
-                    Alerts.created_at == alerts.created_at,
-                    Alerts.updated_at == alerts.updated_at,
-                    Alerts.parsedDate == alerts.parsedDate,
-                    alerts.stop_id == stop.id,
-                )
-                instance = session.exec(table).first()
-                if not instance:
-                    # alerts.stops = stop
-                    # dates.stop_id = stop.id
-                    session.add(alerts)
-                    # session.add(dates)
-
-                    session.commit()
-                    session.refresh(alerts)
-                    # session.refresh(dates)
+        except Exception as e:
+            session.rollback()
+            raise RuntimeError(f"Failed to add alerts: {str(e)}")
 
 
 add_alerts_to_db()

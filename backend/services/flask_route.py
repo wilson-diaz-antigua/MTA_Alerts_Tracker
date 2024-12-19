@@ -1,11 +1,14 @@
 import os
 import sys
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+import database
 from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
 from flask_cors import CORS
 from flask_smorest import Api, Blueprint, abort
-from services import database, server
+from services import server
 from services.alertfeedStatic import add_alerts_to_db
 from services.models import Alerts, ListofAlerts, Stop, StopSchema
 from sqlmodel import Session, select
@@ -27,7 +30,8 @@ class APIConfig:
     )
 
 
-# api = Api(server)
+server.config.from_object(APIConfig)
+api = Api(server)
 stops = Blueprint("stops", "stops", url_prefix="/api", description="MTA stops API")
 
 
@@ -74,7 +78,7 @@ class StopsCollection(MethodView):
         # session.close
 
 
-# api.register_blueprint(stops)
+api.register_blueprint(stops)
 
 
 # @server.route("/")

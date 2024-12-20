@@ -1,15 +1,11 @@
 import logging
 import re
 import time
-from collections import defaultdict
 from datetime import date, datetime
-from itertools import chain, zip_longest
+from itertools import zip_longest
 from pathlib import Path
 from typing import Union
 
-import arrow
-import datefinder as df
-import dateutil.parser as dps
 from dateparser.search import search_dates
 
 stopsPath = (

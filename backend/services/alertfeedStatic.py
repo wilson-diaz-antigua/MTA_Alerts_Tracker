@@ -3,28 +3,24 @@ import csv
 import json
 import os
 import re
-import sys
-from collections import OrderedDict, defaultdict
-from datetime import datetime as dt
-from functools import lru_cache
+from collections import defaultdict
 from pathlib import Path
-from pprint import pprint as pp
 
 import requests
-from database import engine
 from dotenv import load_dotenv
-from models import Alerts, Stop, StopSchema
-from sqlmodel import Session, select
 
 # from backend.route import server
-from util.utils import convert_to_datetime, dateparsing, parseDates, stopid
+from util.utils import convert_to_datetime, dateparsing
+
+from backend.services.models import Alerts, Stop
+
+from .app_factory import db
 
 stopsPath = (
     Path(__file__).parent.parent.parent / "alertsDisplayApp" / "util" / "stops.csv"
 )
 load_dotenv(".env.MTA")
 MTA_API_KEY = os.getenv("MTA_API_KEY")
-print(MTA_API_KEY)
 service_status = {
     "Delays": "delays.png",
     "Planned - Part Suspended": "suspended.png",
@@ -157,21 +153,22 @@ def convert_dates(dic):
 
 def add_alerts_to_db():
     alert_dict = process_alert_feed()
-
-    with Session(engine) as session:
+    with db.session.no_autoflush:
         try:
             for key, values in alert_dict.items():
-                statement = select(Stop).where(Stop.stop == str(key))
-                existing_stop = session.exec(statement).first()
+                existing_stop = Stop.query.filter_by(stop=str(key)).first()
 
                 if existing_stop:
                     stop = existing_stop
                 else:
                     stop = Stop(stop=str(key))
-                    session.add(stop)
-                    session.flush()
+                    db.session.add(stop)
+                    db.session.flush()
 
                 for alert in values["alertInfo"]:
+                    date_text = alert.get("date", {})
+                    if isinstance(date_text, dict):
+                        date_text = json.dumps(date_text)
                     alerts = Alerts(
                         alert_type=alert["alertType"],
                         created_at=alert["createdAt"],
@@ -179,49 +176,26 @@ def add_alerts_to_db():
                         direction=alert["direction"],
                         heading=alert["heading"],
                         route=str(alert["line"]),
-                        dateText=alert.get("date", {}),
-                        stop_id=stop.id,
+                        dateText=date_text,
                     )
 
-                    table = select(Alerts).where(
-                        Alerts.alert_type == alerts.alert_type,
-                        Alerts.route == alerts.route,
-                        Alerts.direction == alerts.direction,
-                        Alerts.heading == alerts.heading,
-                        Alerts.created_at == alerts.created_at,
-                        Alerts.updated_at == alerts.updated_at,
-                        Alerts.parsedDate == alerts.parsedDate,
-                        alerts.stop_id == stop.id,
-                    )
-                    instance = session.exec(table).first()
+                    instance = Alerts.query.filter_by(
+                        alert_type=alerts.alert_type,
+                        route=alerts.route,
+                        direction=alerts.direction,
+                        heading=alerts.heading,
+                        created_at=alerts.created_at,
+                        updated_at=alerts.updated_at,
+                        parsedDate=alerts.parsedDate,
+                        stop_id=stop.id,
+                    ).first()
+
                     if not instance:
                         alerts.stop = stop
-                        session.add(alerts)
+                        db.session.add(alerts)
 
-            session.commit()
+            db.session.commit()
 
         except Exception as e:
-            session.rollback()
+            db.session.rollback()
             raise RuntimeError(f"Failed to add alerts: {str(e)}")
-
-
-add_alerts_to_db()
-
-
-def get_alerts():
-    stopSchema = StopSchema()
-    with Session(engine) as session:
-        stops = session.exec(select(Stop)).all()
-        alerts = session.exec(select(Alerts)).all()
-
-        # for x in stopSchema.dump(stops, many=True):
-        #     for y in alertSchema.dump(alerts, many=True):
-        #         if x["id"] == y["stop_id"]:
-
-        for x in stops[8:10]:
-            print(x.stop, [y.alert_type for y in x.alert])
-
-        return stopSchema.dump(stops)
-
-
-# pp(get_alerts())

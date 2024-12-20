@@ -2,85 +2,70 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# from models import Data
+import logging
+import sys
+from typing import List
 
-import database
 from flask import Flask, jsonify, render_template, request
 from flask.views import MethodView
 from flask_cors import CORS
 from flask_smorest import Api, Blueprint, abort
-from services import server
-from services.alertfeedStatic import add_alerts_to_db
-from services.models import Alerts, ListofAlerts, Stop, StopSchema
-from sqlmodel import Session, select
+from sqlalchemy.exc import SQLAlchemyError
 from util.utils import dateparsing, stopid
 
-# from models import Data
+from backend.services.models import Alerts, ListofAlerts, Stop, StopSchema
+
+from .app_factory import create_app
+
+app, api = create_app()
+
+# Create a logger
+logger = logging.getLogger(__name__)
+# Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+logger.setLevel(logging.DEBUG)
+
+# Create a handler (e.g., console handler)
+handler = logging.StreamHandler()
+
+# Create a formatter
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+# Add the formatter to the handler
+handler.setFormatter(formatter)
+
+# Add the handler to the logger
+logger.addHandler(handler)
 
 
-class APIConfig:
-    API_TITLE = "MTA_API"
-    API_VERSION = "v1"
-    OPENAPI_VERSION = "3.0.3"
-    OPENAPI_URL_PREFIX = "/"
-    OPENAPI_SWAGGER_UI_PATH = "/docs"
-    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    OPENAPI_REDOC_PATH = "/redoc"
-    OPENAPI_REDOC_UI_URL = (
-        "https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"
-    )
-
-
-server.config.from_object(APIConfig)
-api = Api(server)
-stops = Blueprint("stops", "stops", url_prefix="/api", description="MTA stops API")
-
-
-# @stops.route("/alerts")
-# class alertsCollection(MethodView):
-#     # @stops.arguments(StopSchema, location="query")
-#     @stops.response(status_code=200, schema=AlertSchema(many=True))
-#     def get(self):
-#         with Session(engine) as session:
-#             out = session.exec(select(Alerts)).all()
-
-#         return out
-
-#         # return {"£stop": x.stop for x in stops, "alert" : [y.alert[0].alert_type for y in stops]}
+stops = Blueprint(
+    "stops", __name__, url_prefix="/stops", description="Operations on stops"
+)
 
 
 @stops.route("/stops")
 class StopsCollection(MethodView):
-
     @stops.response(status_code=200)
     def get(self):
-        parsed = []
+        try:
+            parsed = []
 
-        stopSchema = StopSchema()
-        # response = supabase.table("alerts").select("*").execute()
-        # response = stopSchema.dump(response, many=True)
-        with Session(database.engine) as session:
-            stops = session.exec(select(Stop)).all()
-            # idstop = [map(lambda a: stopid(a), stops)]
-            # stops= {}
+            stopSchema = StopSchema()
+
+            stops = Stop.query.all()
 
             stops = stopSchema.dump(stops, many=True)
-            # for x in stops:
-            #     if x is not None or x["alert"][0]["dateText"] is not None:
-            #         parsed.append(dateparsing(x["alert"][0]["dateText"]))
-            # print(parsed)
-            # for stop in stops:
-            #     print(stop.alerts)
 
-            # for x in stops:
-            #     if x.id == alerts.stop_id:
-            return stops
+            return jsonify([{"id": stop.id, "stop": stop.stop} for stop in stops])
 
-        # session.close
+        except SQLAlchemyError as e:
+            logger.error(f"Database error: {e}")
+
+            raise
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
+            raise
 
 
-api.register_blueprint(stops)
-
-
-# @server.route("/")
-# def hello():
-#     return jsonify({"about": "Hello World!"})
+if __name__ == "__main__":
+    app.run(debug=True, port=5008)

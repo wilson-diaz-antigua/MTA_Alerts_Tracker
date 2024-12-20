@@ -7,63 +7,44 @@ import sqlalchemy as sa
 from marshmallow import Schema, fields, post_dump, pre_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from pydantic import BaseModel
-from sqlalchemy import MetaData
-from sqlalchemy.dialects import (
-    postgresql,
-)  # ARRAY contains requires dialect specific type
-from sqlalchemy.orm import Mapped, registry
-from sqlmodel import (
-    Column,
-    Field,
-    Relationship,
-    Session,
-    SQLModel,
-    String,
-    create_engine,
-    select,
-)
+from sqlalchemy import JSON, Column, ForeignKey, Integer, MetaData, String
+from sqlalchemy.dialects import postgresql
+from sqlalchemy.orm import declarative_base, relationship
 
-metadata = MetaData()
-if TYPE_CHECKING:
-    from .models import Alerts, Stop
+from .app_factory import db
 
 
-class Stop(SQLModel, table=True):
+class Stop(db.Model):
     __tablename__ = "stop"
     __table_args__ = {"extend_existing": True}
 
-    id: Optional[int] = Field(primary_key=True)
-    stop: Optional[str] = Field(default=None)
-    alerts: List["Alerts"] = Relationship(
-        back_populates="stop",
-        sa_relationship_kwargs={"lazy": "selectin", "cascade": "all, delete-orphan"},
-    )
+    id = Column(Integer, primary_key=True)
+    stop = Column(String, nullable=True)
+    alerts = relationship("Alerts", back_populates="stop")
 
 
-class Alerts(SQLModel, table=True):
+class Alerts(db.Model):
     __tablename__ = "alerts"
     __table_args__ = {"extend_existing": True}
 
-    id: Optional[int] = Field(primary_key=True)
-    alert_type: str = Field(nullable=True)
-    created_at: int = Field(nullable=True)
-    updated_at: int = Field(nullable=True)
-    direction: str = Field(nullable=True)
-    heading: str = Field(nullable=True)
-    dateText: str = Field(nullable=True)
-    parsedDate: str = Field(nullable=True)
-    route: str = Field(nullable=True)
-    stop_id: Optional[int] = Field(default=None, foreign_key="stop.id")
-    stop: Optional["Stop"] = Relationship(
-        back_populates="alerts", sa_relationship_kwargs={"lazy": "joined"}
-    )
+    id = Column(Integer, primary_key=True)
+    alert_type = Column(String, nullable=True)
+    created_at = Column(Integer, nullable=True)
+    updated_at = Column(Integer, nullable=True)
+    direction = Column(String, nullable=True)
+    heading = Column(String, nullable=True)
+    dateText = Column(JSON, nullable=True)
+    parsedDate = Column(String, nullable=True)
+    route = Column(String, nullable=True)
+    stop_id = Column(Integer, ForeignKey("stop.id"), nullable=True)
+    stop = relationship("Stop", back_populates="alerts")
 
 
 class ListofAlerts(SQLAlchemyAutoSchema):
     class Meta:
         model = Alerts
         exclude = ("id", "stop_id", "created_at", "updated_at")
-        include_relationships = False
+        include_relationships = True
 
 
 class StopSchema(SQLAlchemyAutoSchema):
@@ -71,7 +52,4 @@ class StopSchema(SQLAlchemyAutoSchema):
         model = Stop
         exclude = ("id",)
         include_relationships = True
-
-
-engine = create_engine("postgresql+psycopg2://wilson:password@localhost:5432/wilson")
-SQLModel.metadata.create_all(engine)
+        load_instance = True

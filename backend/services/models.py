@@ -3,7 +3,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy import JSON, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from backend.services.app_factory import db
+from .database import db, ma
 
 
 class Stop(db.Model):
@@ -32,14 +32,15 @@ class Alerts(db.Model):
     stop = relationship("Stop", back_populates="alerts")
 
 
-class ListofAlerts(SQLAlchemyAutoSchema):
+class ListofAlerts(ma.SQLAlchemyAutoSchema):
     class Meta:
+
         model = Alerts
         exclude = ("id", "stop_id", "created_at", "updated_at")
         include_relationships = True
 
 
-class StopSchema(SQLAlchemyAutoSchema):
+class StopSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Stop
         exclude = ("id",)

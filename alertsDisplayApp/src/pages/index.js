@@ -56,7 +56,7 @@ function Index() {
 		'Both Directions': null,
 	};
 	useEffect(() => {
-		fetch('http://localhost:5008/api/alerts')
+		fetch('http://localhost:5000/stops/stops')
 			.then((res) => res.json())
 			.then((data) => {
 				setdata(data);

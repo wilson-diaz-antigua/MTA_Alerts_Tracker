@@ -1,6 +1,14 @@
 import os
 import sys
 
+from flask import Flask
+from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_smorest import Api, Blueprint
+from flask_sqlalchemy import SQLAlchemy
+
+from backend.services.database import Config
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import logging
 import sys
@@ -8,49 +16,49 @@ import sys
 from flask import jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from sqlalchemy.exc import SQLAlchemyError
 
-from backend.services.app_factory import stops
-from backend.services.models import Stop, StopSchema
+from .database import db, server
+from .models import Stop, StopSchema
 
-# Create a logger
-logger = logging.getLogger(__name__)
-# Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-logger.setLevel(logging.DEBUG)
 
-# Create a handler (e.g., console handler)
-handler = logging.StreamHandler()
+class APIConfig:
+    API_TITLE = "MTA_API"
+    API_VERSION = "v1"
+    OPENAPI_VERSION = "3.0.3"
+    OPENAPI_URL_PREFIX = "/"
+    OPENAPI_SWAGGER_UI_PATH = "/docs"
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    OPENAPI_REDOC_PATH = "/redoc"
+    OPENAPI_REDOC_UI_URL = (
+        "https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"
+    )
 
-# Create a formatter
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
-# Add the formatter to the handler
-handler.setFormatter(formatter)
+server.config.from_object(APIConfig)
+api = Api(server)
 
-# Add the handler to the logger
-logger.addHandler(handler)
+
+stops = Blueprint(
+    "stops", "stops", url_prefix="/api", description="Operations on stops"
+)
 
 
 @stops.route("/stops")
 class StopsCollection(MethodView):
+
     @stops.response(status_code=200)
     def get(self):
-        try:
 
-            parsed = []
+        stopSchema = StopSchema(many=True)
 
-            stopSchema = StopSchema()
+        stopsQuery = Stop.query.all()
 
-            stopsQuery = Stop.query.all()
+        stops = stopSchema.dump(stopsQuery, many=True)
 
-            stopsQuery = stopSchema.dump(stops, many=True)
+        return stops
 
-            return stopsQuery
 
-        except SQLAlchemyError as e:
-            logger.error(f"Database error: {e}")
+api.register_blueprint(stops)
 
-            raise
-        except Exception as e:
-            logger.error(f"Unexpected error: {e}")
-            raise
+if __name__ == "__main__":
+    server.run(debug=True)

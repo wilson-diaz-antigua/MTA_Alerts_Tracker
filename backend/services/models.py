@@ -1,17 +1,9 @@
-import csv
-from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Union
-
 # import .database as database
-import sqlalchemy as sa
-from marshmallow import Schema, fields, post_dump, pre_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from pydantic import BaseModel
-from sqlalchemy import JSON, Column, ForeignKey, Integer, MetaData, String
-from sqlalchemy.dialects import postgresql
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import JSON, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
-from .app_factory import db
+from backend.services.app_factory import db
 
 
 class Stop(db.Model):

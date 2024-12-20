@@ -23,7 +23,7 @@ def init_db():
 def main():
     global app
     app = init_db()
-    app.run(host="localhost", port=5008, debug=True)
+    app.run(debug=True)
 
 
 app = init_db()

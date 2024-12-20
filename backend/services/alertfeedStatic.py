@@ -10,11 +10,10 @@ import requests
 from dotenv import load_dotenv
 
 # from backend.route import server
-from util.utils import convert_to_datetime, dateparsing
-
-from backend.services.models import Alerts, Stop
+from backend.util.utils import convert_to_datetime, dateparsing
 
 from .app_factory import db
+from .models import Alerts, Stop
 
 stopsPath = (
     Path(__file__).parent.parent.parent / "alertsDisplayApp" / "util" / "stops.csv"

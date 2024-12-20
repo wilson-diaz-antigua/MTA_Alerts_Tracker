@@ -1,13 +1,11 @@
 import json
 from collections import defaultdict
 from pprint import pprint
-from statistics import mean
 
 import requests
 from google.protobuf.json_format import MessageToJson
 from google.transit import gtfs_realtime_pb2
-
-from util.utils import convert_to_datetime, dateparsing, secToMin, secToTime, stopid
+from util.utils import secToTime, stopid
 
 headers = {"x-api-key": "8ogTVWVBY55OObVPvYpmu4zQAjmlHl3Q8HmQ1BpV"}
 tripUrl = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs"

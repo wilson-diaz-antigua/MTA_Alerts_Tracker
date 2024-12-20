@@ -1,12 +1,16 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_smorest import Api
+from flask_smorest import Api, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from services.database import APIConfig, Config
-from services.flask_route import stops
+
+from backend.services.database import APIConfig, Config
 
 db = SQLAlchemy()
+
+stops = Blueprint(
+    "stops", __name__, url_prefix="/stops", description="Operations on stops"
+)
 
 
 def create_app():

@@ -56,10 +56,19 @@ function Index() {
 		'Both Directions': null,
 	};
 	useEffect(() => {
-		fetch('http://localhost:5000/stops/stops')
-			.then((res) => res.json())
+		console.log('useEffect triggered');
+
+		fetch('http://localhost:6543/api/stops')
+			.then((res) => {
+				console.log('Response received:', res);
+				return res.json();
+			})
 			.then((data) => {
+				console.log('Data received:', data);
 				setdata(data);
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
 			});
 	}, []);
 
@@ -79,7 +88,7 @@ function Index() {
 		.map((stops) => {
 			return {
 				stop: stops.stop,
-				alert: stops.alert.filter((alerts) => {
+				alert: stops.alerts.filter((alerts) => {
 					if (dir) {
 						return dir.includes(
 							alerts.direction

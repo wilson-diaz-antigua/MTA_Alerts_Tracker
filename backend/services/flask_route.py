@@ -7,8 +7,6 @@ from flask_migrate import Migrate
 from flask_smorest import Api, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 
-from backend.services.database import Config
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import logging
 import sys
@@ -17,8 +15,8 @@ from flask import jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint
 
-from .database import db, server
-from .models import Stop, StopSchema
+from backend.services.database import server
+from backend.services.models import Stop, StopSchema
 
 
 class APIConfig:
@@ -38,15 +36,13 @@ server.config.from_object(APIConfig)
 api = Api(server)
 
 
-stops = Blueprint(
-    "stops", "stops", url_prefix="/api", description="Operations on stops"
-)
+stops = Blueprint("stops", "api", url_prefix="/api", description="Operations on stops")
 
 
 @stops.route("/stops")
 class StopsCollection(MethodView):
 
-    @stops.response(status_code=200)
+    @stops.response(status_code=200, schema=StopSchema(many=True))
     def get(self):
 
         stopSchema = StopSchema(many=True)
@@ -61,4 +57,4 @@ class StopsCollection(MethodView):
 api.register_blueprint(stops)
 
 if __name__ == "__main__":
-    server.run(debug=True)
+    server.run(port=6543, debug=True)

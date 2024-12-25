@@ -1,5 +1,5 @@
 # import .database as database
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy import fields
 from sqlalchemy import JSON, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
@@ -33,6 +33,7 @@ class Alerts(db.Model):
 
 
 class ListofAlerts(ma.SQLAlchemyAutoSchema):
+
     class Meta:
 
         model = Alerts
@@ -41,8 +42,10 @@ class ListofAlerts(ma.SQLAlchemyAutoSchema):
 
 
 class StopSchema(ma.SQLAlchemyAutoSchema):
+    alerts = fields.Nested(ListofAlerts, many=True)
+
     class Meta:
         model = Stop
         exclude = ("id",)
         include_relationships = True
-        load_instance = True
+        include_fk = True

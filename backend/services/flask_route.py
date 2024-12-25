@@ -51,7 +51,7 @@ class StopsCollection(MethodView):
 
         stops = stopSchema.dump(stopsQuery, many=True)
 
-        return stopsQuery
+        return stops
 
 
 api.register_blueprint(stops)

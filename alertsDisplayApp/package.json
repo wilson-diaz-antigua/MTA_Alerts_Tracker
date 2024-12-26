@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"flask-dev": "FLASK_APP=flask_route.py FLASK_ENV=development flask run",
+		"flask-dev": "FLASK_APP=../backend/services/flask_route.py FLASK_ENV=development flask run",
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",

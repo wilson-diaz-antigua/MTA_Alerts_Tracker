@@ -58,7 +58,7 @@ function Index() {
 	useEffect(() => {
 		console.log('useEffect triggered');
 
-		fetch('http://localhost:6543/api/stops')
+		fetch('/api/stops')
 			.then((res) => {
 				console.log('Response received:', res);
 				return res.json();

@@ -4,20 +4,22 @@
 	"private": true,
 	"scripts": {
 		"flask-dev": "FLASK_DEBUG=1 pip3 install -r ../backend/services/requirements.txt && python3 -m flask --app ../backend/services/flask_route.py run ",
-		"dev": "next dev",
+		"next-dev": "next dev",
+		"dev": "concurrently \"npm run next-dev\" \"npm run flask-dev\"",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@vercel/edge-config": "^1.4.0",
+		"next": "14.2.3",
 		"react": "^18",
-		"react-dom": "^18",
-		"next": "14.2.3"
+		"react-dom": "^18"
 	},
 	"devDependencies": {
-		"postcss": "^8",
-		"tailwindcss": "^3.4.1",
 		"eslint": "^8",
-		"eslint-config-next": "14.2.3"
+		"eslint-config-next": "14.2.3",
+		"postcss": "^8",
+		"tailwindcss": "^3.4.1"
 	}
 }

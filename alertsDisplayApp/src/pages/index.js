@@ -58,7 +58,7 @@ function Index() {
 	useEffect(() => {
 		console.log('useEffect triggered');
 
-		fetch('http://127.0.0.1:6543/api/stops')
+		fetch('https://backend-production-0687.up.railway.app/api/stops')
 			.then((res) => {
 				console.log('Response received:', res);
 				return res.json();

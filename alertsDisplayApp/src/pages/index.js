@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import objects from '../../util/subwayLineColors.json';
-import FilteredAlerts from './FilteredAlerts.js';
-import TimelineItem from './TimelineItem';
+import FilteredAlerts from './components/FilteredAlerts.js';
+import TimelineItem from './components/TimelineItem';
 
 export const AccordionContext = createContext();
 let colors = 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue';

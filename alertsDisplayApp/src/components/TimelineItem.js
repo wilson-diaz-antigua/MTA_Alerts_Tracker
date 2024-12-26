@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import stopNames from '../../../util/stopNames.json';
+import stopNames from '../../util/stopNames.json';
 
-import { AccordionContext } from '../index.js';
+import { AccordionContext } from '../pages/index.js';
 const TimelineItem = (props) => {
 	const { accordionOpen, setAccordionOpen } = useContext(AccordionContext);
 	// Ensure props.stop and props.stop.alert are defined

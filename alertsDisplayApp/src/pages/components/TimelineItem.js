@@ -4,6 +4,11 @@ import stopNames from '../../../util/stopNames.json';
 import { AccordionContext } from '../index.js';
 const TimelineItem = (props) => {
 	const { accordionOpen, setAccordionOpen } = useContext(AccordionContext);
+	// Ensure props.stop and props.stop.alert are defined
+	if (!props.stop || !props.stop.alert) {
+		return null; // or return a fallback UI
+	}
+
 	const open = accordionOpen === props.index;
 	const mapFromColors = new Map(
 		props.stop.alert.map((item) => [item.heading, item])

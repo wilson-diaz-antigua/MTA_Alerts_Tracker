@@ -7,7 +7,7 @@ export const AccordionContext = createContext();
 let colors = 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue';
 let beforecolors =
 	'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue';
-function Index() {
+function MtaTracker() {
 	const [accordionOpen, setAccordionOpen] = useState(false);
 	const [data, setdata] = useState([]);
 	const [filtLines, setFiltLines] = useState('broadway');
@@ -217,4 +217,4 @@ function Index() {
 	);
 }
 
-export default Index;
+export default MtaTracker;

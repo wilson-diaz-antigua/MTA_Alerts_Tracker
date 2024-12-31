@@ -6,7 +6,7 @@ const FilteredAlerts = (props) => {
 		<section>
 			<select
 				multiple={props.multiple || false}
-				className={`appearance-none cursor-pointer ${props.className}`}
+				className={` appearance-none cursor-pointer ${props.className}`}
 				name='filter'
 				id='filter'
 				value={props.state}
@@ -15,7 +15,7 @@ const FilteredAlerts = (props) => {
 				{props.value && <option value='x'>X</option>}
 				{objMap.map((filtIter, value) => {
 					return (
-						<option key={value} value={filtIter}>
+						<option className='hidden' key={value} value={filtIter}>
 							{filtIter}
 						</option>
 					);

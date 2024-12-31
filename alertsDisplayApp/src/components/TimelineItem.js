@@ -24,6 +24,8 @@ const TimelineItem = (props) => {
 				<div className=' timelineItem'>
 					<div className='icon'>
 						<svg
+							height={40}
+							width={40}
 							className=''
 							xmlns='http://www.w3.org/2000/svg'
 							viewBox='0 0 40 40'
@@ -32,8 +34,8 @@ const TimelineItem = (props) => {
 								className={`fill-current text-slate-50 stroke-zinc-900`}
 								cx='20'
 								cy='20'
-								r='17.6'
-								strokeWidth='10'
+								r='15'
+								strokeWidth='12'
 								fill='none'
 							/>
 						</svg>

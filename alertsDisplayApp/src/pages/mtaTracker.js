@@ -161,15 +161,15 @@ function MtaTracker() {
 	return (
 		<div className=' pb-[100%] bg-zinc-900'>
 			<div className=' bg-zinc-900'>
-				<section className=' flex  pt-10 ml-[05rem] sm:ml-[10rem]  md:ml-[10rem]  lg:ml-[13rem]'>
-					<div className='w-20 h-20 justify-self-end '>
+				<section className=' flex  pt-10 ml-[05rem]   md:ml-[10rem]  lg:ml-[13rem]'>
+					<div className='w-20 h-20 block '>
 						<FilteredAlerts
 							data={objects.serviceByLines[filtLines]}
 							state={service}
 							setState={(e) => {
 								setService(e.target.value);
 							}}
-							className={` pt-2 route ${objects.lineColors[filtLines]} `}
+							className={`[text-align-last:center]  pt-2 m-0.5  p-2.5  rounded-full w-full h-full mb-0 text-slate-50 font-bold text-6xl text-center ${objects.lineColors[filtLines]} `}
 							value={true}
 						/>
 					</div>

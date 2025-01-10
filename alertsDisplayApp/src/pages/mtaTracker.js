@@ -98,7 +98,6 @@ function MtaTracker() {
 			return item.alert.length;
 		});
 
-	console.log(data2);
 	const data1 = () =>
 		data2.map((item, index) => {
 			const alerts = {
@@ -124,7 +123,6 @@ function MtaTracker() {
 					),
 				],
 			};
-			console.log(item);
 			return (
 				<>
 					<AccordionContext.Provider

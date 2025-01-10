@@ -15,7 +15,7 @@ const FilteredAlerts = (props) => {
 				{props.value && <option value='x'>X</option>}
 				{objMap.map((filtIter, value) => {
 					return (
-						<option className='hidden' key={value} value={filtIter}>
+						<option className='' key={value} value={filtIter}>
 							{filtIter}
 						</option>
 					);

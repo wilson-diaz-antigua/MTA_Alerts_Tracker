@@ -14,9 +14,7 @@ function MtaTracker() {
 	const [service, setService] = useState('x');
 	const [direction, setDirection] = useState('Both Directions');
 	const [stop, setStop] = useState('101');
-	const testClick = (event, id) => {
-		setStop(id);
-	};
+	const [loading, setLoading] = useState(true);
 
 	let terminal = {
 		Northbound: [
@@ -65,6 +63,7 @@ function MtaTracker() {
 			})
 			.then((data) => {
 				console.log('Data received:', data);
+				setLoading(false);
 				setdata(data);
 			})
 			.catch((error) => {
@@ -206,9 +205,26 @@ function MtaTracker() {
 				</section>
 			</div>
 			<div
-				className={` content relative
+				className={`${loading ? 'animate-pulse' : ''} content relative
           before:${objects.lineColors[filtLines]}`}
 			>
+				{loading && (
+					<div
+						role='status'
+						className='max-w-sm ml-[07rem]   md:ml-[12rem]  lg:ml-[14.6rem] animate-pulse'
+					>
+						{[...Array(5)].map((e, i) => (
+							<div className='mt-10 flex items-center' key={i}>
+								<div
+									className={
+										' border-8 border-zinc-900  flex items-center justify-center w-7 h-7 bg-slate-50 rounded-full  '
+									}
+								></div>
+								<div className='ml-4  h-3 bg-slate-50 w-52 rounded-full'></div>
+							</div>
+						))}
+					</div>
+				)}
 				<div className='relative'>
 					<section>{data1()}</section>
 				</div>

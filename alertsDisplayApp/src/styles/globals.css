@@ -11,14 +11,14 @@
 
 @layer components {
 	.content {
-		@apply items-start flex  space-x-3 space-y-5  before:absolute before:inset-0 before:-translate-x-px before:ml-[7.5rem]  md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.3rem];
+		@apply items-start flex  space-x-3 space-y-5  before:absolute before:inset-0 before:-translate-x-px before:ml-[7.5rem]  md:before:ml-[12.7rem] before:translate-x-0 before:h-full before:w-2 lg:before:ml-[15.1rem];
 	}
 
 	.timelineItem {
 		@apply flex items-start justify-start;
 	}
 	.icon {
-		@apply mt-7 ml-[-0.20rem] sm:ml-[0.70rem]  flex items-center justify-center w-7 h-7 bg-slate-900 rounded-full  order-1;
+		@apply mt-7 ml-[-0.20rem] md:ml-[0.70rem]  flex items-center justify-center w-7 h-7 bg-slate-900 rounded-full  order-1;
 	}
 	.leftSide {
 		@apply text-xl font-medium  w-28  h-4/5 lg:w-[11em] md:w-[9em];

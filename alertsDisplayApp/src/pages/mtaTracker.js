@@ -54,15 +54,11 @@ function MtaTracker() {
 		'Both Directions': null,
 	};
 	useEffect(() => {
-		console.log('useEffect triggered');
-
 		fetch('https://backend-production-0687.up.railway.app/stops')
 			.then((res) => {
-				console.log('Response received:', res);
 				return res.json();
 			})
 			.then((data) => {
-				console.log('Data received:', data);
 				setLoading(false);
 				setdata(data);
 			})
@@ -81,8 +77,6 @@ function MtaTracker() {
 		terminal[direction] &&
 		terminal[direction].map((item) => item.toLowerCase());
 
-	// const startStop = filteredItems.findIndex((obj) => obj.stop == stop);
-	// const indexOf = filteredItems.findIndex((obj) => obj.stop == "42");
 	let data2 = filteredItems
 		.map((stops) => {
 			return {
@@ -104,14 +98,6 @@ function MtaTracker() {
 			return item.alert.length;
 		});
 
-	// let dir = filteredItems.map((element) => {
-	//   return [...new Set(element.alert.map((element) => element.direction))];
-	// });
-	// dir = dir.flat();
-	// dir = dir.filter((item, index) => {
-	//   return dir.indexOf(item) === index;
-	// });
-	// console.log(dir);
 	console.log(data2);
 	const data1 = () =>
 		data2.map((item, index) => {
@@ -211,7 +197,7 @@ function MtaTracker() {
 				{loading && (
 					<div
 						role='status'
-						className='max-w-sm ml-[07rem]   md:ml-[12rem]  lg:ml-[14.6rem] animate-pulse'
+						className='max-w-sm ml-[6.8rem]   md:ml-[12rem]  lg:ml-[14.6rem] animate-pulse'
 					>
 						{[...Array(5)].map((e, i) => (
 							<div className='mt-10 flex items-center' key={i}>

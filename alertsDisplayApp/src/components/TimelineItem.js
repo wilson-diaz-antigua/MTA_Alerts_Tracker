@@ -103,7 +103,6 @@ const TimelineItem = (props) => {
 									</>
 								);
 							})}
-							;
 						</div>
 					</div>
 				</div>

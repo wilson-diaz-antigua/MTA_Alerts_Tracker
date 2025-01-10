@@ -146,7 +146,7 @@ function MtaTracker() {
 	return (
 		<div className=' pb-[100%] bg-zinc-900'>
 			<div className=' bg-zinc-900'>
-				<section className=' flex  pt-10 ml-[05rem]   md:ml-[10rem]  lg:ml-[13rem]'>
+				<section className=' flex  pt-10 ml-[05rem]   md:ml-[10rem]  lg:ml-[12.5rem]'>
 					<div className='w-20 h-20 block '>
 						<FilteredAlerts
 							data={objects.serviceByLines[filtLines]}

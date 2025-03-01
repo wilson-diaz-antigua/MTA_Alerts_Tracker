@@ -1,34 +1,37 @@
 {
-  "serviceByLines": {
-    "broadway": ["1", "2", "3"],
-    "lexington": ["4", "5", "6"],
-    "queens blvd": ["7"],
-    "8th ave": ["A", "B", "C", "E"]
-  },
-  "lineColors": {
-    "broadway": "bg-MTAred",
-    "lexington": "bg-MTAgreen",
-    "queens blvd": "bg-MTAmagenta",
-    "8th ave": "bg-MTAblue"
-  },
-  "timelineLineColors": {
-    "broadway": "before:bg-MTAred",
-    "lexington": "before:bg-MTAgreen",
-    "queens blvd": "before:bg-MTAmagenta",
-    "8th ave": "before:bg-MTAblue"
-  },
+	"serviceByLines": {
+		"broadway": ["1", "2", "3"],
+		"lexington": ["4", "5", "6"],
+		"queens blvd": ["7"],
+		"8th ave": ["A", "B", "C", "E"]
+	},
+	"lineColors": {
+		"broadway": "bg-MTAred",
+		"lexington": "bg-MTAgreen",
+		"queens blvd": "bg-MTAmagenta",
+		"8th ave": "bg-MTAblue"
+	},
+	"timelineLineColors": {
+		"broadway": "before:bg-MTAred",
+		"lexington": "before:bg-MTAgreen",
+		"queens blvd": "before:bg-MTAmagenta",
+		"8th ave": "before:bg-MTAblue"
+	},
 
-  "serviceColors": {
-    "1": "bg-MTAred",
-    "2": "bg-MTAred",
-    "3": "bg-MTAred",
-    "4": "bg-MTAgreen",
-    "5": "bg-MTAgreen",
-    "6": "bg-MTAgreen",
-    "7": "bg-MTAmagenta",
-    "A": "bg-MTAblue",
-    "B": "bg-MTAblue",
-    "C": "bg-MTAblue",
-    "E": "bg-MTAblue"
-  }
+	"serviceColors": {
+		"1": "bg-MTAred",
+		"2": "bg-MTAred",
+		"3": "bg-MTAred",
+		"4": "bg-MTAgreen",
+		"5": "bg-MTAgreen",
+		"6": "bg-MTAgreen",
+		"7": "bg-MTAmagenta",
+		"A": "bg-MTAblue",
+		"B": "bg-MTAblue",
+		"C": "bg-MTAblue",
+		"E": "bg-MTAblue",
+		"F": "bg-MTAorange",
+		"B": "bg-MTAorange",
+		"D": "bg-MTAorange"
+	}
 }

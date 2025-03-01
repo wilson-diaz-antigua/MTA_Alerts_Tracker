@@ -121,7 +121,7 @@ const TimelineItem = ({
 					/>
 				</div>
 				<div className='mt-0'>
-					<button className='self-start font-bold text-slate-50 mt-2 bg-slate-900'>
+					<button className='self-start font-bold text-slate-50 mt-2 '>
 						<span>{customTitle || 'Special Item'}</span>
 					</button>
 					{alerts?.type && (
@@ -180,7 +180,7 @@ const TimelineItem = ({
 					className={`self-start font-bold text-slate-50 mt-2 ${
 						isOpen
 							? "ml-2 inline-block bg-slate-50 text-slate-900 rounded-e-md relative px-2 before:content-[''] before:absolute before:h-0 before:w-0 before:top-[0px] before:left-[-24px] before:border-[12px] before:border-r-slate-50 before:border-l-transparent before:border-y-transparent border-solid"
-							: 'bg-slate-900'
+							: ''
 					}`}
 				>
 					<span>{stationName}</span>

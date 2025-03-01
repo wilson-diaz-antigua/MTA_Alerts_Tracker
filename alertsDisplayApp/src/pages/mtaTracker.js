@@ -290,7 +290,7 @@ function MtaTracker() {
 
 		// Custom icon for summary item
 		const summaryIcon = (
-			<div className='icon'>
+			<div className='icon '>
 				<svg
 					height={40}
 					width={40}
@@ -330,9 +330,16 @@ function MtaTracker() {
 	};
 
 	const customIcon = (
-		<div className='icon fill-current text-red-700 stroke-zinc-900'>
-			<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512'>
-				<path d='M143 256.3 7 120.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0L313 86.3c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.4 9.5-24.6 9.5-34 .1zm34 192 136-136c9.4-9.4 9.4-24.6 0-33.9l-22.6-22.6c-9.4-9.4-24.6-9.4-33.9 0L160 352.1l-96.4-96.4c-9.4-9.4-24.6-9.4-33.9 0L7 278.3c-9.4 9.4-9.4 24.6 0 33.9l136 136c9.4 9.5 24.6 9.5 34 .1z' />
+		<div class='icon h-[70px] w-[30px] bg-zinc-900 fill-current pt-2  text-[#EE352E]'>
+			<svg
+				viewBox=' 0 0 50 150'
+				width='20'
+				height='60'
+				xmlns='http://www.w3.org/2000/svg'
+			>
+				<ellipse cx='25' cy='20' rx='10' ry='10' />
+				<ellipse cx='25' cy='60' rx='10' ry='10' />
+				<ellipse cx='25' cy='100' rx='10' ry='10' />
 			</svg>
 		</div>
 	);
@@ -362,9 +369,9 @@ function MtaTracker() {
 					) : (
 						<div className='relative'>
 							{/* Summary item at the top */}
-							{alertData.length > 0 && (
+							{/* {alertData.length > 0 && (
 								<section className='mb-6'>{renderSummaryItem()}</section>
-							)}
+							)} */}
 
 							{/* Regular timeline items */}
 							<section>{renderTimelineItems().slice(0, 5)}</section>

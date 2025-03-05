@@ -17,6 +17,12 @@
 		"queens blvd": "before:bg-MTAmagenta",
 		"8th ave": "before:bg-MTAblue"
 	},
+	"dottedColors": {
+		"broadway": "text-MTAred",
+		"lexington": "text-MTAgreen",
+		"queens blvd": "text-MTAmagenta",
+		"8th ave": "text-MTAblue"
+	},
 
 	"serviceColors": {
 		"1": "bg-MTAred",

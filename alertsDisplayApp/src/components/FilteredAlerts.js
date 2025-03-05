@@ -8,7 +8,6 @@ const FilteredAlerts = (props) => {
 				multiple={props.multiple || false}
 				className={` appearance-none cursor-pointer ${props.className}`}
 				name='filter'
-				id='filter'
 				value={props.state}
 				onChange={props.setState}
 			>

@@ -1,102 +1,22 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import stopNames from '../../util/stopNames.json';
-import { AccordionContext } from '../pages/mtaTracker.js';
+// Fix imports - separate the AccordionContext and ensureArray imports
+import { AccordionContext } from '../pages/mtaTracker.tsx';
+import { ensureArray } from '../utils/arrayUtils';
+import AlertDetails from './AlertDetails';
+import ExpandedAlertContent from './ExpandedAlertContent';
 import ServiceList from './ServiceList';
+import StationIcon from './StationIcon';
 
 /**
- * Ensures a value is treated as an array
- * @param {any} value - The value to ensure is an array
- * @returns {Array} The value as an array
+ * TimelineItem component displays a station with its alerts in a timeline format
  */
-const ensureArray = (value) => {
-	if (value === undefined || value === null) return [];
-	return Array.isArray(value) ? value : [value];
-};
-
-// Station icon component
-const StationIcon = ({ custom }) => {
-	if (custom) {
-		return custom;
-	}
-
-	return (
-		<div className='icon'>
-			<svg
-				height={40}
-				width={40}
-				xmlns='http://www.w3.org/2000/svg'
-				viewBox='0 0 40 40'
-			>
-				<circle
-					className='fill-current text-slate-50 stroke-zinc-900'
-					cx='20'
-					cy='20'
-					r='15'
-					strokeWidth='12'
-					fill='none'
-				/>
-			</svg>
-		</div>
-	);
-};
-
-// Alert details component
-const AlertDetails = ({ isOpen, alertTypes }) => {
-	const alertTypesArray = ensureArray(alertTypes);
-
-	if (alertTypesArray.length === 0) return null;
-
-	return (
-		<div
-			className={`grid transition-all duration-300 ease-in-out text-slate-600 text-sm ${
-				!isOpen
-					? 'grid-rows-[1fr] opacity-100'
-					: 'grid-rows-[0fr] opacity-0 overflow-hidden'
-			}`}
-		>
-			<div className='overflow-hidden'>
-				{alertTypesArray.map((alertType, index) => (
-					<ul key={`alertType-${index}`}>{alertType}</ul>
-				))}
-			</div>
-		</div>
-	);
-};
-
-// Expanded alert component
-const ExpandedAlertContent = ({ isOpen, alertItems }) => {
-	const alertItemsArray = ensureArray(alertItems);
-
-	if (alertItemsArray.length === 0) return null;
-
-	return (
-		<div
-			className={`grid transition-all duration-300 ease-in-out text-sm ${
-				isOpen
-					? 'grid-rows-[1fr] opacity-100'
-					: 'grid-rows-[0fr] opacity-0 overflow-hidden'
-			}`}
-		>
-			<div className='mt-2 overflow-hidden'>
-				{alertItemsArray.map((item, index) => (
-					<div key={`alert-${index}`}>
-						<div className='text-sm text-slate-300'>
-							{item?.alert_type || ''}
-						</div>
-						<div className='text-sm text-slate-600'>{item?.heading || ''}</div>
-					</div>
-				))}
-			</div>
-		</div>
-	);
-};
-
 const TimelineItem = ({
 	index,
 	stop,
-	alerts,
-	className,
+	alerts = { service: [], type: [], heading: [] },
+	className = {},
 	filtLines,
 	customIcon,
 	customTitle,
@@ -121,7 +41,7 @@ const TimelineItem = ({
 					/>
 				</div>
 				<div className='mt-0'>
-					<button className='self-start font-bold text-slate-50 mt-2 '>
+					<button className='self-start font-bold text-slate-50 mt-10'>
 						<span>{customTitle || 'Special Item'}</span>
 					</button>
 					{alerts?.type && (
@@ -169,13 +89,13 @@ const TimelineItem = ({
 	};
 
 	return (
-		<div className={`content ${accordionOpen ? 'mb-0' : 'mb-10'}`}>
-			<div className='timelineItem'>
+		<div className={`content ${accordionOpen ? 'mb-0' : 'mb-0 '}`}>
+			<div className='timelineItem  '>
 				<StationIcon custom={customIcon} />
 				<ServiceList services={alertServices} classNames={className || {}} />
 			</div>
 
-			<div onClick={toggleAccordion} className='mt-0 cursor-pointer'>
+			<div onClick={toggleAccordion} className='mt-0 pt-4 cursor-pointer'>
 				<button
 					className={`self-start font-bold text-slate-50 mt-2 ${
 						isOpen
@@ -206,12 +126,6 @@ TimelineItem.propTypes = {
 	customIcon: PropTypes.node,
 	customTitle: PropTypes.string,
 	isSpecial: PropTypes.bool,
-};
-
-TimelineItem.defaultProps = {
-	alerts: { service: [], type: [], heading: [] },
-	className: {},
-	isSpecial: false,
 };
 
 export default TimelineItem;

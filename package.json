@@ -1,6 +1,6 @@
 {
 	"devDependencies": {
-		"@craco/craco": "^7.1.0",
+		"@craco/craco": "^5.9.0",
 		"@types/node": "^22.13.9"
 	},
 	"dependencies": {

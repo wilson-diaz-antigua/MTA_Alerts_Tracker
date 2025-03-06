@@ -88,7 +88,7 @@ function MtaTracker(): JSX.Element {
     return filteredItems
       .map((stops) => ({
         stop: stops.stop,
-        alert: stops.alerts.filter((alert) =>
+        alerts: stops.alerts.filter((alert) =>
           directionTerms
             ? directionTerms.includes(
                 alert.direction
@@ -98,7 +98,7 @@ function MtaTracker(): JSX.Element {
             : alert
         ),
       }))
-      .filter((item) => item.alert.length);
+      .filter((item) => item.alerts.length);
   }, [data, service, filtLines, direction]);
 
   const alertData = processAlertData();
@@ -107,9 +107,9 @@ function MtaTracker(): JSX.Element {
   const renderTimelineItems = (): JSX.Element[] =>
     alertData.map((item, index) => {
       const alerts: ProcessedAlert = {
-        service: ArrayUtils.uniqueValues(item.alert, (service) => service.route),
-        heading: ArrayUtils.uniqueValues(item.alert, (service) => service.heading),
-        type: ArrayUtils.uniqueValues(item.alert, (service) => service.alert_type),
+        service: ArrayUtils.uniqueValues(item.alerts, (service) => service.route),
+        heading: ArrayUtils.uniqueValues(item.alerts, (service) => service.heading),
+        type: ArrayUtils.uniqueValues(item.alerts, (service) => service.alert_type),
       };
 
       return (
@@ -187,10 +187,14 @@ function MtaTracker(): JSX.Element {
                       } more stations affected`}
                       isSpecial={true}
                       alerts={isExpanded?{
+                        service: [],
+                        heading: [],
                         type: [
                           ` show less`,
                         ],
                       }:{
+                        service: [],
+                        heading: [],
                         type: [
                           ` show ${alertData.length -6} more stations with alerts`,
                         ],

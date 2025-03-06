@@ -151,7 +151,7 @@ function MtaTracker(): JSX.Element {
   return (
     <div className=' bg-zinc-900'>
       <AccordionContext.Provider value={accordionContextValue}>
-        <div className='bg-zinc-600 sticky top-0 z-10 shadow-md '>
+        <div className='bg-zinc-600 sticky top-0 z-10  '>
           <FilterControls
             filtLines={filtLines}
             setFiltLines={setFiltLines}

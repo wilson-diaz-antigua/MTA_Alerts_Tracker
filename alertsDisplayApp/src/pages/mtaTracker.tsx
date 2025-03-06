@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from 'react';
+import { createContext, JSX, useCallback, useState } from 'react';
 import objects from '../../util/subwayLineColors.json';
 import EndMarker from '../components/EndMarker';
 import FilterControls from '../components/FilterControls';

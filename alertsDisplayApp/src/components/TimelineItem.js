@@ -18,8 +18,8 @@ const TimelineItem = ({
 	alerts = { service: [], type: [], heading: [] },
 	className = {},
 	filtLines,
-	customIcon,
-	customTitle,
+	customIcon = null,
+	customTitle = '',
 	isSpecial = false,
 }) => {
 	// Fix context usage with fallback values

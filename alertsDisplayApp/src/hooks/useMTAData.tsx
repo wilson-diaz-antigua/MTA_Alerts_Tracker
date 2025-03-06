@@ -1,14 +1,8 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { API_BASE_URL, RETRY_DELAY } from '../constants/config';
 
-// Constants
-const API_BASE_URL = 'https://backend-production-0687.up.railway.app';
-const RETRY_DELAY = 2000;
 
-/**
- * Custom hook for fetching MTA data
- * @returns {Object} Object containing data array and loading state
- */
 const useMtaData = () => {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);

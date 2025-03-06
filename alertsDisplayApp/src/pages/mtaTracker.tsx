@@ -38,10 +38,12 @@ interface ProcessedAlert {
   type: string[];
 }
 
+
 interface AccordionContextType {
   accordionOpen: boolean | null;
   setAccordionOpen: (open: boolean) => void;
 }
+type TerminalKeys = 'broadway' | 'lexington' | 'queens blvd' | '8th ave';
 
 // Initialize the context with default values
 export const AccordionContext = createContext<AccordionContextType>({

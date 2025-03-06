@@ -13,11 +13,11 @@ import StationIcon from './StationIcon';
  * TimelineItem component displays a station with its alerts in a timeline format
  */
 const TimelineItem = ({
-	index,
-	stop,
-	alerts = { service: [], type: [], heading: [] },
+	index = 0,
+	stop = '',
+	alerts = { service: [], type: [], heading: [] } || {},
 	className = {},
-	filtLines,
+	filtLines = '',
 	customIcon = null,
 	customTitle = '',
 	isSpecial = false,

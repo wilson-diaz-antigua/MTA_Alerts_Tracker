@@ -14,7 +14,7 @@ import StationIcon from './StationIcon';
  */
 const TimelineItem = ({
 	index = 0,
-	stop = '',
+	stop = null,
 	alerts = { service: [], type: [], heading: [] } || {},
 	className = {},
 	filtLines = '',

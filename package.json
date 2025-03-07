@@ -1,6 +1,8 @@
 {
 	"devDependencies": {
-		"@craco/craco": "^7.1.0"
+		"@babel/eslint-parser": "^7.26.8",
+		"@craco/craco": "^7.1.0",
+		"eslint-config-next": "^15.2.1"
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^0.10.4",

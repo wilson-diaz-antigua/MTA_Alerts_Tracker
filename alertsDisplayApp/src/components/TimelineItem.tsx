@@ -1,6 +1,5 @@
-import { JSX, useContext } from 'react';
+import { createContext, JSX, useContext } from 'react';
 import stopNames from '../../util/stopNames.json';
-import { AccordionContext } from '../pages/mtaTracker';
 import { ensureArray } from '../utils/arrayUtils';
 import AlertDetails from './AlertDetails';
 import ExpandedAlertContent from './ExpandedAlertContent';
@@ -10,6 +9,11 @@ import StationIcon from './StationIcon';
 /**
  * TimelineItem component displays a station with its alerts in a timeline format
  */
+
+export const AccordionContext = createContext<{
+    accordionOpen: number | null;
+    setAccordionOpen: (index: number | null) => void;
+} | null>(null);
 
 interface TimelineItemProps {
 	index?: number;

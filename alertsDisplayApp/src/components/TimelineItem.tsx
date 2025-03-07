@@ -1,5 +1,6 @@
-import { createContext, JSX, useContext } from 'react';
+import { JSX, useContext } from 'react';
 import stopNames from '../../util/stopNames.json';
+import { AccordionContext } from '../pages/mtaTracker';
 import { ensureArray } from '../utils/arrayUtils';
 import AlertDetails from './AlertDetails';
 import ExpandedAlertContent from './ExpandedAlertContent';
@@ -9,12 +10,10 @@ import StationIcon from './StationIcon';
 /**
  * TimelineItem component displays a station with its alerts in a timeline format
  */
-
-export const AccordionContext = createContext<{
-    accordionOpen: number | null;
-    setAccordionOpen: (index: number | null) => void;
-} | null>(null);
-
+interface AccordionContextType {
+  accordionOpen: number | null;
+  setAccordionOpen: (open: number | null) => void;
+}
 interface TimelineItemProps {
 	index?: number;
 	stop?: string | object | any;
@@ -40,10 +39,7 @@ const TimelineItem = ({
 	customTitle,
 	isSpecial,
 }: TimelineItemProps): JSX.Element | null => {
-	const context = useContext(AccordionContext) || {
-		accordionOpen: 1,
-		setAccordionOpen: () => {},
-	};
+	const context = useContext(AccordionContext) 
 	const { accordionOpen, setAccordionOpen } = context;
 
 	// Handle special items differently
@@ -80,7 +76,6 @@ const TimelineItem = ({
 
 	const stopAlert = stop.alert || stop.alerts || [];
 	const isOpen = accordionOpen === index;
-	console.log('isOpen', isOpen);	
 	// Process alerts data consistently
 	const alertData = ensureArray(stopAlert);
 

@@ -1,5 +1,6 @@
 import { JSX, useContext } from 'react';
 import stopNames from '../../util/stopNames.json';
+import type { StopData } from '../pages/mtaTracker';
 import { AccordionContext } from '../pages/mtaTracker';
 import { ensureArray } from '../utils/arrayUtils';
 import AlertDetails from './AlertDetails';
@@ -13,7 +14,7 @@ import StationIcon from './StationIcon';
 
 interface TimelineItemProps {
 	index?: number;
-	stop?: string | object ;
+	stop?: string | object | StopData ;
 	alerts?: {
 		service?: string | string[];
 		type?: string | string[];

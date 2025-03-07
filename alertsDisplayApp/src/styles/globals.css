@@ -24,7 +24,7 @@
 		@apply text-xl font-medium  w-24 h-4/5 lg:w-[11em] md:w-[9em];
 	}
 	.leftcont {
-		@apply pl-px md:w-[18em]  w-[11em]   lg:w-[21em]   absolute left-0 flex flex-wrap items-end justify-end px-12 mb-0 text-xs font-semibold uppercase text-emerald-600 h-10 place-items-stretch;
+		@apply pl-px md:w-[18em]  w-[11em]   lg:w-[21em]   absolute left-0 flex flex-wrap items-end justify-end px-12 mb-0 text-xs font-semibold uppercase text-emerald-600 h-14 place-items-stretch;
 	}
 	.items {
 		@apply m-0.5  p-2.5 py-1.5 rounded-full w-7 h-7 mb-0  text-slate-50 font-bold;

@@ -25,7 +25,7 @@ const FilterControls = ({
 	setDirection,
 	objects,
 }) => (
-	<section className='flex pt-5 ml-[05rem] md:ml-[10rem] lg:ml-[12.5rem]'>
+	<section className='flex pt-5 ml-[04rem] md:ml-[10.2rem] lg:ml-[12.5rem]'>
 		<div className='w-20 h-20 block'>
 			<FilteredAlerts
 				data={objects.serviceByLines[filtLines]}

@@ -23,7 +23,7 @@ const EndMarker = ({ linecolors, objects }) => (
 				<rect width='60' height='20' x='0' y='0' rx='0' ry='0' />
 			</svg>
 		</div>
-		<button className='leftSide'>
+		<button className='rightSide'>
 			<span className='self-start font-bold text-slate-50'></span>
 		</button>
 	</div>

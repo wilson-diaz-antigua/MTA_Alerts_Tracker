@@ -1,8 +1,6 @@
-import PropTypes from 'prop-types';
-import { useContext } from 'react';
+import { JSX, useContext } from 'react';
 import stopNames from '../../util/stopNames.json';
-// Fix imports - separate the AccordionContext and ensureArray imports
-import { AccordionContext } from '../pages/mtaTracker.tsx';
+import { AccordionContext } from '../pages/mtaTracker';
 import { ensureArray } from '../utils/arrayUtils';
 import AlertDetails from './AlertDetails';
 import ExpandedAlertContent from './ExpandedAlertContent';
@@ -12,17 +10,32 @@ import StationIcon from './StationIcon';
 /**
  * TimelineItem component displays a station with its alerts in a timeline format
  */
+
+interface TimelineItemProps {
+	index?: number;
+	stop?: string | object | StopData;
+	alerts?: {
+		service?: string | string[];
+		type?: string | string[];
+		heading?: string | string[];
+	};
+	className?: object;
+	filtLines?: string;
+	customIcon?: React.ReactNode;
+	customTitle?: string;
+	isSpecial?: boolean;
+}
+
 const TimelineItem = ({
-	index = 0,
-	stop = null,
-	alerts = { service: [], type: [], heading: [] } || {},
-	className = {},
-	filtLines = '',
-	customIcon = null,
-	customTitle = '',
-	isSpecial = false,
-}) => {
-	// Fix context usage with fallback values
+	index,
+	stop,
+	alerts,
+	className,
+	filtLines,
+	customIcon,
+	customTitle,
+	isSpecial,
+}: TimelineItemProps): JSX.Element | null => {
 	const context = useContext(AccordionContext) || {
 		accordionOpen: true,
 		setAccordionOpen: () => {},
@@ -113,19 +126,6 @@ const TimelineItem = ({
 	);
 };
 
-TimelineItem.propTypes = {
-	index: PropTypes.number,
-	stop: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-	alerts: PropTypes.shape({
-		service: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-		type: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-		heading: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-	}),
-	className: PropTypes.object,
-	filtLines: PropTypes.string,
-	customIcon: PropTypes.node,
-	customTitle: PropTypes.string,
-	isSpecial: PropTypes.bool,
-};
+
 
 export default TimelineItem;

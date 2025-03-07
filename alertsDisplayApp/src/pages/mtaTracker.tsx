@@ -8,18 +8,15 @@ import terminal from '../constants/terminalDirections';
 import useMTAData from '../hooks/useMTAData';
 // Change to namespace import
 import * as ArrayUtils from '../utils/arrayUtils';
-
 //--TODO: if length of stops is less than 6 then dont show last section
 //--TODO: show full list of stops when clicking on the more stations affected section
 const COLORS = {
 	TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
 	DOT_COLORS:
-		'text-MTAred" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
+		'text-red-500" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
 	BEFORE_COLORS:
 		'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue',
-};
-
-// Define interfaces for type safety
+};// Define interfaces for type safety
 interface Alert {
   route: string;
   heading: string;
@@ -168,7 +165,7 @@ function MtaTracker(): JSX.Element {
           className={`${
             loading ? 'animate-pulse' : ''
           } content relative before:${objects.lineColors[filtLines]}`}
-        >
+         >
           {loading ? (
             <LoadingSkeleton />
           ) : (

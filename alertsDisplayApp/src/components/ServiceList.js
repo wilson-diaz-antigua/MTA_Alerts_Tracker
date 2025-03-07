@@ -23,10 +23,10 @@ const ServiceList = ({ services, classNames, className = '' }) => {
 	const serviceArray = ensureArray(services);
 
 	if (serviceArray.length === 0)
-		return <div className={`leftSide ${className}`}></div>;
+		return <div className={`rightSide ${className}`}></div>;
 
 	return (
-		<div className={`leftSide ${className}`}>
+		<div className={`rightSide ${className}`}>
 			<ul className='leftcont'>
 				{serviceArray.map((service, index) => (
 					<li

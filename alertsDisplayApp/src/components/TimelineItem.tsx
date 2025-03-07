@@ -70,7 +70,7 @@ const TimelineItem = ({
 	}
 
 	// Handle standard timeline items
-	if (!stop || (!stop.alert && !stop.alerts)) {
+	if (!stop || (typeof stop === 'object' && !stop.alert && !stop.alerts)) {
 		return null;
 	}
 

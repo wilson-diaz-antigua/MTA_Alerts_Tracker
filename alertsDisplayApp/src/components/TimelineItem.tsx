@@ -13,7 +13,7 @@ import StationIcon from './StationIcon';
 
 interface TimelineItemProps {
 	index?: number;
-	stop?: string | object | null;
+	stop?: string | object | StopData;
 	alerts?: {
 		service?: string | string[];
 		type?: string | string[];
@@ -70,11 +70,11 @@ const TimelineItem = ({
 	}
 
 	// Handle standard timeline items
-	if (!stop || (typeof stop === 'object' && !stop.alert && !stop.alerts)) {
+	if (!stop || (!stop.alert && !stop.alerts)) {
 		return null;
 	}
 
-	const stopAlert = typeof stop === 'object' && (stop.alert || stop.alerts) || [];
+	const stopAlert = stop.alert || stop.alerts || [];
 	const isOpen = accordionOpen === index;
 
 	// Process alerts data consistently

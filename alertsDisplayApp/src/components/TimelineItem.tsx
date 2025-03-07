@@ -1,4 +1,4 @@
-import { JSX, useContext } from 'react';
+import { JSX, useContext, useState } from 'react';
 import stopNames from '../../util/stopNames.json';
 import { AccordionContext } from '../pages/mtaTracker';
 import { ensureArray } from '../utils/arrayUtils';
@@ -41,7 +41,12 @@ const TimelineItem = ({
 		setAccordionOpen: () => {},
 	};
 	const { accordionOpen, setAccordionOpen } = context;
+	const[isOpen, setOpen] = useState(false);
 
+      const onAccordionOpen = (index) => {
+       setAccordionOpen(index);
+       setOpen(!isOpen);
+     }
 	// Handle special items differently
 	if (isSpecial) {
 		return (
@@ -75,8 +80,8 @@ const TimelineItem = ({
 	}
 
 	const stopAlert = stop.alert || stop.alerts || [];
-	const isOpen = accordionOpen === index;
-	console.log('isOpen', isOpen);	
+	
+
 	// Process alerts data consistently
 	const alertData = ensureArray(stopAlert);
 
@@ -94,12 +99,7 @@ const TimelineItem = ({
 	const alertServices = ensureArray(alerts?.service || []);
 	const alertTypes = ensureArray(alerts?.type || []);
 
-	const toggleAccordion = () => {
-		// Only call setAccordionOpen if it exists
-		if (typeof setAccordionOpen === 'function') {
-			setAccordionOpen(isOpen ? null : index);
-		}
-	};
+
 
 	return (
 		<div className={`content ${accordionOpen ? 'mb-0' : 'mb-0 '}`}>
@@ -108,7 +108,7 @@ const TimelineItem = ({
 				<ServiceList services={alertServices} classNames={className || {}} />
 			</div>
 
-			<div onClick={toggleAccordion} className='mt-0 pt-4 cursor-pointer'>
+			<div onClick={()=>onAccordionOpen(index)} className='mt-0 pt-4 cursor-pointer'>
 				<button
 					className={`self-start font-bold text-slate-50 mt-2 ${
 						isOpen

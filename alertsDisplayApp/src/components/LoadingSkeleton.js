@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Loading Skeleton Component for timeline display
  * @returns {JSX.Element} Loading skeleton with animation
@@ -7,7 +5,7 @@ import React from 'react';
 const LoadingSkeleton = () => (
 	<div
 		role='status'
-		className='max-w-sm ml-[6.8rem] md:ml-[12rem] lg:ml-[14.4rem] animate-pulse'
+		className='max-w-sm ml-[5.8rem] md:ml-[12rem] lg:ml-[14.4rem] animate-pulse'
 	>
 		{[...Array(5)].map((_, i) => (
 			<div className='mt-10 flex items-center' key={i}>

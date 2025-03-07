@@ -75,8 +75,8 @@ const TimelineItem = ({
 	}
 
 	const stopAlert = stop.alert || stop.alerts || [];
-	const isOpen = accordionOpen && accordionOpen === index;
-
+	const isOpen = accordionOpen === index;
+	console.log('isOpen', isOpen);	
 	// Process alerts data consistently
 	const alertData = ensureArray(stopAlert);
 

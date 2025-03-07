@@ -13,7 +13,7 @@ import StationIcon from './StationIcon';
 
 interface TimelineItemProps {
 	index?: number;
-	stop?: string | object | StopData;
+	stop?: string | object | any;
 	alerts?: {
 		service?: string | string[];
 		type?: string | string[];

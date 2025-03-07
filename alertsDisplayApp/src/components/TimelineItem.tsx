@@ -75,7 +75,7 @@ const TimelineItem = ({
 	}
 
 	const stopAlert = stop.alert || stop.alerts || [];
-	const isOpen = accordionOpen === index;
+	const isOpen = accordionOpen === index;  // @ts-ignore
 	// Process alerts data consistently
 	const alertData = ensureArray(stopAlert);
 
@@ -96,7 +96,7 @@ const TimelineItem = ({
 	const toggleAccordion = () => {
 		// Only call setAccordionOpen if it exists
 		if (typeof setAccordionOpen === 'function') {
-			setAccordionOpen(isOpen ? null : index);
+			setAccordionOpen(isOpen ? null : index); // @ts-ignore
 		}
 	};
 

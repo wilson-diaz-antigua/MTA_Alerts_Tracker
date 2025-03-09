@@ -11,11 +11,11 @@ import * as ArrayUtils from '../utils/arrayUtils';
 //--TODO: if length of stops is less than 6 then dont show last section
 //--TODO: show full list of stops when clicking on the more stations affected section
 const COLORS = {
-	TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
-	DOT_COLORS:
-		'text-red-500" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
-	BEFORE_COLORS:
-		'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue',
+  TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
+  DOT_COLORS:
+    'text-red-500" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
+  BEFORE_COLORS:
+    'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue',
 };// Define interfaces for type safety
 interface Alert {
   route: string;
@@ -45,7 +45,7 @@ type TerminalKeys = 'broadway' | 'lexington' | 'queens blvd' | '8th ave';
 // Initialize the context with default values
 export const AccordionContext = createContext<AccordionContextType>({
   accordionOpen: null,
-  setAccordionOpen: () => {},
+  setAccordionOpen: () => { },
 });
 
 // Re-export for backward compatibility
@@ -71,7 +71,7 @@ function MtaTracker(): JSX.Element {
   // Process data based on selected filters
   const processAlertData = useCallback((): StopData[] => {
     if (!data || !Array.isArray(data)) return [];
-    
+
     // Filter by service line
     const filteredItems = data.filter((x) =>
       service === 'x'
@@ -90,10 +90,10 @@ function MtaTracker(): JSX.Element {
         alerts: stops.alerts.filter((alert) =>
           directionTerms
             ? directionTerms.includes(
-                alert.direction
-                  ? alert.direction.toLowerCase()
-                  : alert.direction
-              )
+              alert.direction
+                ? alert.direction.toLowerCase()
+                : alert.direction
+            )
             : alert
         ),
       }))
@@ -112,7 +112,7 @@ function MtaTracker(): JSX.Element {
       };
 
       return (
-   
+
         <AccordionContext.Provider
           key={`regular-${item.stop}`}
           value={accordionContextValue}
@@ -131,7 +131,7 @@ function MtaTracker(): JSX.Element {
   // Custom icon for "more stations" indicator
   const customIcon = (
     <div className={`icon h-[70px] w-[30px] bg-zinc-900 fill-current pt-2 ${objects.dottedColors[filtLines]}`}>
-  
+
 
 
       <svg
@@ -162,49 +162,47 @@ function MtaTracker(): JSX.Element {
           />
         </div>
         <div
-          className={`${
-            loading ? 'animate-pulse' : ''
-          } content relative before:${objects.lineColors[filtLines]}`}
-         >
+          className={`${loading ? 'animate-pulse' : ''
+            } content relative before:${objects.lineColors[filtLines]}`}
+        >
           {loading ? (
             <LoadingSkeleton />
           ) : (
             <div className='relative'>
-              <section>{isExpanded? renderTimelineItems(): renderTimelineItems().slice(0, 5)}</section>
+              <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>
 
-              {alertData.length > 6 &&  (
+              {alertData.length > 6 && (
 
                 <>
                   <section
-                  onClick={() => setIsExpanded(!isExpanded)}
+                    onClick={() => setIsExpanded(!isExpanded)}
                   >
                     <TimelineItem
                       customIcon={customIcon}
                       index={-2}
-                      customTitle={ isExpanded? `collapse stations`:`${
-                        alertData.length - 6
-                      } more stations affected`}
+                      customTitle={isExpanded ? `collapse stations` : `${alertData.length - 6
+                        } more stations affected`}
                       isSpecial={true}
-                      alerts={isExpanded?{
+                      alerts={isExpanded ? {
                         service: [],
                         heading: [],
                         type: [
                           ` show less`,
                         ],
-                      }:{
+                      } : {
                         service: [],
                         heading: [],
                         type: [
-                          ` show ${alertData.length -6} more stations with alerts`,
+                          ` show ${alertData.length - 6} more stations with alerts`,
                         ],
                       }}
                     />
                   </section>
-                  <section>{ isExpanded?'':renderTimelineItems().slice(-1)}</section>
+                  <section>{isExpanded ? '' : renderTimelineItems().slice(-1)}</section>
                 </>
               )}
 
-              
+
               <EndMarker linecolors={filtLines} objects={objects} />
             </div>
           )}

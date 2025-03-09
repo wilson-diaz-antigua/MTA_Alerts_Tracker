@@ -10,10 +10,7 @@ import StationIcon from './StationIcon';
 /**
  * TimelineItem component displays a station with its alerts in a timeline format
  */
-interface AccordionContextType {
-  accordionOpen: number | null;
-  setAccordionOpen: (open: number | null) => void;
-}
+
 interface TimelineItemProps {
 	index?: number;
 	stop?: string | object | any;
@@ -39,7 +36,7 @@ const TimelineItem = ({
 	customTitle,
 	isSpecial,
 }: TimelineItemProps): JSX.Element | null => {
-	const context = useContext(AccordionContext) 
+	const context = useContext(AccordionContext)
 	const { accordionOpen, setAccordionOpen } = context;
 
 	// Handle special items differently
@@ -76,7 +73,7 @@ const TimelineItem = ({
 
 	const stopAlert = stop.alert || stop.alerts || [];
 	// @ts-ignore
-	const isOpen = accordionOpen === index;  
+	const isOpen = accordionOpen === index;
 	// Process alerts data consistently
 	const alertData = ensureArray(stopAlert);
 
@@ -97,7 +94,7 @@ const TimelineItem = ({
 	const toggleAccordion = () => {
 		// Only call setAccordionOpen if it exists
 		if (typeof setAccordionOpen === 'function') {
-			 // @ts-ignore
+			// @ts-ignore
 			setAccordionOpen(isOpen ? null : index);
 		}
 	};
@@ -111,11 +108,10 @@ const TimelineItem = ({
 
 			<div onClick={toggleAccordion} className='mt-0 pt-4 cursor-pointer'>
 				<button
-					className={`self-start font-bold text-slate-50 mt-2 ${
-						isOpen
-							? "ml-2 inline-block bg-slate-50 text-slate-900 rounded-e-md relative px-2 before:content-[''] before:absolute before:h-0 before:w-0 before:top-[0px] before:left-[-24px] before:border-[12px] before:border-r-slate-50 before:border-l-transparent before:border-y-transparent border-solid"
-							: ''
-					}`}
+					className={`self-start font-bold text-slate-50 mt-2 ${isOpen
+						? "ml-2 inline-block bg-slate-50 text-slate-900 rounded-e-md relative px-2 before:content-[''] before:absolute before:h-0 before:w-0 before:top-[0px] before:left-[-24px] before:border-[12px] before:border-r-slate-50 before:border-l-transparent before:border-y-transparent border-solid"
+						: ''
+						}`}
 				>
 					<span>{stationName}</span>
 				</button>

@@ -1,4 +1,9 @@
 {
+	"name": "mta-alert-display",
+	"version": "1.0.0",
+	"engines": {
+		"node": "18.x"
+	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.26.8",
 		"@craco/craco": "^7.1.0",

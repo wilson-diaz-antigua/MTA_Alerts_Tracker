@@ -14,7 +14,7 @@ import * as ArrayUtils from '../utils/arrayUtils';
 const COLORS = {
   TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
   DOT_COLORS:
-    'text-red-500" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
+    'text-MTAred" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
   BEFORE_COLORS:
     'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue',
 };// Define interfaces for type safety

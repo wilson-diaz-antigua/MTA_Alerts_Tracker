@@ -6,6 +6,7 @@ import LoadingSkeleton from '../components/LoadingSkeleton';
 import TimelineItem from '../components/TimelineItem';
 import terminal from '../constants/terminalDirections';
 import useMTAData from '../hooks/useMTAData';
+import AlertSummary from './alertSummary';
 // Change to namespace import
 import * as ArrayUtils from '../utils/arrayUtils';
 //--TODO: if length of stops is less than 6 then dont show last section
@@ -163,12 +164,12 @@ function MtaTracker(): JSX.Element {
         </div>
         <div
           className={`${loading ? 'animate-pulse' : ''
-            } content relative before:${objects.lineColors[filtLines]}`}
+            } content relative  before:${objects.lineColors[filtLines]}`}
         >
           {loading ? (
             <LoadingSkeleton />
           ) : (
-            <div className='relative'>
+            <div className='relative xl:w-[40%] lg:w-[60%]'>
               <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>
 
               {alertData.length > 6 && (
@@ -206,6 +207,9 @@ function MtaTracker(): JSX.Element {
               <EndMarker linecolors={filtLines} objects={objects} />
             </div>
           )}
+          <div className={`hidden ${loading ? 'md:hidden' : 'md:block'} lg:w-[42rem] xl:self-start`}>
+            <AlertSummary />
+          </div>
         </div>
       </AccordionContext.Provider>
     </div>

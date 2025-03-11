@@ -1,4 +1,5 @@
 
+import stopNames from '../../util/stopNames.json';
 import objects from '../../util/subwayLineColors.json';
 import useMtaData from "../hooks/useMTAData";
 
@@ -80,10 +81,10 @@ function getHomeStation(data: StopData[], station: string): Alert[] {
 }
 
 
-function filterAlertsByDate(data: Alert[], saturday: number) {
+function filterAlertsByDate(data: Alert[], saturday: number[]) {
 	return data.filter((datesInArray: Alert) => {
 		console.log(datesInArray.activePeriod);
-		return datesInArray.activePeriod.some((period: DateRange) => period.start === saturday);
+		return datesInArray.activePeriod.some((period: DateRange) => saturday.includes(period.start));
 	});
 }
 
@@ -105,11 +106,13 @@ function formatHeading(heading: string) {
 
 const alertSummary = () => {
 	const { data, loading } = useMtaData();
+	const today = new Date();
+	const todayTimestamp = Math.floor(today.getTime() / 1000);
 	const { nextsaturday, nextsunday, saturdayTimestamp, sundayTimestamp } = getWeekendTimestamps();
 	const station = getHomeStation(data, "621");
 	const mockStation = [
 		{
-			activePeriod: [{ start: 1741388869 }],
+			activePeriod: [{ start: todayTimestamp }],
 			alert_type: 'Delays',
 			dateText: {},
 			direction: null,
@@ -237,7 +240,9 @@ const alertSummary = () => {
 		}
 	]
 
-	const filteredAlerts = filterAlertsByDate(mockStation, saturdayTimestamp, sundayTimestamp);
+
+	const weekendAlerts = filterAlertsByDate(mockStation, [saturdayTimestamp, sundayTimestamp]);
+	const todayAlerts = filterAlertsByDate(mockStation, [todayTimestamp]);
 
 
 
@@ -249,19 +254,18 @@ const alertSummary = () => {
 
 	return (
 		<main className='text-slate-50 font-bold text-xl'>
-			<section className="pt-8 pb-2 pl-5 max-w-[90%] border-slate-50 border-b-2">active alerts</section>
-			<div>
+			<section className="pt-8 pb-2 pl-5 max-w-[90%] border-slate-50 border-b-2">active alerts   <span className='ml-1 text-base font-semibold text-zinc-400'>{stopNames['621'].stop_name}</span></section>
+			{todayAlerts.map((alert, index) => {
+				return (
+					<div key={index} className="pl-5 w-[90%]">
+						<div className="text-sm font-medium">{formatHeading(alert.heading)}</div>
 
+					</div>
+				)
+			})}
 
-
-
-			</div>
-
-
-
-
-			<section className="pt-8 pb-2 pl-5 max-w-[90%] border-slate-50 border-b-2">weekend alerts</section>
-			{filteredAlerts.map((alert, index) => {
+			<section className="pt-8 pb-2 pl-5 max-w-[90%] border-slate-50 border-b-2">weekend alerts <span className='ml-1 text-base font-semibold text-zinc-400'>{stopNames['621'].stop_name}</span></section>
+			{weekendAlerts.map((alert, index) => {
 				return (
 					<div key={index} className="pl-5 w-[90%]">
 						<div className="text-sm font-medium">{formatHeading(alert.heading)}</div>

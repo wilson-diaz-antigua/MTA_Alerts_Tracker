@@ -17,7 +17,7 @@ interface Alert {
 
 interface DateRange {
 	start: number;
-	end: number;
+	end?: number;
 }
 
 const dates: DateRange[] = [

@@ -13,6 +13,7 @@ interface StopData {
 }
 interface Alert {
 	activePeriod: DateRange[];
+	heading: string;
 }
 
 interface DateRange {

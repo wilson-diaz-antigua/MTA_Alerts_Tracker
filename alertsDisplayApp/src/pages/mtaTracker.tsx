@@ -9,8 +9,6 @@ import useMTAData from '../hooks/useMTAData';
 import AlertSummary from './alertSummary';
 // Change to namespace import
 import * as ArrayUtils from '../utils/arrayUtils';
-//--TODO: if length of stops is less than 6 then dont show last section
-//--TODO: show full list of stops when clicking on the more stations affected section
 const COLORS = {
   TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
   DOT_COLORS:
@@ -207,7 +205,7 @@ function MtaTracker(): JSX.Element {
               <EndMarker linecolors={filtLines} objects={objects} />
             </div>
           )}
-          <div className={`hidden ${loading ? 'md:hidden' : 'md:block'} lg:w-[42rem] xl:self-start`}>
+          <div className={`hidden ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
             <AlertSummary />
           </div>
         </div>

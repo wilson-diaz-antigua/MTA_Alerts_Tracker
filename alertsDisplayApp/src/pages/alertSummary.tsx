@@ -3,6 +3,10 @@ import stopNames from '../../util/stopNames.json';
 import objects from '../../util/subwayLineColors.json';
 import useMtaData from "../hooks/useMTAData";
 
+//TODO: select a home station and show alerts for that station
+//TODO: animate alert summary after clicking on button
+
+
 interface StopData {
 	stop: string[];
 	alerts: Alert[];

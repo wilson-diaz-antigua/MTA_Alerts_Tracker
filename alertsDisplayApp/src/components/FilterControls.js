@@ -1,21 +1,8 @@
 import PropTypes from 'prop-types';
-
+import SummaryIcon from '../assets/summaryIcon';
 import terminal from '../constants/terminalDirections';
 import FilteredAlerts from './FilteredAlerts';
 
-const summaryIcon = (
-	<svg
-		xmlns='http://www.w3.org/2000/svg'
-		width='30'
-		height='30'
-		viewBox='0 0 32 32'
-		className='fill-current text-slate-50'
-	>
-		<path d='M19 10h7v2h-7zM19 15h7v2h-7zM19 20h7v2h-7zM6 10h7v2H6zM6 15h7v2H6zM6 20h7v2H6z' />
-		<path d='M28 5H4a2.002 2.002 0 0 0-2 2v18a2.002 2.002 0 0 0 2 2h24a2.002 2.002 0 0 0 2-2V7a2.002 2.002 0 0 0-2-2ZM4 7h11v18H4Zm13 18V7h11v18Z' />
-		<path d='M0 0h32v32H0z ' fill='none' />
-	</svg>
-);
 /**
  * Filter Controls Component for MTA tracker
  * Provides UI for filtering subway line information
@@ -27,11 +14,17 @@ const summaryIcon = (
  * @param {Function} props.setService - Function to update service
  * @param {string} props.direction - Currently selected direction
  * @param {Function} props.setDirection - Function to update direction
+ * @param {function} props.setHomeStation
  * @param {Object} props.objects - Subway line color and mapping data
  * @returns {JSX.Element} Filter controls UI
  */
 
 const FilterControls = ({
+	stopNames,
+	setSummary,
+	summary,
+	homeStation,
+	setHomeStation,
 	filtLines,
 	setFiltLines,
 	service,
@@ -41,7 +34,7 @@ const FilterControls = ({
 	objects,
 }) => (
 	<section className='flex pt-5 ml-[04rem] md:ml-[10.2rem] lg:ml-[12.5rem]'>
-		<div className='w-20 h-20 block'>
+		<div className='w-20 h-20 '>
 			<FilteredAlerts
 				data={objects.serviceByLines[filtLines]}
 				state={service}
@@ -50,38 +43,52 @@ const FilterControls = ({
 				value={true}
 			/>
 		</div>
-		<div>
-			<div className='ml-5'>
+		<div className='w-44 ml-4 flex flex-col'>
+			<div className=''>
 				<FilteredAlerts
 					setState={(e) => {
-						setService('x');
-						setFiltLines(e.target.value);
+						setHomeStation(e.target.value);
 					}}
-					state={filtLines}
-					data={objects.serviceByLines}
-					className='content-center h-auto pt-1 text-2xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50'
-					value={false}
+					state={homeStation}
+					data={stopNames}
+					className=' h-auto w-36 md:w-64 truncate pt-1 text-lg font-black uppercase bg-transparent justify-self-start text-slate-50'
+					value={true}
 				/>
 			</div>
-			<div className='ml-5'>
-				<FilteredAlerts
-					setState={(e) => {
-						setService('x');
-						setDirection(e.target.value);
-					}}
-					data={terminal}
-					state={direction}
-					className='content-center h-auto pt-2 text-1xl font-black uppercase bg-transparent hb-20 justify-self-start text-slate-50'
-					value={false}
-				/>
+			<div className=''>
+				<div className=' sm:flex items-center justify-between'>
+					<FilteredAlerts
+						setState={(e) => {
+							setService('1');
+							setFiltLines(e.target.value);
+						}}
+						state={filtLines}
+						data={objects.serviceByLines}
+						className='content-center h-auto w-auto text-sm  font-bold uppercase bg-transparent text-zinc-400'
+						value={false}
+					/>
+					<span className='content-center sm:mx-2 hidden sm:inline text-lg font-bold uppercase bg-transparent text-zinc-50'>
+						|
+					</span>
+					<FilteredAlerts
+						setState={(e) => {
+							setService('x');
+							setDirection(e.target.value);
+						}}
+						data={terminal}
+						state={direction}
+						className='content-center h-auto text-sm   font-bold uppercase bg-transparent justify-self-start text-zinc-400'
+						value={false}
+					/>
+				</div>
 			</div>
 		</div>
-		<div className='ml-4 flex items-center justify-center '>
+		<div className=' flex items-center justify-center '>
 			<button
-				onClick={() => (window.location.href = '/project/alertSummary')}
+				onClick={() => setSummary(!summary)}
 				className=' w-12 h-12 rounded-full flex items-center justify-center bg-zinc-600 md:hidden'
 			>
-				{summaryIcon}
+				<SummaryIcon />
 			</button>
 		</div>
 	</section>
@@ -90,6 +97,8 @@ const FilterControls = ({
 FilterControls.propTypes = {
 	filtLines: PropTypes.string.isRequired,
 	setFiltLines: PropTypes.func.isRequired,
+	homeStation: PropTypes.string.isRequired,
+	setHomeStation: PropTypes.func.isRequired,
 	service: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
 	setService: PropTypes.func.isRequired,
 	direction: PropTypes.string.isRequired,

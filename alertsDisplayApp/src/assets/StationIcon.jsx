@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 /**
  * Station icon component for timeline displays
@@ -6,10 +5,7 @@ import PropTypes from 'prop-types';
  * @param {React.ReactNode} props.custom - Custom icon to display instead of default
  * @returns {JSX.Element} Station icon
  */
-const StationIcon = ({ custom }) => {
-	if (custom) {
-		return custom;
-	}
+const StationIcon = () => {
 
 	return (
 		<div className='icon'>
@@ -24,7 +20,7 @@ const StationIcon = ({ custom }) => {
 					cx='20'
 					cy='20'
 					r='15'
-					strokeWidth='12'
+					strokeWidth='13'
 					fill='none'
 				/>
 			</svg>
@@ -32,8 +28,6 @@ const StationIcon = ({ custom }) => {
 	);
 };
 
-StationIcon.propTypes = {
-	custom: PropTypes.node,
-};
+
 
 export default StationIcon;

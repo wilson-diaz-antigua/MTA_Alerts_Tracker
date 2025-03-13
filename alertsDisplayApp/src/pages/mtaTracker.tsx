@@ -6,40 +6,19 @@ import LoadingSkeleton from '../components/LoadingSkeleton';
 import TimelineItem from '../components/TimelineItem';
 import terminal from '../constants/terminalDirections';
 import useMTAData from '../hooks/useMTAData';
+import { selectStopName } from '../utils/alertUtils';
 import AlertSummary from './alertSummary';
 // Change to namespace import
+import { AccordionContextType, ProcessedAlert, StopData } from '../utils/alertTypes';
 import * as ArrayUtils from '../utils/arrayUtils';
+
 const COLORS = {
   TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
   DOT_COLORS:
     'text-MTAred" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
   BEFORE_COLORS:
     'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue',
-};// Define interfaces for type safety
-interface Alert {
-  route: string;
-  heading: string;
-  alert_type: string;
-  direction?: string;
-}
-
-interface StopData {
-  stop: string[];
-  alerts: Alert[];
-}
-
-interface ProcessedAlert {
-  service: string[];
-  heading: string[];
-  type: string[];
-}
-
-
-interface AccordionContextType {
-  accordionOpen: boolean | null;
-  setAccordionOpen: (open: boolean) => void;
-}
-type TerminalKeys = 'broadway' | 'lexington' | 'queens blvd' | '8th ave';
+};
 
 // Initialize the context with default values
 export const AccordionContext = createContext<AccordionContextType>({
@@ -47,25 +26,39 @@ export const AccordionContext = createContext<AccordionContextType>({
   setAccordionOpen: () => { },
 });
 
+
 // Re-export for backward compatibility
 export const ensureArray = ArrayUtils.ensureArray;
 
 /**
  * Main MTA Tracker Component
  */
+let initialHomeStation = 'Grand Central - 42 St';
 function MtaTracker(): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [accordionOpen, setAccordionOpen] = useState<boolean>(false);
   const [filtLines, setFiltLines] = useState<string>('broadway');
-  const [service, setService] = useState<string>('x');
-  const [direction, setDirection] = useState<string>('Both Directions');
-
+  const [service, setService] = useState<string>('1');
+  const [direction, setDirection] = useState<string>('Both ways');
+  const [homeStation, setHomeStation] = useState<string>(initialHomeStation);
+  const [summary, setSummary] = useState(false);
   const { data, loading } = useMTAData();
   // Create a context value object to ensure stability
   const accordionContextValue: AccordionContextType = {
     accordionOpen,
     setAccordionOpen,
   };
+  const stopnames = selectStopName(objects.serviceByLines[filtLines]);
+  const stopNamedata = stopnames.map((item) => {
+
+    return item.stop_name;
+  });
+
+
+  initialHomeStation = stopNamedata[0];
+
+
+
 
   // Process data based on selected filters
   const processAlertData = useCallback((): StopData[] => {
@@ -127,30 +120,18 @@ function MtaTracker(): JSX.Element {
       );
     });
 
-  // Custom icon for "more stations" indicator
-  const customIcon = (
-    <div className={`icon h-[70px] w-[30px] bg-zinc-900 fill-current pt-2 ${objects.dottedColors[filtLines]}`}>
 
-
-
-      <svg
-        viewBox='0 0 50 150'
-        width='20'
-        height='60'
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        <ellipse cx='25' cy='20' rx='10' ry='10' />
-        <ellipse cx='25' cy='60' rx='10' ry='10' />
-        <ellipse cx='25' cy='100' rx='10' ry='10' />
-      </svg>
-    </div>
-  );
 
   return (
     <div className=' bg-zinc-900'>
       <AccordionContext.Provider value={accordionContextValue}>
         <div className='bg-zinc-800 sticky top-0 z-10  '>
           <FilterControls
+            stopNames={[...new Set(stopNamedata)]}
+            setSummary={setSummary}
+            summary={summary}
+            homeStation={homeStation}
+            setHomeStation={setHomeStation}
             filtLines={filtLines}
             setFiltLines={setFiltLines}
             service={service}
@@ -161,13 +142,13 @@ function MtaTracker(): JSX.Element {
           />
         </div>
         <div
-          className={`${loading ? 'animate-pulse' : ''
-            } content relative  before:${objects.lineColors[filtLines]}`}
+          className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : ''
+            } content relative  `}
         >
           {loading ? (
             <LoadingSkeleton />
           ) : (
-            <div className='relative xl:w-[40%] lg:w-[60%]'>
+            <div className={`${summary ? 'hidden' : 'relative'} xl:w-[40%] lg:w-[60%]`}>
               <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>
 
               {alertData.length > 6 && (
@@ -176,8 +157,9 @@ function MtaTracker(): JSX.Element {
                   <section
                     onClick={() => setIsExpanded(!isExpanded)}
                   >
+
                     <TimelineItem
-                      customIcon={customIcon}
+                      filtLines={filtLines}
                       index={-2}
                       customTitle={isExpanded ? `collapse stations` : `${alertData.length - 6
                         } more stations affected`}
@@ -205,8 +187,8 @@ function MtaTracker(): JSX.Element {
               <EndMarker linecolors={filtLines} objects={objects} />
             </div>
           )}
-          <div className={`hidden ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
-            <AlertSummary />
+          <div className={`${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
+            <AlertSummary homestation={homeStation} stopnamedata={stopnames} />
           </div>
         </div>
       </AccordionContext.Provider>

@@ -1,11 +1,11 @@
 import { JSX, useContext } from 'react';
 import stopNames from '../../util/stopNames.json';
+import object from '../../util/subwayLineColors.json';
 import { AccordionContext } from '../pages/mtaTracker';
 import { ensureArray } from '../utils/arrayUtils';
 import AlertDetails from './AlertDetails';
 import ExpandedAlertContent from './ExpandedAlertContent';
 import ServiceList from './ServiceList';
-import StationIcon from './StationIcon';
 
 /**
  * TimelineItem component displays a station with its alerts in a timeline format
@@ -25,7 +25,13 @@ interface TimelineItemProps {
 	customTitle?: string;
 	isSpecial?: boolean;
 }
-
+const COLORS = {
+	TRAIN_COLORS: 'bg-MTAred bg-MTAgreen bg-MTAmagenta bg-MTAblue bg-MTAorange',
+	DOT_COLORS:
+		'text-MTAred" text-MTAgreen text-MTAmagenta text-MTAblue text-MTAorange',
+	BEFORE_COLORS:
+		'before:bg-MTAred before:bg-MTAgreen before:bg-MTAmagenta before:bg-MTAblue',
+};
 const TimelineItem = ({
 	index,
 	stop,
@@ -38,13 +44,50 @@ const TimelineItem = ({
 }: TimelineItemProps): JSX.Element | null => {
 	const context = useContext(AccordionContext)
 	const { accordionOpen, setAccordionOpen } = context;
+	COLORS
 
+	const stationIcon = <div className='icon'>
+		<svg
+			height={40}
+			width={40}
+			xmlns='http://www.w3.org/2000/svg'
+			viewBox='0 0 40 40'
+		>
+			<circle
+				className='fill-current text-slate-50 stroke-zinc-900'
+				cx='20'
+				cy='20'
+				r='15'
+				strokeWidth='13'
+				fill='none'
+			/>
+		</svg>
+	</div>
+
+
+	const moreStationsIcon = <div className={`icon h-[70px] w-[30px] bg-zinc-900 fill-current pt-2 
+		${object.dottedColors[filtLines]}`}>
+
+
+
+		<svg
+			viewBox='0 0 50 150'
+			width='20'
+			height='60'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<ellipse cx='25' cy='20' rx='10' ry='10' />
+			<ellipse cx='25' cy='60' rx='10' ry='10' />
+			<ellipse cx='25' cy='100' rx='10' ry='10' />
+		</svg>
+	</div>
 	// Handle special items differently
 	if (isSpecial) {
 		return (
 			<div className={`content mb-10`}>
 				<div className='timelineItem'>
-					<StationIcon custom={customIcon} />
+					{moreStationsIcon}
+
 					<ServiceList
 						services={alerts?.service || []}
 						classNames={className || {}}
@@ -102,7 +145,7 @@ const TimelineItem = ({
 	return (
 		<div className={`content ${accordionOpen ? 'mb-0' : 'mb-0 '}`}>
 			<div className='timelineItem  '>
-				<StationIcon custom={customIcon} />
+				{stationIcon}
 				<ServiceList services={alertServices} classNames={className || {}} />
 			</div>
 

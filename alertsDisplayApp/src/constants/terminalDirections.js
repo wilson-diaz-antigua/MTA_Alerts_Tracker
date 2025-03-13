@@ -36,7 +36,7 @@ const terminal = {
 		'downtown',
 		'Flushing-bound',
 	],
-	'Both Directions': null,
+	'Both ways': null,
 };
 
 export default terminal;

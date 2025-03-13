@@ -21,7 +21,10 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "src/assets/moreStationsIcon.jsx",
+    "src/assets/StationIcon.js",
+    "src/assets/StationIcon.jsx"
   ],
   "exclude": [
     "node_modules"

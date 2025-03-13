@@ -2,26 +2,26 @@
 	"serviceByLines": {
 		"broadway": ["1", "2", "3"],
 		"lexington": ["4", "5", "6"],
-		"queens blvd": ["7"],
-		"8th ave": ["A", "B", "C", "E"]
+		"queens bl": ["7"],
+		"8th avenue": ["A", "B", "C", "E"]
 	},
 	"lineColors": {
 		"broadway": "bg-MTAred",
 		"lexington": "bg-MTAgreen",
-		"queens blvd": "bg-MTAmagenta",
-		"8th ave": "bg-MTAblue"
+		"queens bl": "bg-MTAmagenta",
+		"8th avenue": "bg-MTAblue"
 	},
 	"timelineLineColors": {
 		"broadway": "before:bg-MTAred",
 		"lexington": "before:bg-MTAgreen",
-		"queens blvd": "before:bg-MTAmagenta",
-		"8th ave": "before:bg-MTAblue"
+		"queens bl": "before:bg-MTAmagenta",
+		"8th avenue": "before:bg-MTAblue"
 	},
 	"dottedColors": {
 		"broadway": "text-MTAred",
 		"lexington": "text-MTAgreen",
-		"queens blvd": "text-MTAmagenta",
-		"8th ave": "text-MTAblue"
+		"queens bl": "text-MTAmagenta",
+		"8th avenue": "text-MTAblue"
 	},
 
 	"serviceColors": {

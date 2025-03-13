@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import objects from "../../util/subwayLineColors.json";
-import useMtaData from "../hooks/useMTAData";
 import {
 	convertTimestampToDate,
 	filterAlertsByDate,
@@ -34,7 +33,6 @@ const AlertSummary = (props) => {
 	const [todayAlerts, setTodayAlerts] = useState([]);
 	const [weekendAlerts, setWeekendAlerts] = useState([]);
 
-	const { data, loading } = useMtaData();
 
 	useEffect(() => {
 		setIsClient(true);
@@ -47,11 +45,11 @@ const AlertSummary = (props) => {
 			findstopNamebyID(props.stopnamedata, props.homestation) : "";
 
 		// Only try to get station data if we have a valid stop ID
-		const station = findstopNameID ? getHomeStation(data, findstopNameID) : [];
+		const station = findstopNameID ? getHomeStation(props.data, findstopNameID) : [];
 
 		setTodayAlerts(filterAlertsByDate(station, [todayTimestamp]));
 		setWeekendAlerts(filterAlertsByDate(station, [nextsaturday, nextsunday]));
-	}, [data, props.stopnamedata, props.homestation]);
+	}, [props.data, props.stopnamedata, props.homestation]);
 
 	// Return fallback UI while client-side rendering is not ready
 	if (!isClient) {

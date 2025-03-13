@@ -66,9 +66,8 @@ function MtaTracker(): JSX.Element {
 
     // Filter by service line
     const filteredItems = data.filter((x) =>
-      service === 'x'
-        ? objects.serviceByLines[filtLines].includes(x.stop[0])
-        : service.includes(x.stop[0])
+      objects.serviceByLines[filtLines].includes(x.stop[0])
+
     );
 
     // Process direction filter
@@ -188,7 +187,7 @@ function MtaTracker(): JSX.Element {
             </div>
           )}
           <div className={`${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
-            <AlertSummary homestation={homeStation} stopnamedata={stopnames} />
+            <AlertSummary data={data} homestation={homeStation} stopnamedata={stopnames} />
           </div>
         </div>
       </AccordionContext.Provider>

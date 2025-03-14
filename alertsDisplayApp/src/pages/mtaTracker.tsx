@@ -1,4 +1,4 @@
-import { createContext, JSX, useCallback, useState } from 'react';
+import { createContext, JSX, useCallback, useEffect, useState } from 'react';
 import objects from '../../util/subwayLineColors.json';
 import EndMarker from '../components/EndMarker';
 import FilterControls from '../components/FilterControls';
@@ -57,37 +57,38 @@ function MtaTracker(): JSX.Element {
 
   initialHomeStation = stopNamedata[0];
 
-
-
-
+  useEffect(() => {
+    setService(objects.serviceByLines[filtLines][0]);
+  }, [filtLines, direction]);
   // Process data based on selected filters
   const processAlertData = useCallback((): StopData[] => {
     if (!data || !Array.isArray(data)) return [];
 
-    // Filter by service line
-    const filteredItems = data.filter((x) =>
-      objects.serviceByLines[filtLines].includes(x.stop[0])
 
+    const filterByLines = data.filter((item) =>
+      objects.serviceByLines[filtLines].includes(item.stop[0]));
+    const filteredByService = filterByLines.filter((item) =>
+      item.alerts.some(alert => alert.route === service)
     );
+
 
     // Process direction filter
     const directionTerms = terminal[direction] &&
       terminal[direction].map((item: string) => item.toLowerCase());
 
     // Apply direction filter and organize alerts
-    return filteredItems
-      .map((stops) => ({
-        stop: stops.stop,
-        alerts: stops.alerts.filter((alert) =>
-          directionTerms
-            ? directionTerms.includes(
-              alert.direction
-                ? alert.direction.toLowerCase()
-                : alert.direction
-            )
-            : alert
-        ),
-      }))
+    return filteredByService.map((stops) => ({
+      stop: stops.stop,
+      alerts: stops.alerts.filter((alert) =>
+        directionTerms
+          ? directionTerms.includes(
+            alert.direction
+              ? alert.direction.toLowerCase()
+              : alert.direction
+          )
+          : alert
+      ),
+    }))
       .filter((item) => item.alerts.length);
   }, [data, service, filtLines, direction]);
 
@@ -186,7 +187,7 @@ function MtaTracker(): JSX.Element {
               <EndMarker linecolors={filtLines} objects={objects} />
             </div>
           )}
-          <div className={`${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
+          <div className={`  ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
             <AlertSummary data={data} homestation={homeStation} stopnamedata={stopnames} />
           </div>
         </div>

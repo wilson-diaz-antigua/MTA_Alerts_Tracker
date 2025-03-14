@@ -25,6 +25,7 @@ function formatHeading(heading: string) {
 		return part;
 	});
 }
+
 const AlertSummary = (props) => {
 	// Add client-side rendering control
 	const [isClient, setIsClient] = useState(false);
@@ -62,13 +63,13 @@ const AlertSummary = (props) => {
 
 	// Rest of your component with client-side rendering
 	return (
-		<main className='text-slate-50 font-bold text-xl'>
-			<section className="pt-8 pb-2 pl-5 max-w-[90%] border-slate-50 border-b-2">active alerts   <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span>
+		<main className='ml-5 w-full   md:mr-10 text-slate-50  font-bold text-xl '>
+			<section className="  pt-8 pb-2  border-slate-50 border-b-2 truncate">active alerts   <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span>
 			</section>
 			{todayAlerts.length > 0 ? (
 				todayAlerts.map((alert, index) => {
 					return (
-						<div key={index} className="pt-2 pl-5 w-[90%]">
+						<div key={index} className="pt-2 pl-5 ">
 							<div className="text-sm font-medium">{formatHeading(alert.heading)}</div>
 						</div>
 					);
@@ -79,16 +80,16 @@ const AlertSummary = (props) => {
 				</div>
 			)}
 
-			<section className="pt-8 pb-2 pl-5 max-w-[90%] border-slate-50 border-b-2">weekend alerts <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span></section>
+			<section className=" pt-8 pb-2   border-slate-50 border-b-2 truncate">weekend alerts <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span></section>
 			{weekendAlerts.length > 0 ? weekendAlerts.map((alert, index) => {
 				return (
-					<div key={index} className="pt-2 pl-5 w-[90%]">
+					<div key={index} className="pt-2 pl-5">
 						<div className="text-sm font-medium">{formatHeading(alert.heading)}</div>
 
 					</div>
 				)
 			}) : (
-				<div className="pt-2 pl-5 w-[90%]">
+				<div className="pt-2 pl-5 ">
 					<div className="text-sm font-medium">No alerts for the upcoming weekend.</div>
 				</div>
 			)}

@@ -3,7 +3,7 @@
 		"broadway": ["1", "2", "3"],
 		"lexington": ["4", "5", "6"],
 		"queens bl": ["7"],
-		"8th avenue": ["A", "B", "C", "E"]
+		"8th avenue": ["A", "C", "E"]
 	},
 	"lineColors": {
 		"broadway": "bg-MTAred",

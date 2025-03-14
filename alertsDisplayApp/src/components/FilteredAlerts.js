@@ -13,7 +13,11 @@ const FilteredAlerts = (props) => {
 			>
 				{objMap.map((filtIter, value) => {
 					return (
-						<option className='' key={value} value={filtIter}>
+						<option
+							className='overflow-clip w-auto'
+							key={value}
+							value={filtIter}
+						>
 							{filtIter}
 						</option>
 					);

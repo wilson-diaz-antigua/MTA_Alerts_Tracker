@@ -9,6 +9,10 @@ import FilteredAlerts from './FilteredAlerts';
  *
  * @param {Object} props - Component props
  * @param {string} props.filtLines - Currently selected line filter
+ * @param {Array} props.stopNames - List of subway stop names
+ * @param {Function} props.setSummary - Function to update summary view
+ * @param {boolean} props.summary - Current summary view state
+ * @param {string} props.homeStation - Currently selected home station
  * @param {Function} props.setFiltLines - Function to update line filter
  * @param {string} props.service - Currently selected service
  * @param {Function} props.setService - Function to update service
@@ -43,7 +47,7 @@ const FilterControls = ({
 				value={true}
 			/>
 		</div>
-		<div className='w-44 ml-4 flex flex-col'>
+		<div className='w-44 ml-2 flex flex-col'>
 			<div className=''>
 				<FilteredAlerts
 					setState={(e) => {
@@ -51,28 +55,28 @@ const FilterControls = ({
 					}}
 					state={homeStation}
 					data={stopNames}
-					className=' h-auto w-36 md:w-64 truncate pt-1 text-lg font-black uppercase bg-transparent justify-self-start text-slate-50'
+					className=' h-auto w-36 iphone-14pro-max:w-48 md:w-64 truncate pt-1 text-lg font-black uppercase bg-transparent justify-self-start text-slate-50'
 					value={true}
 				/>
 			</div>
 			<div className=''>
-				<div className=' sm:flex items-center justify-between'>
+				<div className='  iphone-14pro-max:flex items-center justify-between'>
 					<FilteredAlerts
 						setState={(e) => {
-							setService('1');
+							setService(objects.serviceByLines[filtLines][0]);
 							setFiltLines(e.target.value);
 						}}
 						state={filtLines}
 						data={objects.serviceByLines}
-						className='content-center h-auto w-auto text-sm  font-bold uppercase bg-transparent text-zinc-400'
+						className='content-center h-auto w-auto text-sm text-center  font-bold uppercase bg-transparent text-zinc-400'
 						value={false}
 					/>
-					<span className='content-center sm:mx-2 hidden sm:inline text-lg font-bold uppercase bg-transparent text-zinc-50'>
+					<span className='content-center iphone-14pro-max:mx-2 hidden  iphone-14pro-max:inline text-lg font-bold uppercase bg-transparent text-zinc-50'>
 						|
 					</span>
 					<FilteredAlerts
 						setState={(e) => {
-							setService('x');
+							setService(objects.serviceByLines[filtLines][0]);
 							setDirection(e.target.value);
 						}}
 						data={terminal}
@@ -83,10 +87,10 @@ const FilterControls = ({
 				</div>
 			</div>
 		</div>
-		<div className=' flex items-center justify-center '>
+		<div className=' iphone-14pro-max:ml-10 mr-4 flex items-center justify-end '>
 			<button
 				onClick={() => setSummary(!summary)}
-				className=' w-12 h-12 rounded-full flex items-center justify-center bg-zinc-600 md:hidden'
+				className='  w-11 h-11 rounded-full flex items-center justify-center bg-zinc-600 md:hidden'
 			>
 				<SummaryIcon />
 			</button>
@@ -95,6 +99,8 @@ const FilterControls = ({
 );
 
 FilterControls.propTypes = {
+	stopNames: PropTypes.array,
+
 	filtLines: PropTypes.string.isRequired,
 	setFiltLines: PropTypes.func.isRequired,
 	homeStation: PropTypes.string.isRequired,

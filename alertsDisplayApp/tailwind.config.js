@@ -7,6 +7,9 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			screens: {
+				'iphone-14pro-max': '430px', // Define custom screen size
+			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'gradient-conic':

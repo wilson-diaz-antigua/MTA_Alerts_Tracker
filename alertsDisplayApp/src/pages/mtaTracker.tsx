@@ -142,10 +142,10 @@ function MtaTracker(): JSX.Element {
           />
         </div>
         <div
-          className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : ''
-            } content relative  iphone-14pro-max:justify-center sm:justify-between  `}
+          className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : 'iphone-14pro-max:justify-center sm:justify-between '
+            } content relative   `}
         >
-          <div className='flex justify-stretch '>
+          <div className={`${loading ? '' : 'flex justify-stretch '}`}>
             {loading ? (
               <LoadingSkeleton />
             ) : (
@@ -188,8 +188,8 @@ function MtaTracker(): JSX.Element {
             </div>
           </div>
         </div>
-      </AccordionContext.Provider>
-    </div>
+      </AccordionContext.Provider >
+    </div >
   );
 }
 

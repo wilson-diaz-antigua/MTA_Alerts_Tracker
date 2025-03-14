@@ -60,7 +60,7 @@ const FilterControls = ({
 				/>
 			</div>
 			<div className=''>
-				<div className='  iphone-14pro-max:flex items-center justify-between'>
+				<div className=' iphone-14pro-max:flex items-center justify-between'>
 					<FilteredAlerts
 						setState={(e) => {
 							setService(objects.serviceByLines[filtLines][0]);
@@ -68,7 +68,7 @@ const FilterControls = ({
 						}}
 						state={filtLines}
 						data={objects.serviceByLines}
-						className='content-center h-auto w-auto text-sm text-center  font-bold uppercase bg-transparent text-zinc-400'
+						className='content-center h-auto w-auto text-sm text-right  font-bold uppercase bg-transparent text-zinc-400'
 						value={false}
 					/>
 					<span className='content-center iphone-14pro-max:mx-2 hidden  iphone-14pro-max:inline text-lg font-bold uppercase bg-transparent text-zinc-50'>

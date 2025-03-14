@@ -16,7 +16,7 @@ const EndMarker = ({ linecolors, objects }) => (
 		>
 			<svg
 				height={40}
-				width={40}
+				width={50}
 				xmlns='http://www.w3.org/2000/svg'
 				viewBox='0 0 60 60'
 			>

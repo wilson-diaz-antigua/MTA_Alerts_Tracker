@@ -143,7 +143,7 @@ function MtaTracker(): JSX.Element {
         </div>
         <div
           className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : ''
-            } content relative  iphone-14pro-max:justify-center  `}
+            } content relative  iphone-14pro-max:justify-center sm:justify-between  `}
         >
           <div className='flex justify-stretch '>
             {loading ? (

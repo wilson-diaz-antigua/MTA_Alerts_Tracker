@@ -68,7 +68,7 @@ const FilterControls = ({
 						}}
 						state={filtLines}
 						data={objects.serviceByLines}
-						className='content-center h-auto w-auto text-sm iphone-14pro-max:text-right  font-bold uppercase bg-transparent text-zinc-400'
+						className='content-center h-auto w-auto text-sm    iphone-14pro-max:text-right  font-bold uppercase bg-transparent text-zinc-400'
 						value={false}
 					/>
 					<span className='content-center iphone-14pro-max:mx-2 hidden  iphone-14pro-max:inline text-lg font-bold uppercase bg-transparent text-zinc-50'>

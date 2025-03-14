@@ -10,9 +10,7 @@ import PropTypes from 'prop-types';
 const EndMarker = ({ linecolors, objects }) => (
 	<div className='timelineItem '>
 		<div
-			className={` icon fill-current text-zinc-900 ${
-				objects?.lineColors?.[linecolors] || ''
-			}`}
+			className={` icon fill-current bg-zinc-900  ${objects?.dottedColors?.[linecolors]}`}
 		>
 			<svg
 				height={50}
@@ -20,7 +18,7 @@ const EndMarker = ({ linecolors, objects }) => (
 				xmlns='http://www.w3.org/2000/svg'
 				viewBox='10 0 40 40'
 			>
-				<rect width='60' height='20' x='0' y='0' rx='0' ry='0' />
+				<rect width='60' height='10' x='0' y='0' rx='0' ry='0' />
 			</svg>
 		</div>
 		<button className='rightSide'>

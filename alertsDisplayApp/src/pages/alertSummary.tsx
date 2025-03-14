@@ -63,7 +63,7 @@ const AlertSummary = (props) => {
 
 	// Rest of your component with client-side rendering
 	return (
-		<main className='ml-5 w-full   md:mr-10 text-slate-50  font-bold text-xl '>
+		<main className='mx-3  text-slate-50  font-bold text-xl '>
 			<section className="  pt-8 pb-2  border-slate-50 border-b-2 truncate">active alerts   <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span>
 			</section>
 			{todayAlerts.length > 0 ? (
@@ -75,7 +75,7 @@ const AlertSummary = (props) => {
 					);
 				})
 			) : (
-				<div className="pt-2 pl-5 w-[90%]">
+				<div className="pt-2 pl-5 ">
 					<div className="text-sm font-medium">No alerts for today.</div>
 				</div>
 			)}

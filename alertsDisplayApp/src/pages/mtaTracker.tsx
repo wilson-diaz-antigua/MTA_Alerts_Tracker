@@ -148,7 +148,7 @@ function MtaTracker(): JSX.Element {
           {loading ? (
             <LoadingSkeleton />
           ) : (
-            <div className={`${summary ? 'hidden' : 'relative'} xl:w-[40%] lg:w-[60%]`}>
+            <div className={`${summary ? 'hidden' : 'relative'} sm:min-w-[430px] xl:w-[40%] md:w-[60%] `}>
               <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>
 
               {alertData.length > 6 && (
@@ -187,7 +187,7 @@ function MtaTracker(): JSX.Element {
               <EndMarker linecolors={filtLines} objects={objects} />
             </div>
           )}
-          <div className={`  ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'} xl:w-[42rem] `}>
+          <div className={` justify-self-center ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'}`}>
             <AlertSummary data={data} homestation={homeStation} stopnamedata={stopnames} />
           </div>
         </div>

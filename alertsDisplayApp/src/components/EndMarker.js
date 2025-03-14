@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} End marker component
  */
 const EndMarker = ({ linecolors, objects }) => (
-	<div className='timelineItem'>
+	<div className='timelineItem '>
 		<div
-			className={`icon fill-current text-zinc-900 ${
+			className={` icon fill-current text-zinc-900 ${
 				objects?.lineColors?.[linecolors] || ''
 			}`}
 		>

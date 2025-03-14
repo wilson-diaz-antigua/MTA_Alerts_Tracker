@@ -57,6 +57,7 @@ function MtaTracker(): JSX.Element {
 
   initialHomeStation = stopNamedata[0];
 
+
   useEffect(() => {
     setService(objects.serviceByLines[filtLines][0]);
   }, [filtLines, direction]);
@@ -127,6 +128,7 @@ function MtaTracker(): JSX.Element {
       <AccordionContext.Provider value={accordionContextValue}>
         <div className='bg-zinc-800 sticky top-0 z-10  '>
           <FilterControls
+
             stopNames={[...new Set(stopNamedata)]}
             setSummary={setSummary}
             summary={summary}
@@ -142,7 +144,7 @@ function MtaTracker(): JSX.Element {
           />
         </div>
         <div
-          className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : 'iphone-14pro-max:justify-center sm:justify-between '
+          className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : 'sm:justify-between '
             } content relative   `}
         >
           <div className={`${loading ? '' : 'flex justify-stretch '}`}>
@@ -183,7 +185,7 @@ function MtaTracker(): JSX.Element {
                 <EndMarker linecolors={filtLines} objects={objects} />
               </div>
             )}
-            <div className={` iphone-14pro-max:mx-5 max-w-[40rem] xl:mx-5 grow  ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'}`}>
+            <div className={`min-w-[350px] iphone-14pro-max:mx-5 max-w-[40rem] xl:mx-5 grow  ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'}`}>
               <AlertSummary data={data} homestation={homeStation} stopnamedata={stopnames} />
             </div>
           </div>

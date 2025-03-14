@@ -63,8 +63,8 @@ const AlertSummary = (props) => {
 
 	// Rest of your component with client-side rendering
 	return (
-		<main className='mx-3  text-slate-50  font-bold text-xl '>
-			<section className="  pt-8 pb-2  border-slate-50 border-b-2 truncate">active alerts   <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span>
+		<main className='md:mr-3 lg:mr-10    text-slate-50  font-bold text-xl '>
+			<section className=" pt-8 pb-2  border-slate-50 border-b-2 truncate">active alerts   <span className='ml-1 text-base font-semibold text-zinc-400'>{props.homestation}</span>
 			</section>
 			{todayAlerts.length > 0 ? (
 				todayAlerts.map((alert, index) => {

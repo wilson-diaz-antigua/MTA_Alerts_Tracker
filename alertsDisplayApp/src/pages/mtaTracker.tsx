@@ -143,52 +143,49 @@ function MtaTracker(): JSX.Element {
         </div>
         <div
           className={`${summary ? '' : `before:${objects.lineColors[filtLines]}`} ${loading ? 'animate-pulse' : ''
-            } content relative  `}
+            } content relative  iphone-14pro-max:justify-center  `}
         >
-          {loading ? (
-            <LoadingSkeleton />
-          ) : (
-            <div className={`${summary ? 'hidden' : 'relative'} sm:min-w-[430px] xl:w-[40%] md:w-[60%] `}>
-              <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>
-
-              {alertData.length > 6 && (
-
-                <>
-                  <section
-                    onClick={() => setIsExpanded(!isExpanded)}
-                  >
-
-                    <TimelineItem
-                      filtLines={filtLines}
-                      index={-2}
-                      customTitle={isExpanded ? `collapse stations` : `${alertData.length - 6
-                        } more stations affected`}
-                      isSpecial={true}
-                      alerts={isExpanded ? {
-                        service: [],
-                        heading: [],
-                        type: [
-                          ` show less`,
-                        ],
-                      } : {
-                        service: [],
-                        heading: [],
-                        type: [
-                          ` show ${alertData.length - 6} more stations with alerts`,
-                        ],
-                      }}
-                    />
-                  </section>
-                  <section>{isExpanded ? '' : renderTimelineItems().slice(-1)}</section>
-                </>
-              )}
-
-
-              <EndMarker linecolors={filtLines} objects={objects} />
+          <div className='flex justify-stretch '>
+            {loading ? (
+              <LoadingSkeleton />
+            ) : (
+              <div className={`${summary ? 'hidden' : 'relative'} sm:min-w-[430px] xl:w-[40%] md:w-[60%] `}>
+                <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>
+                {alertData.length > 6 && (
+                  <>
+                    <section
+                      onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                      <TimelineItem
+                        filtLines={filtLines}
+                        index={-2}
+                        customTitle={isExpanded ? `collapse stations` : `${alertData.length - 6
+                          } more stations affected`}
+                        isSpecial={true}
+                        alerts={isExpanded ? {
+                          service: [],
+                          heading: [],
+                          type: [
+                            ` show less`,
+                          ],
+                        } : {
+                          service: [],
+                          heading: [],
+                          type: [
+                            ` show ${alertData.length - 6} more stations with alerts`,
+                          ],
+                        }}
+                      />
+                    </section>
+                    <section>{isExpanded ? '' : renderTimelineItems().slice(-1)}</section>
+                  </>
+                )}
+                <EndMarker linecolors={filtLines} objects={objects} />
+              </div>
+            )}
+            <div className={` iphone-14pro-max:mx-5 max-w-[40rem] xl:mx-5 grow  ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'}`}>
+              <AlertSummary data={data} homestation={homeStation} stopnamedata={stopnames} />
             </div>
-          )}
-          <div className={` justify-self-center ${summary ? 'block' : 'hidden'}  ${loading ? 'md:hidden' : 'md:block'}`}>
-            <AlertSummary data={data} homestation={homeStation} stopnamedata={stopnames} />
           </div>
         </div>
       </AccordionContext.Provider>

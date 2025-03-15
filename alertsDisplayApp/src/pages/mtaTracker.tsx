@@ -61,6 +61,17 @@ function MtaTracker(): JSX.Element {
   useEffect(() => {
     setService(objects.serviceByLines[filtLines][0]);
   }, [filtLines, direction]);
+
+  // Ensure summary is false when screen size is larger than 430px
+  // Prevent summary from being updated if screen size is larger than 430px
+  const handleSetSummary = (value: boolean) => {
+    if (window.matchMedia('(min-width: 431px)').matches) {
+      setSummary(false);
+    } else {
+      setSummary(value);
+    }
+  };
+
   // Process data based on selected filters
   const processAlertData = useCallback((): StopData[] => {
     if (!data || !Array.isArray(data)) return [];
@@ -130,7 +141,7 @@ function MtaTracker(): JSX.Element {
           <FilterControls
 
             stopNames={[...new Set(stopNamedata)]}
-            setSummary={setSummary}
+            setSummary={handleSetSummary}
             summary={summary}
             homeStation={homeStation}
             setHomeStation={setHomeStation}
@@ -150,6 +161,8 @@ function MtaTracker(): JSX.Element {
           <div className={`${loading ? '' : 'flex justify-stretch '}`}>
             {loading ? (
               <LoadingSkeleton />
+
+
             ) : (
               <div className={`${summary ? 'hidden' : 'relative'} sm:min-w-[430px] xl:w-[40%] md:w-[60%] `}>
                 <section>{isExpanded ? renderTimelineItems() : renderTimelineItems().slice(0, 5)}</section>

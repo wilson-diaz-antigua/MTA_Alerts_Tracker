@@ -52,6 +52,7 @@ const FilterControls = ({
 				<FilteredAlerts
 					setState={(e) => {
 						setHomeStation(e.target.value);
+
 						setSummary(true);
 					}}
 					state={homeStation}

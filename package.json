@@ -7,12 +7,26 @@
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.26.8",
 		"@craco/craco": "^7.1.0",
-		"eslint-config-next": "^15.2.1"
+		"@testing-library/dom": "^10.4.0",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.2.0",
+		"@types/jest": "^29.5.14",
+		"@types/react": "^19.0.12",
+		"@types/react-dom": "^19.0.4",
+		"eslint-config-next": "^15.2.1",
+		"jest": "^27.5.1",
+		"jest-environment-jsdom": "^29.7.0",
+		"ts-node": "^10.9.2"
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^0.10.4",
 		"axios": "^1.8.1",
 		"tailwind-merge": "^2.3.0",
 		"vercel": "^39.2.2"
+	},
+	"jest": {
+		"setupFilesAfterEnv": [
+			"./tests/mtaTracker.test.tsx"
+		]
 	}
 }

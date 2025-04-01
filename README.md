@@ -1,30 +1,57 @@
 # MTA Alert Display
 
-## Development Setup
+A real-time display system for New York City Metropolitan Transportation Authority (MTA) service alerts and updates.
 
-### Node.js Version
+## Overview
 
-This project requires Node.js version 18.x. Here's how to switch:
+MTA Alert Display is a tool for monitoring and displaying service changes, delays, and other important notifications from the New York City transit system. Stay informed about subway, bus, and train status changes with this easy-to-use alert system.
 
-#### Using nvm (Node Version Manager)
+## Features
 
-```bash
-# Install Node.js 18 if not already installed
-nvm install 18
+- Real-time MTA service alerts
+- Customizable display options
+- Filter alerts by transit line, service, and direction
+- Responsive design for various display sizes
 
-# Use Node.js 18 for this project
-nvm use 18
-```
-
-#### Direct installation
-
-If not using nvm, download and install Node.js 18.x from the [official website](https://nodejs.org/download/release/).
-
-#### Verifying installation
-
-Confirm you're using the correct version:
+## Installation
 
 ```bash
-node --version
-# Should output v18.x.x
+# Clone the repository
+git clone https://github.com/yourusername/MTAAlertDisplay.git
+
+# Navigate to project directory
+cd MTAAlertDisplay
+
+# Install dependencies
+npm install
 ```
+
+## Usage
+
+```bash
+# Start the application
+npm start
+```
+
+Navigate to `http://localhost:3000` to view the alert display.
+
+
+## Technologies Used
+
+- Node.js
+- Next.js 
+- MTA GTFS-Realtime API
+- Tailwindcss for styling
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Acknowledgments
+
+- MTA for providing the public API
+- Contributors and users of the application

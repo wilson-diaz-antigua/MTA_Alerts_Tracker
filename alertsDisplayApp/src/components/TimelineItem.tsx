@@ -156,7 +156,7 @@ const TimelineItem = ({
 						: ''
 						}`}
 				>
-					<span className='text-slate-50'>{stationName}</span>
+					<span className={`${isOpen ? "text-slate-900" : "text-slate-50"}`}>{stationName}</span>
 				</button>
 
 				<AlertDetails isOpen={isOpen} alertTypes={alertTypes} />

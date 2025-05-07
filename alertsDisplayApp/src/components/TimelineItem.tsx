@@ -152,11 +152,11 @@ const TimelineItem = ({
 			<div onClick={toggleAccordion} className='mt-0 pt-4 cursor-pointer'>
 				<button
 					className={` font-bold  mt-2 ${isOpen
-						? "ml-2 inline-block bg-slate-50 text-slate-900 rounded-e-md relative px-2 before:content-[''] before:absolute before:h-0 before:w-0 before:top-[0px] before:left-[-24px] text-slate-50 before:border-[12px] before:border-r-slate-50 before:border-l-transparent before:border-y-transparent border-solid self-start"
+						? "ml-2 inline-block bg-slate-50 rounded-e-md relative px-2 before:content-[''] before:absolute before:h-0 before:w-0 before:top-[0px] before:left-[-24px] text-slate-50 before:border-[12px] before:border-r-slate-50 before:border-l-transparent before:border-y-transparent border-solid self-start"
 						: ''
 						}`}
 				>
-					<span>{stationName}</span>
+					<span className='text-slate-50'>{stationName}</span>
 				</button>
 
 				<AlertDetails isOpen={isOpen} alertTypes={alertTypes} />

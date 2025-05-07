@@ -12,7 +12,7 @@
  * @returns {JSX.Element} A section containing a dropdown or multi-select menu with the filtered alerts.
  */
 const FilteredAlerts = (props) => {
-  let undefinedState = !props.state && props.data ? props.data[0] : "";
+  let undefinedState = !props.state && !props.data ? props.data[0] : "";
   let objMap = props.value
     ? Object.values(props.data || {})
     : Object.keys(props.data || {});
@@ -21,8 +21,8 @@ const FilteredAlerts = (props) => {
       <select
         className={`cursor-pointer appearance-none ${props.className}`}
         name="filter"
-        value={undefinedState}
-        onChange={(e) => props.setState(e.target.value)}
+        value={props.state}
+        onChange={props.setState}
       >
         {objMap.map((filtIter, value) => {
           return (

@@ -89,7 +89,7 @@ const FilterControls = ({
             }}
             data={terminal} // Data for terminal directions
             state={direction} // Current selected direction
-            className="h-auto content-center justify-self-start bg-transparent text-sm font-bold uppercase text-zinc-400" // Styling for the dropdown
+            className="h-auto content-center justify-self-start bg-transparent text-sm font-bold uppercase text-zinc-400 [text-align-last:left]" // Styling for the dropdown
             value={false} // Indicates this is not a selectable value
           />
         </div>
